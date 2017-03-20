@@ -6,25 +6,26 @@ public abstract class BaseMovementController : MonoBehaviour
 {
 
 	private Rigidbody cachedRigidbody = null;
+	[SerializeField]
 	private Vector3 direction = Vector3.zero;
 	[SerializeField]
-	private float movementSpeed = 4;
+	private float movementSpeed = 2;
 	[SerializeField]
-	private float gravity = -2.0f;
+	private float gravity = -0.987f;
 	[SerializeField]
-	private float jumpSpeed = 4.0f;
+	private float jumpSpeed = 6.0f;
 	[SerializeField]
 	private int remainingJumps = 2;
+	[SerializeField]
 	private int maxJumps = 2;
 	private float nextJumpTime = 0.0f;
-	private float jumpDelay = 1.0f;
-	private float landingDelay = 0.2f;
+	[SerializeField]
+	private float jumpDelay = 0.66f;
 	private float lastLandingTime = 0.0f;
-
+	[SerializeField]
+	private float landingDelay = 0.066f;
 	[SerializeField]
 	protected bool grounded = true;
-
-
 	private float distanceToGround = 0.0f;
 
 	void Awake()
@@ -54,7 +55,6 @@ public abstract class BaseMovementController : MonoBehaviour
 			--this.remainingJumps;
 			this.nextJumpTime = Time.time + this.jumpDelay;	
 		}
-			
 	}
 
 	void FixedUpdate()
