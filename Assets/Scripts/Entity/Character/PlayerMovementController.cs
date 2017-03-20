@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerMovementController : MovementController
+public class PlayerMovementController : BaseMovementController
 {
 	public override Vector3 CalculateDirection()
 	{

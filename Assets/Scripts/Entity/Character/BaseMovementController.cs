@@ -2,7 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class MovementController : MonoBehaviour 
+public abstract class BaseMovementController : MonoBehaviour 
 {
 
 	private Rigidbody cachedRigidbody = null;
