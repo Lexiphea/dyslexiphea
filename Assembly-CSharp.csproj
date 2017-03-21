@@ -47,8 +47,12 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\Entity\Camera\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Entity\Character\Attribute\CharacterStat.cs" />
+     <Compile Include="Assets\Scripts\Entity\Character\Attribute\IBaseStat.cs" />
+     <Compile Include="Assets\Scripts\Entity\Character\Attribute\ICharacterStat.cs" />
      <Compile Include="Assets\Scripts\Entity\Character\BaseMovementController.cs" />
      <Compile Include="Assets\Scripts\Entity\Character\PlayerMovementController.cs" />
+     <Compile Include="Assets\Scripts\Extensions\FloatExtensions.cs" />
  <Reference Include="UnityEngine.Analytics">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
  </Reference>

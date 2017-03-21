@@ -9,7 +9,7 @@ public abstract class BaseMovementController : MonoBehaviour
 	[SerializeField]
 	private Vector3 direction = Vector3.zero;
 	[SerializeField]
-	private float movementSpeed = 2;
+	private float movementSpeed = 4;
 	[SerializeField]
 	private float gravity = -0.987f;
 	[SerializeField]
@@ -28,6 +28,8 @@ public abstract class BaseMovementController : MonoBehaviour
 	protected bool grounded = true;
 	private float distanceToGround = 0.0f;
 
+	public Vector3 Velocity = Vector3.zero;
+
 	void Awake()
 	{
 		this.cachedRigidbody = this.gameObject.GetComponent<Rigidbody>();
@@ -40,6 +42,7 @@ public abstract class BaseMovementController : MonoBehaviour
 
 	void Update()
 	{
+		this.Velocity = this.cachedRigidbody.velocity;
 		this.direction = this.CalculateDirection();
 
 		bool prevGrounded = this.grounded;
