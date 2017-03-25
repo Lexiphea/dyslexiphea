@@ -31,7 +31,7 @@ public static class FloatExtensions
 	/// </summary>
 	public static int DigitCount(this float number)
 	{
-		if (number > 0.0f || number < 0.0f)
+		if (number != 0)
 		{
 			return ((int)Math.Log10(number.Absolute())) + 1;
 		}
