@@ -41,20 +41,20 @@ public class BitArray64<T>
 		Flags |= pFlagType;
 	}
 
-	/*public static bool Read(DataBuffer pBuffer, out BitArray64<T> pArray)
+	public static bool Read(DataBuffer buffer, out BitArray64<T> array)
 	{
 		long flags;
-		if (!pBuffer.ReadLong(out flags))
+		if (!buffer.ReadLong(out flags))
 		{
-			pArray = null;
+			array = null;
 			return false;
 		}
-		pArray = new BitArray64<T>(flags);
+		array = new BitArray64<T>(flags);
 		return true;
 	}
 
-	public void Write(DataBuffer pBuffer)
+	public void Write(DataBuffer buffer)
 	{
-		pBuffer.WriteLong(Flags);
-	}*/
+		buffer.WriteLong(Flags);
+	}
 }

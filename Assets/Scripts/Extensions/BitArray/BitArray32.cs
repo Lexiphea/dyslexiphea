@@ -41,20 +41,20 @@ public class BitArray32<T>
 		Flags |= pFlagType;
 	}
 
-	/*public static bool Read(DataBuffer pBuffer, out BitArray32<T> pArray)
+	public static bool Read(DataBuffer buffer, out BitArray32<T> array)
 	{
 		int flags = 0;
-		if (!pBuffer.ReadInt(out flags))
+		if (!buffer.ReadInt(out flags))
 		{
-			pArray = null;
+			array = null;
 			return false;
 		}
-		pArray = new BitArray32<T>(flags);
+		array = new BitArray32<T>(flags);
 		return true;
 	}
 
-	public void Write(DataBuffer pBuffer)
+	public void Write(DataBuffer buffer)
 	{
-		pBuffer.WriteInt((int)Flags);
-	}*/
+		buffer.WriteInt((int)Flags);
+	}
 }

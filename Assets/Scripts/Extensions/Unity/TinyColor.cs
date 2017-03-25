@@ -286,26 +286,26 @@ public struct TinyColor
 		}
 	}
 
-	/*public static bool Read(DataBuffer pBuffer, out TinyColor pTinyColor)
+	public static bool Read(DataBuffer buffer, out TinyColor tinyColor)
 	{
 		byte r, g, b, a;
-		if (!pBuffer.ReadByte(out r) ||
-			!pBuffer.ReadByte(out g) ||
-			!pBuffer.ReadByte(out b) ||
-			!pBuffer.ReadByte(out a))
+		if (!buffer.ReadByte(out r) ||
+			!buffer.ReadByte(out g) ||
+			!buffer.ReadByte(out b) ||
+			!buffer.ReadByte(out a))
 		{
-			pTinyColor = default(TinyColor);
+			tinyColor = default(TinyColor);
 			return false;
 		}
-		pTinyColor = new TinyColor(r, g, b, a);
+		tinyColor = new TinyColor(r, g, b, a);
 		return true;
 	}
 
-	public void Write(DataBuffer pBuffer)
+	public void Write(DataBuffer buffer)
 	{
-		pBuffer.WriteByte(r);
-		pBuffer.WriteByte(g);
-		pBuffer.WriteByte(b);
-		pBuffer.WriteByte(a);
-	}*/
+		buffer.WriteByte(r);
+		buffer.WriteByte(g);
+		buffer.WriteByte(b);
+		buffer.WriteByte(a);
+	}
 }
