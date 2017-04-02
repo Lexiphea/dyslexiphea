@@ -2,7 +2,7 @@
 using UnityEngine;
 
 [Serializable]
-public class AttackerInfo
+public class AttackInfo
 {
 	[SerializeField]
 	private GameObject attacker;
@@ -16,7 +16,7 @@ public class AttackerInfo
 	private Quaternion attackRotation;
 	private float damage;
 
-	public AttackerInfo(GameObject attacker, GameObject weapon, Vector3 attackPosition, Quaternion attackRotation, float damage)
+	public AttackInfo(GameObject attacker, GameObject weapon, Vector3 attackPosition, Quaternion attackRotation, float damage)
 	{
 		this.attacker = attacker;
 		this.weapon = weapon;

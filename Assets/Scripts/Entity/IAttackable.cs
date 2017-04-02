@@ -2,5 +2,5 @@
 
 public interface IAttackable
 {
-	void Attack(Collision collisionInfo, AttackerInfo attackerInfo);
+	void Attack(Collision collisionInfo, AttackInfo attackInfo);
 }
