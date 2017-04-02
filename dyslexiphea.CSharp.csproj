@@ -1,0 +1,159 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>10.0.20506</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D59A0398-FCC8-D5A0-20DF-D57B5689C76D}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AssemblyName>Assembly-CSharp</AssemblyName>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{E097FAD1-6243-4DAD-9C02-E9B9EFC3FFC1};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
+    <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
+    <CompilerResponseFile></CompilerResponseFile>
+    <UnityProjectType>Game:1</UnityProjectType>
+    <UnityBuildTarget>StandaloneOSXIntel64:27</UnityBuildTarget>
+    <UnityVersion>5.6.0f3</UnityVersion>
+    <RootNamespace></RootNamespace>
+    <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Debug\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Debug\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>DEBUG;TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_0;UNITY_5_6;UNITY_5;UNITY_64;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>Temp\UnityVS_bin\Release\</OutputPath>
+    <IntermediateOutputPath>Temp\UnityVS_obj\Release\</IntermediateOutputPath>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <DefineConstants>TRACE;UNITY_5_3_OR_NEWER;UNITY_5_4_OR_NEWER;UNITY_5_5_OR_NEWER;UNITY_5_6_OR_NEWER;UNITY_5_6_0;UNITY_5_6;UNITY_5;UNITY_64;UNITY_ANALYTICS;ENABLE_AUDIO;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_DUCK_TYPING;ENABLE_GENERICS;ENABLE_PVR_GI;ENABLE_MICROPHONE;ENABLE_MULTIPLE_DISPLAYS;ENABLE_PHYSICS;ENABLE_RUNTIME_NAVMESH_BUILDING;ENABLE_SPRITERENDERER_FLIPPING;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_RAKNET;ENABLE_UNET;ENABLE_LZMA;ENABLE_UNITYEVENTS;ENABLE_WEBCAM;ENABLE_WWW;ENABLE_CLOUD_SERVICES_COLLAB;ENABLE_CLOUD_SERVICES_ADS;ENABLE_CLOUD_HUB;ENABLE_CLOUD_PROJECT_ID;ENABLE_CLOUD_SERVICES_UNET;ENABLE_CLOUD_SERVICES_BUILD;ENABLE_CLOUD_LICENSE;ENABLE_EDITOR_METRICS;ENABLE_EDITOR_METRICS_CACHING;ENABLE_NATIVE_ARRAY;INCLUDE_DYNAMIC_GI;INCLUDE_GI;PLATFORM_SUPPORTS_MONO;RENDER_SOFTWARE_CURSOR;INCLUDE_PUBNUB;ENABLE_PLAYMODE_TESTS_RUNNER;ENABLE_SCRIPTING_NEW_CSHARP_COMPILER;ENABLE_VIDEO;UNITY_STANDALONE_OSX;UNITY_STANDALONE;ENABLE_SUBSTANCE;ENABLE_GAMECENTER;ENABLE_RUNTIME_GI;ENABLE_MOVIES;ENABLE_NETWORK;ENABLE_CRUNCH_TEXTURE_COMPRESSION;ENABLE_UNITYWEBREQUEST;ENABLE_CLOUD_SERVICES;ENABLE_CLOUD_SERVICES_ANALYTICS;ENABLE_CLOUD_SERVICES_PURCHASING;ENABLE_CLOUD_SERVICES_CRASH_REPORTING;ENABLE_VR;ENABLE_WEBSOCKET_HOST;ENABLE_MONO;NET_2_0_SUBSET;ENABLE_PROFILER;DEBUG;TRACE;UNITY_ASSERTIONS;UNITY_EDITOR;UNITY_EDITOR_64;UNITY_EDITOR_WIN;ENABLE_NATIVE_ARRAY_CHECKS;ENABLE_VSTU</DefineConstants>
+    <AllowUnsafeBlocks>false</AllowUnsafeBlocks>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="mscorlib" />
+    <Reference Include="System" />
+    <Reference Include="System.XML" />
+    <Reference Include="System.Core" />
+    <Reference Include="Boo.Lang" />
+    <Reference Include="UnityScript.Lang" />
+    <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="UnityEngine">
+      <HintPath>Library\UnityAssemblies\UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>Library\UnityAssemblies\UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.TestRunner">
+      <HintPath>Library\UnityAssemblies\UnityEngine.TestRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="nunit.framework">
+      <HintPath>Library\UnityAssemblies\nunit.framework.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>Library\UnityAssemblies\UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HoloLens">
+      <HintPath>Library\UnityAssemblies\UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VR">
+      <HintPath>Library\UnityAssemblies\UnityEngine.VR.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor">
+      <HintPath>Library\UnityAssemblies\UnityEditor.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Xcode">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Xcode.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEditor.iOS.Extensions.Common">
+      <HintPath>Library\UnityAssemblies\UnityEditor.iOS.Extensions.Common.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Assets\Scripts\Database\Database.cs" />
+    <Compile Include="Assets\Scripts\Database\DatabaseEditor.cs" />
+    <Compile Include="Assets\Scripts\Database\DatabaseItem.cs" />
+    <Compile Include="Assets\Scripts\Entity\Camera\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\AttackerInfo.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Attribute\CharacterStat.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Attribute\IBaseStat.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Attribute\ICharacterStat.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\BaseMovementController.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Buff\Buff.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Buff\BuffTemplate.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Buff\BuffTemplateDatabaseEditor.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Item\ItemTemplate.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Item\ItemTemplateDatabaseEditor.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\PlayerMovementController.cs" />
+    <Compile Include="Assets\Scripts\Entity\IAttackable.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ArrayExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\BitArray\BitArray32.cs" />
+    <Compile Include="Assets\Scripts\Extensions\BitArray\BitArray64.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Collections\Queue\BlockingQueue.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Collections\Queue\ConcurrentQueue.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Collections\Queue\LockFreeQueue.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Collections\Queue\QueueNode.cs" />
+    <Compile Include="Assets\Scripts\Extensions\FastActivator.cs" />
+    <Compile Include="Assets\Scripts\Extensions\IListExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Byte\ByteArrayExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Byte\ByteExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Byte\SByteExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Float\DoubleExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Float\FloatExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Int\IntExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Int\UIntExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Long\LongExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Long\ULongExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Short\ShortExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Short\UShortExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\DataBuffer.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\DataPair.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\ISerializable.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\ISerializer.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\Serializer.cs" />
+    <Compile Include="Assets\Scripts\Extensions\SetOnce.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolCompletedEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolDoWorkEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolProgressUpdateEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolReportProgressEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\ThreadPool.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\ThreadPoolCancellationToken.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\ThreadPoolMessagePump.cs" />
+    <Compile Include="Assets\Scripts\Extensions\TypeExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\AllocConsoleHelper.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\ComponentExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\GameObjectExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\Hex.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\SerializableDictionary.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\SerializableHashSet.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\SkinnedMeshRendererExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\TinyColor.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\TransformExtensions.cs" />
+    <Compile Include="Assets\Scripts\GUI\Controls\GUIDraggable.cs" />
+    <Compile Include="Assets\Scripts\GUI\Controls\GUILabel3D.cs" />
+    <Compile Include="Assets\Scripts\GUI\Controls\GUIObject3D.cs" />
+    <Compile Include="Assets\Scripts\GUI\GUIControl.cs" />
+    <Compile Include="Assets\Scripts\GUI\GUIManager.cs" />
+    <Compile Include="Assets\Scripts\RateLimiter\IRateLimiter.cs" />
+    <Compile Include="Assets\Scripts\RateLimiter\RateLimiter.cs" />
+  </ItemGroup>
+  <Import Project="$(MSBuildExtensionsPath)\SyntaxTree\UnityVS\2015\UnityVS.CSharp.targets" />
+</Project>

@@ -1,12 +1,9 @@
-﻿namespace libutility
+﻿public class ThreadPoolProgressUpdateEventArgs
 {
-	public class ThreadPoolProgressUpdateEventArgs
-	{
-		public uint Value;
+	public uint Value;
 
-		public ThreadPoolProgressUpdateEventArgs(uint value)
-		{
-			Value = value;
-		}
+	public ThreadPoolProgressUpdateEventArgs(uint value)
+	{
+		Value = value;
 	}
 }

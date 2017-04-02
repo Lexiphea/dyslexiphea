@@ -5,7 +5,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProductVersion>10.0.20506</ProductVersion>
     <SchemaVersion>2.0</SchemaVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <ProjectGuid>{B23E8184-5E55-0459-0165-DDDDE3B775CE}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
@@ -46,32 +47,93 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Entity\Camera\CameraController.cs" />
-     <Compile Include="Assets\Scripts\Entity\Character\Attribute\CharacterStat.cs" />
-     <Compile Include="Assets\Scripts\Entity\Character\Attribute\IBaseStat.cs" />
-     <Compile Include="Assets\Scripts\Entity\Character\Attribute\ICharacterStat.cs" />
-     <Compile Include="Assets\Scripts\Entity\Character\BaseMovementController.cs" />
-     <Compile Include="Assets\Scripts\Entity\Character\PlayerMovementController.cs" />
-     <Compile Include="Assets\Scripts\Extensions\FloatExtensions.cs" />
- <Reference Include="UnityEngine.Analytics">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.PlaymodeTestsRunner">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.Networking">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.UI">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.HoloLens">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
- </Reference>
- <Reference Include="UnityEngine.VR">
- <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
- </Reference>
+    <Compile Include="Assets\Scripts\Database\Database.cs" />
+    <Compile Include="Assets\Scripts\Database\DatabaseEditor.cs" />
+    <Compile Include="Assets\Scripts\Database\DatabaseItem.cs" />
+    <Compile Include="Assets\Scripts\Entity\Camera\CameraController.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\AttackerInfo.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Attribute\CharacterStat.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Attribute\IBaseStat.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Attribute\ICharacterStat.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\BaseMovementController.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Buff\BuffTemplate.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Buff\Buff.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Buff\BuffTemplateDatabaseEditor.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Item\ItemTemplate.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Item\ItemTemplateDatabaseEditor.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\PlayerMovementController.cs" />
+    <Compile Include="Assets\Scripts\Entity\IAttackable.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\DataBuffer.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\DataPair.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\ISerializable.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\ISerializer.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\Serializer.cs" />
+    <Compile Include="Assets\Scripts\Extensions\SetOnce.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\Hex.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\AllocConsoleHelper.cs" />
+    <Compile Include="Assets\Scripts\Extensions\BitArray\BitArray32.cs" />
+    <Compile Include="Assets\Scripts\Extensions\BitArray\BitArray64.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Collections\Queue\BlockingQueue.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Collections\Queue\ConcurrentQueue.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Collections\Queue\LockFreeQueue.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Collections\Queue\QueueNode.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ArrayExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\FastActivator.cs" />
+    <Compile Include="Assets\Scripts\Extensions\IListExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolCompletedEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolDoWorkEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolProgressUpdateEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\EventArgs\ThreadPoolReportProgressEventArgs.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\ThreadPool.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\ThreadPoolCancellationToken.cs" />
+    <Compile Include="Assets\Scripts\Extensions\ThreadPool\ThreadPoolMessagePump.cs" />
+    <Compile Include="Assets\Scripts\Extensions\TypeExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\ComponentExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\GameObjectExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Byte\ByteArrayExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Byte\ByteExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Byte\SByteExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Float\DoubleExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Float\FloatExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Int\IntExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Int\UIntExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Long\LongExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Long\ULongExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Short\ShortExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Primitive\Short\UShortExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\SerializableDictionary.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\SerializableHashSet.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\SkinnedMeshRendererExtensions.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\TinyColor.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Unity\TransformExtensions.cs" />
+    <Compile Include="Assets\Scripts\GUI\Controls\GUIDraggable.cs" />
+    <Compile Include="Assets\Scripts\GUI\Controls\GUILabel3D.cs" />
+    <Compile Include="Assets\Scripts\GUI\Controls\GUIObject3D.cs" />
+    <Compile Include="Assets\Scripts\GUI\GUIControl.cs" />
+    <Compile Include="Assets\Scripts\GUI\GUIManager.cs" />
+    <Compile Include="Assets\Scripts\RateLimiter\IRateLimiter.cs" />
+    <Compile Include="Assets\Scripts\RateLimiter\RateLimiter.cs" />
+    <Reference Include="UnityEngine.Analytics">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityAnalytics/UnityEngine.Analytics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.PlaymodeTestsRunner">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/PlaymodeTestsRunner/UnityEngine.PlaymodeTestsRunner.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.Networking">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Networking/UnityEngine.Networking.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/GUISystem/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.HoloLens">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.VR">
+      <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll</HintPath>
+    </Reference>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
@@ -80,5 +142,4 @@
   <Target Name="AfterBuild">
   </Target>
   -->
-  
 </Project>

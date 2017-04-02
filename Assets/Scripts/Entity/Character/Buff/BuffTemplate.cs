@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEditor;
 
 public class BuffTemplate : DatabaseItem
 {
@@ -7,7 +8,7 @@ public class BuffTemplate : DatabaseItem
 	private int maxStacks = 1;
 
 	[MenuItem("Assets/Create/Templates/Buff/BuffTemplate")]
-	public static ItemTemplate Create()
+	public static BuffTemplate Create()
 	{
 		BuffTemplate template = ScriptableObject.CreateInstance<BuffTemplate>();
 		string path = "Assets/NewBuffTemplate.asset";

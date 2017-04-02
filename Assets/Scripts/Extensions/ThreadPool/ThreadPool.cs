@@ -10,7 +10,7 @@ public delegate void ThreadPoolEventComplete(ThreadPoolCompletedEventArgs pArgs)
 
 public static class ThreadPool
 {
-	internal static MessageLog Log = new MessageLog("[ThreadPool]");
+	//internal static MessageLog Log = new MessageLog("[ThreadPool]");
 
 	public const int DEFAULT_MAX_THREAD_POOL_COUNT = 4;
 	public const int DEFAULT_UPDATE_TIMEOUT = 4;
@@ -192,7 +192,7 @@ public static class ThreadPool
 			}
 			catch (Exception e)
 			{
-				Log.Message(LogLevel.Error, e.ToString());
+				//Log.Message(LogLevel.Error, e.ToString());
 			}
 		}
 	}
