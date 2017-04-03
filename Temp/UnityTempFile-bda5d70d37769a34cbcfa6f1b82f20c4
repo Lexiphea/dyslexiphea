@@ -13,9 +13,6 @@
 -r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityHoloLens/RuntimeEditor/UnityEngine.HoloLens.dll"
 -r:"C:/Program Files/Unity/Editor/Data/UnityExtensions/Unity/UnityVR/RuntimeEditor/UnityEngine.VR.dll"
 -r:"C:/Program Files/Unity/Editor/Data/Managed/UnityEditor.dll"
--r:"C:/Program Files/Unity/Editor/Data/PlaybackEngines/AppleTVSupport/UnityEditor.iOS.Extensions.Xcode.dll"
--r:"C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Xcode.dll"
--r:"C:/Program Files/Unity/Editor/Data/PlaybackEngines/iOSSupport/UnityEditor.iOS.Extensions.Common.dll"
 -define:UNITY_5_3_OR_NEWER
 -define:UNITY_5_4_OR_NEWER
 -define:UNITY_5_5_OR_NEWER
@@ -88,9 +85,6 @@
 -define:UNITY_EDITOR_WIN
 -define:ENABLE_NATIVE_ARRAY_CHECKS
 -define:ENABLE_VSTU
-Assets/Scripts/Database/Database.cs
-Assets/Scripts/Database/DatabaseEditor.cs
-Assets/Scripts/Database/DatabaseItem.cs
 Assets/Scripts/Entity/Camera/CameraController.cs
 Assets/Scripts/Entity/Character/AttackInfo.cs
 Assets/Scripts/Entity/Character/Attribute/CharacterStat.cs
@@ -111,6 +105,9 @@ Assets/Scripts/Extensions/Collections/Queue/BlockingQueue.cs
 Assets/Scripts/Extensions/Collections/Queue/ConcurrentQueue.cs
 Assets/Scripts/Extensions/Collections/Queue/LockFreeQueue.cs
 Assets/Scripts/Extensions/Collections/Queue/QueueNode.cs
+Assets/Scripts/Extensions/Database/Database.cs
+Assets/Scripts/Extensions/Database/DatabaseEditor.cs
+Assets/Scripts/Extensions/Database/DatabaseItem.cs
 Assets/Scripts/Extensions/FastActivator.cs
 Assets/Scripts/Extensions/IListExtensions.cs
 Assets/Scripts/Extensions/Primitive/Byte/ByteArrayExtensions.cs
@@ -124,6 +121,8 @@ Assets/Scripts/Extensions/Primitive/Long/LongExtensions.cs
 Assets/Scripts/Extensions/Primitive/Long/ULongExtensions.cs
 Assets/Scripts/Extensions/Primitive/Short/ShortExtensions.cs
 Assets/Scripts/Extensions/Primitive/Short/UShortExtensions.cs
+Assets/Scripts/Extensions/RateLimiter/IRateLimiter.cs
+Assets/Scripts/Extensions/RateLimiter/RateLimiter.cs
 Assets/Scripts/Extensions/Serialization/DataBuffer.cs
 Assets/Scripts/Extensions/Serialization/DataPair.cs
 Assets/Scripts/Extensions/Serialization/ISerializable.cs
@@ -153,8 +152,6 @@ Assets/Scripts/GUI/Controls/GUILabel3D.cs
 Assets/Scripts/GUI/Controls/GUIObject3D.cs
 Assets/Scripts/GUI/GUIControl.cs
 Assets/Scripts/GUI/GUIManager.cs
-Assets/Scripts/RateLimiter/IRateLimiter.cs
-Assets/Scripts/RateLimiter/RateLimiter.cs
 -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Runtime.Serialization.dll"
 -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\System.Xml.Linq.dll"
 -r:"C:\Program Files\Unity\Editor\Data\Mono\lib\mono\unity\UnityScript.dll"

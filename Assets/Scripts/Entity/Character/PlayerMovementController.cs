@@ -9,6 +9,11 @@ public class PlayerMovementController : BaseMovementController
 
 	public override bool TryJump()
 	{
-		return Input.GetAxis("Vertical")>0.0f;
+		return base.TryJump() && Input.GetAxis("Vertical") > 0.0f;
+	}
+
+	public override bool TryFastFall()
+	{
+		return base.TryFastFall() && Input.GetAxis("Vertical") < 0.0f;
 	}
 }

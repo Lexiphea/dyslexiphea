@@ -2,16 +2,18 @@
 
 public abstract class BaseMovementController : MonoBehaviour 
 {
-
 	private Rigidbody cachedRigidbody = null;
 	[SerializeField]
 	private Vector3 direction = Vector3.zero;
 	[SerializeField]
-	private float movementSpeed = 4;
+	private float movementSpeed = 4.0f;
 	[SerializeField]
-	private float gravity = -0.987f;
+	private float gravity = -9.81f;
+	private bool fastFalling = false;
 	[SerializeField]
-	private float jumpSpeed = 6.0f;
+	private float fastFallSpeed = -8.0f;
+	[SerializeField]
+	private float jumpSpeed = 12.0f;
 	[SerializeField]
 	private int remainingJumps = 2;
 	[SerializeField]
@@ -23,10 +25,8 @@ public abstract class BaseMovementController : MonoBehaviour
 	[SerializeField]
 	private float landingDelay = 0.066f;
 	[SerializeField]
-	protected bool grounded = true;
+	private bool grounded = false;
 	private float distanceToGround = 0.0f;
-
-	public Vector3 Velocity = Vector3.zero;
 
 	void Awake()
 	{
@@ -40,29 +40,38 @@ public abstract class BaseMovementController : MonoBehaviour
 
 	void Update()
 	{
-		this.Velocity = this.cachedRigidbody.velocity;
 		this.direction = this.CalculateDirection();
 
 		bool prevGrounded = this.grounded;
 		this.grounded = this.IsGrounded();
+		//Check if we just landed on ground
 		if (this.grounded && prevGrounded != this.grounded) 
 		{
+			this.nextJumpTime = 0.0f;
 			this.remainingJumps = this.maxJumps;
 		}
 
-		if (this.TryJump() && this.remainingJumps > 0 && Time.time >= this.nextJumpTime && (Time.time - this.lastLandingTime) >= this.landingDelay) 
+		//Jump
+		if (this.TryJump()) 
 		{
 			this.cachedRigidbody.AddForce(Vector3.up * this.jumpSpeed, ForceMode.Impulse);
 			--this.remainingJumps;
-			this.nextJumpTime = Time.time + this.jumpDelay;	
+			this.nextJumpTime = Time.time + this.jumpDelay;
 		}
+
+		//FastFall
+		this.fastFalling = this.TryFastFall();
 	}
 
 	void FixedUpdate()
 	{
 		this.direction *= this.movementSpeed;
 		this.direction.y += this.gravity;
-		this.cachedRigidbody.AddForce(this.direction);
+		if (this.fastFalling)
+		{
+			this.direction.y += this.fastFallSpeed;
+		}
+		this.cachedRigidbody.AddForce(this.direction, ForceMode.Force);
 	}
 
 	private bool IsGrounded()
@@ -71,5 +80,12 @@ public abstract class BaseMovementController : MonoBehaviour
 	}
 
 	public abstract Vector3 CalculateDirection();
-	public abstract bool TryJump();
+	public virtual bool TryJump()
+	{
+		return this.remainingJumps > 0 && Time.time >= this.nextJumpTime && (Time.time - this.lastLandingTime) >= this.landingDelay;
+	}
+	public virtual bool TryFastFall()
+	{
+		return !this.grounded;
+	}
 }
