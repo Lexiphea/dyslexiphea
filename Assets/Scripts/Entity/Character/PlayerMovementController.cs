@@ -9,7 +9,7 @@ public class PlayerMovementController : BaseMovementController
 
 	public override bool TryJump()
 	{
-		return base.TryJump() && Input.GetAxis("Vertical") > 0.0f;
+		return base.TryJump() && Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow);
 	}
 
 	public override bool TryFastFall()

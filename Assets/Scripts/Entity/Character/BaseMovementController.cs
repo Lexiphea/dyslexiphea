@@ -1,32 +1,36 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 
 public abstract class BaseMovementController : MonoBehaviour 
 {
 	private Rigidbody cachedRigidbody = null;
 	[SerializeField]
-	private Vector3 direction = Vector3.zero;
+	private float movementSpeed = 8.0f;
 	[SerializeField]
-	private float movementSpeed = 4.0f;
+	private bool useGravity = true;
 	[SerializeField]
-	private float gravity = -9.81f;
+	private float gravity = -32.0f;
 	private bool fastFalling = false;
 	[SerializeField]
-	private float fastFallSpeed = -8.0f;
+	private float fastFallSpeed = -24.02f;
 	[SerializeField]
-	private float jumpSpeed = 12.0f;
+	private float jumpSpeed = 18.0f;
 	[SerializeField]
 	private int remainingJumps = 2;
 	[SerializeField]
 	private int maxJumps = 2;
 	private float nextJumpTime = 0.0f;
 	[SerializeField]
-	private float jumpDelay = 0.66f;
-	private float lastLandingTime = 0.0f;
+	private float jumpDelay = 0.33f;
+	private float landingLag = 0.0f;
 	[SerializeField]
 	private float landingDelay = 0.066f;
 	[SerializeField]
 	private bool grounded = false;
 	private float distanceToGround = 0.0f;
+
+	[SerializeField]
+	private List<Transform> groundedRayCastOrigins = new List<Transform>();
 
 	void Awake()
 	{
@@ -40,20 +44,33 @@ public abstract class BaseMovementController : MonoBehaviour
 
 	void Update()
 	{
-		this.direction = this.CalculateDirection();
+		Vector3 direction = this.CalculateDirection();
+		if (direction.sqrMagnitude > 1.0f)
+		{
+			direction.Normalize();
+		}
+		direction *= this.movementSpeed * Time.deltaTime;
 
 		bool prevGrounded = this.grounded;
-		this.grounded = this.IsGrounded();
-		//Check if we just landed on ground
-		if (this.grounded && prevGrounded != this.grounded) 
+		this.grounded = this.CheckGrounded();
+		if (this.grounded) 
 		{
-			this.nextJumpTime = 0.0f;
-			this.remainingJumps = this.maxJumps;
+			//Check if we just landed on ground
+			if (prevGrounded != this.grounded)
+			{
+				this.landingLag = Time.time + this.landingDelay;
+				this.nextJumpTime = 0.0f;
+				this.remainingJumps = this.maxJumps;
+			}
 		}
 
 		//Jump
 		if (this.TryJump()) 
 		{
+			if (!this.grounded)
+			{
+				this.cachedRigidbody.velocity = new Vector3(this.cachedRigidbody.velocity.x, 0.0f, this.cachedRigidbody.velocity.z);
+			}
 			this.cachedRigidbody.AddForce(Vector3.up * this.jumpSpeed, ForceMode.Impulse);
 			--this.remainingJumps;
 			this.nextJumpTime = Time.time + this.jumpDelay;
@@ -61,28 +78,44 @@ public abstract class BaseMovementController : MonoBehaviour
 
 		//FastFall
 		this.fastFalling = this.TryFastFall();
+
+		//Translate
+		this.cachedRigidbody.MovePosition(this.transform.position + direction);
 	}
 
 	void FixedUpdate()
 	{
-		this.direction *= this.movementSpeed;
-		this.direction.y += this.gravity;
-		if (this.fastFalling)
+		if (!this.grounded)
 		{
-			this.direction.y += this.fastFallSpeed;
+			Vector3 downForce = Vector3.zero;
+			if (this.useGravity)
+			{
+				downForce.y += this.gravity;
+			}
+			if (this.fastFalling)
+			{
+				downForce.y += this.fastFallSpeed;
+			}
+			this.cachedRigidbody.AddForce(downForce);
 		}
-		this.cachedRigidbody.AddForce(this.direction, ForceMode.Force);
 	}
 
-	private bool IsGrounded()
+	private bool CheckGrounded()
 	{
-		return Physics.Raycast(this.transform.position, Vector3.down, this.distanceToGround + 0.1f);
+		foreach (Transform origin in this.groundedRayCastOrigins)
+		{
+			if (Physics.Raycast(origin.position, Vector3.down, this.distanceToGround + 0.1f))
+			{
+				return true;
+			}
+		}
+		return false;
 	}
 
 	public abstract Vector3 CalculateDirection();
 	public virtual bool TryJump()
 	{
-		return this.remainingJumps > 0 && Time.time >= this.nextJumpTime && (Time.time - this.lastLandingTime) >= this.landingDelay;
+		return this.remainingJumps > 0 && Time.time >= this.nextJumpTime && Time.time >= this.landingLag;
 	}
 	public virtual bool TryFastFall()
 	{
