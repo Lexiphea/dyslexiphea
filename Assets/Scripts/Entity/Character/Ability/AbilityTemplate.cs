@@ -9,7 +9,6 @@ public class AbilityTemplate : DatabaseItem
 	private float recoveryDuration = 0.0f;
 	private float cooldown = 0.0f;
 	private float force = 0.0f;
-	private float damage = 0.0f;
 	private BuffTemplate[] buffs = null;
 	private GameObject hitbox = null;
 

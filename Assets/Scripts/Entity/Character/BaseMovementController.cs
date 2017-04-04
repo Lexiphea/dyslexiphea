@@ -117,4 +117,13 @@ public abstract class BaseMovementController : MonoBehaviour
 	{
 		return !this.grounded;
 	}
+
+	public void ResetRemainingJumps()
+	{
+		this.ResetRemainingJumps(0);
+	}
+	public void ResetRemainingJumps(int modifier)
+	{
+		this.remainingJumps = this.maxJumps + modifier;
+	}
 }
