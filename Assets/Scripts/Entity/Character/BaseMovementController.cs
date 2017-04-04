@@ -19,7 +19,7 @@ public abstract class BaseMovementController : MonoBehaviour
 	private int remainingJumps = 2;
 	[SerializeField]
 	private int maxJumps = 2;
-	private IRateLimiter jumpLimiter = new RateLimiter(0.33f);
+	private IRateLimiter jumpRateLimiter = new RateLimiter(0.33f);
 	private IRateLimiter landingLagLimiter = new RateLimiter(0.066f);
 	[SerializeField]
 	private bool grounded = false;
@@ -72,7 +72,7 @@ public abstract class BaseMovementController : MonoBehaviour
 
 	private void Jump()
 	{
-		if (this.TryJump() && this.jumpLimiter.IsReady && this.landingLagLimiter.IsReady)
+		if (this.TryJump() && this.jumpRateLimiter.IsReady && this.landingLagLimiter.IsReady)
 		{
 			if (!this.grounded)
 			{
@@ -80,7 +80,7 @@ public abstract class BaseMovementController : MonoBehaviour
 			}
 			this.cachedRigidbody.AddForce(Vector3.up * this.jumpSpeed, ForceMode.Impulse);
 			--this.remainingJumps;
-			this.jumpLimiter.Reset();
+			this.jumpRateLimiter.Reset();
 		}
 	}
 
@@ -102,7 +102,7 @@ public abstract class BaseMovementController : MonoBehaviour
 			if (prevGrounded != this.grounded)
 			{
 				this.landingLagLimiter.Reset();
-				this.jumpLimiter.SetNextTick(0.0f);
+				this.jumpRateLimiter.SetNextTick(0.0f);
 				this.remainingJumps = this.maxJumps;
 			}
 		}

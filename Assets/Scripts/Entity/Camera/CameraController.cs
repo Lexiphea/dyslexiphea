@@ -32,5 +32,15 @@ public class CameraController : MonoBehaviour
 
 			this.transform.position += newPos;
 		}
-	}	
+	}
+
+	public void SetTarget(Transform target)
+	{
+		this.target = target;
+	}
+
+	public void SetPosition(Vector3 position)
+	{
+		this.transform.position = position;
+	}
 }

@@ -13,7 +13,7 @@ public class ItemTemplate : DatabaseItem
 	public GameObject MeshPrefab;
 	public Material Material;
 
-	[MenuItem("Assets/Create/Templates/Item/New Template")]
+	[MenuItem("Templates/Item/New Template")]
 	public static ItemTemplate Create()
 	{
 		ItemTemplate template = ScriptableObject.CreateInstance<ItemTemplate>();

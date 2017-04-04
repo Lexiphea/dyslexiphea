@@ -83,7 +83,7 @@ public abstract class CharacterStat : MonoBehaviour, ICharacterStat
 	}
 
 	public abstract Type[] ParentTypes { get; }
-	public virtual Type[] ChildTypes { get; }
+	public abstract Type[] ChildTypes { get; }
 
 	public virtual void Awake()
 	{

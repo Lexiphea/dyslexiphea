@@ -1,20 +1,23 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class BuffTemplate : DatabaseItem
+public class AbilityTemplate : DatabaseItem
 {
-	public string Description = "NO_DESCRIPTION";
-	public float Duration = 0.0f;
-	public float TickRate = 0.0f;
-	[Tooltip("Resets the duration of the buff when applied again if true.")]
-	public bool ResetDuration = true;
-	public int MaxStacks = 1;
+	private string description = "NO_DESCRIPTION";
+	private float startupDuration = 0.0f;
+	private float activeDuration = 0.0f;
+	private float recoveryDuration = 0.0f;
+	private float cooldown = 0.0f;
+	private float force = 0.0f;
+	private float damage = 0.0f;
+	private BuffTemplate[] buffs = null;
+	private GameObject hitbox = null;
 
-	[MenuItem("Templates/Buff/New Template")]
-	public static BuffTemplate Create()
+	[MenuItem("Templates/Ability/New Template")]
+	public static AbilityTemplate Create()
 	{
-		BuffTemplate template = ScriptableObject.CreateInstance<BuffTemplate>();
-		string path = "Assets/NewBuffTemplate.asset";
+		AbilityTemplate template = ScriptableObject.CreateInstance<AbilityTemplate>();
+		string path = "Assets/NewAbilityTemplate.asset";
 		path = AssetDatabase.GenerateUniqueAssetPath(path);
 		AssetDatabase.CreateAsset(template, path);
 		AssetDatabase.SaveAssets();
@@ -42,17 +45,12 @@ public class BuffTemplate : DatabaseItem
 		EditorGUILayout.EndVertical();
 	}
 
-	public void OnApply(GameObject target)
+	void OnApply(GameObject obj)
 	{
 
 	}
 
-	public void OnApplyTick(GameObject target, int numStacks)
-	{
-
-	}
-
-	public void OnRemove(GameObject target)
+	void OnRemove(GameObject obj)
 	{
 
 	}

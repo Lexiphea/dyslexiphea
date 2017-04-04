@@ -69,16 +69,21 @@ public abstract class DatabaseEditor<T> : EditorWindow where T : DatabaseItem
 
 			EditorGUILayout.BeginHorizontal(EditorStyles.helpBox, GUILayout.MinWidth(640.0f), GUILayout.MaxWidth(1080.0f));
 				this.scrollPosition = EditorGUILayout.BeginScrollView(this.scrollPosition, EditorStyles.helpBox, GUILayout.Width(200.0f));
-				foreach (KeyValuePair<string, DatabaseItem> pair in this.currentDatabase.Items)
+				foreach (DatabaseItem item in new List<DatabaseItem>(this.currentDatabase.Items.Values))
 				{
+					if (item == null)
+					{
+						this.currentDatabase.Remove(item.Identifier);
+						continue;
+					}
 					Color defaultColor = GUI.color;
-					if (pair.Value == this.selectedItem)
+					if (item == this.selectedItem)
 					{
 						GUI.color = Color.green;
 					}
-					if (GUILayout.Button(pair.Value.name))
+					if (GUILayout.Button(item.name))
 					{
-						this.selectedItem = pair.Value;
+						this.selectedItem = item;
 					}
 					GUI.color = defaultColor;
 				}
