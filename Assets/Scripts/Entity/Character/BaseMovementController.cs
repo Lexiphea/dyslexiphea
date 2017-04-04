@@ -20,7 +20,6 @@ public abstract class BaseMovementController : MonoBehaviour
 	[SerializeField]
 	private int maxJumps = 2;
 	private IRateLimiter jumpLimiter = new RateLimiter(0.33f);
-	private float landingLag = 0.0f;
 	private IRateLimiter landingLagLimiter = new RateLimiter(0.066f);
 	[SerializeField]
 	private bool grounded = false;
@@ -48,35 +47,9 @@ public abstract class BaseMovementController : MonoBehaviour
 		}
 		direction *= this.movementSpeed * Time.deltaTime;
 
-		bool prevGrounded = this.grounded;
-		this.grounded = this.CheckGrounded();
-		if (this.grounded)
-		{
-			//Check if we just landed on ground
-			if (prevGrounded != this.grounded)
-			{
-				this.landingLagLimiter.Reset();
-				this.jumpLimiter.SetNextTick(0.0f);
-				this.remainingJumps = this.maxJumps;
-			}
-		}
-
-		//Jump
-		if (this.TryJump() && this.jumpLimiter.IsReady && this.landingLagLimiter.IsReady)
-		{
-			if (!this.grounded)
-			{
-				this.cachedRigidbody.velocity = new Vector3(this.cachedRigidbody.velocity.x, 0.0f, this.cachedRigidbody.velocity.z);
-			}
-			this.cachedRigidbody.AddForce(Vector3.up * this.jumpSpeed, ForceMode.Impulse);
-			--this.remainingJumps;
-			this.jumpLimiter.Reset();
-		}
-
-		//FastFall
+		this.Grounded();
+		this.Jump();
 		this.fastFalling = this.TryFastFall();
-
-		//Translate
 		this.cachedRigidbody.MovePosition(this.transform.position + direction);
 	}
 
@@ -97,16 +70,42 @@ public abstract class BaseMovementController : MonoBehaviour
 		}
 	}
 
-	private bool CheckGrounded()
+	private void Jump()
 	{
+		if (this.TryJump() && this.jumpLimiter.IsReady && this.landingLagLimiter.IsReady)
+		{
+			if (!this.grounded)
+			{
+				this.cachedRigidbody.velocity = new Vector3(this.cachedRigidbody.velocity.x, 0.0f, this.cachedRigidbody.velocity.z);
+			}
+			this.cachedRigidbody.AddForce(Vector3.up * this.jumpSpeed, ForceMode.Impulse);
+			--this.remainingJumps;
+			this.jumpLimiter.Reset();
+		}
+	}
+
+	private void Grounded()
+	{
+		bool prevGrounded = this.grounded;
+		this.grounded = false;
 		foreach (Transform origin in this.groundedRayCastOrigins)
 		{
-			if (Physics.Raycast(origin.position, Vector3.down, this.distanceToGround + 0.1f))
+			if (Physics.Raycast(origin.position, Vector3.down, this.distanceToGround + 0.001f))
 			{
-				return true;
+				this.grounded = true;
+				break;
 			}
 		}
-		return false;
+		if (this.grounded)
+		{
+			//Check if we just landed on ground
+			if (prevGrounded != this.grounded)
+			{
+				this.landingLagLimiter.Reset();
+				this.jumpLimiter.SetNextTick(0.0f);
+				this.remainingJumps = this.maxJumps;
+			}
+		}
 	}
 
 	public abstract Vector3 CalculateDirection();
