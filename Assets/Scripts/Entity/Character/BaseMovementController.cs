@@ -12,19 +12,16 @@ public abstract class BaseMovementController : MonoBehaviour
 	private float gravity = -32.0f;
 	private bool fastFalling = false;
 	[SerializeField]
-	private float fastFallSpeed = -24.02f;
+	private float fastFallSpeed = -24.0f;
 	[SerializeField]
 	private float jumpSpeed = 18.0f;
 	[SerializeField]
 	private int remainingJumps = 2;
 	[SerializeField]
 	private int maxJumps = 2;
-	private float nextJumpTime = 0.0f;
-	[SerializeField]
-	private float jumpDelay = 0.33f;
+	private IRateLimiter jumpLimiter = new RateLimiter(0.33f);
 	private float landingLag = 0.0f;
-	[SerializeField]
-	private float landingDelay = 0.066f;
+	private IRateLimiter landingLagLimiter = new RateLimiter(0.066f);
 	[SerializeField]
 	private bool grounded = false;
 	private float distanceToGround = 0.0f;
@@ -53,19 +50,19 @@ public abstract class BaseMovementController : MonoBehaviour
 
 		bool prevGrounded = this.grounded;
 		this.grounded = this.CheckGrounded();
-		if (this.grounded) 
+		if (this.grounded)
 		{
 			//Check if we just landed on ground
 			if (prevGrounded != this.grounded)
 			{
-				this.landingLag = Time.time + this.landingDelay;
-				this.nextJumpTime = 0.0f;
+				this.landingLagLimiter.Reset();
+				this.jumpLimiter.SetNextTick(0.0f);
 				this.remainingJumps = this.maxJumps;
 			}
 		}
 
 		//Jump
-		if (this.TryJump()) 
+		if (this.TryJump() && this.jumpLimiter.IsReady && this.landingLagLimiter.IsReady)
 		{
 			if (!this.grounded)
 			{
@@ -73,7 +70,7 @@ public abstract class BaseMovementController : MonoBehaviour
 			}
 			this.cachedRigidbody.AddForce(Vector3.up * this.jumpSpeed, ForceMode.Impulse);
 			--this.remainingJumps;
-			this.nextJumpTime = Time.time + this.jumpDelay;
+			this.jumpLimiter.Reset();
 		}
 
 		//FastFall
@@ -115,7 +112,7 @@ public abstract class BaseMovementController : MonoBehaviour
 	public abstract Vector3 CalculateDirection();
 	public virtual bool TryJump()
 	{
-		return this.remainingJumps > 0 && Time.time >= this.nextJumpTime && Time.time >= this.landingLag;
+		return this.remainingJumps > 0;
 	}
 	public virtual bool TryFastFall()
 	{

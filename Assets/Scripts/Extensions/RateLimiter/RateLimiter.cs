@@ -5,17 +5,19 @@ using UnityEngine;
 public class RateLimiter : IRateLimiter
 {
 	[SerializeField]
-	private float rate;
+	private float delay;
 	private float nextTick;
 
-	public void Reset()
+	public bool IsReady { get { return Time.time >= this.nextTick; } }
+
+	public RateLimiter(float initialDelay)
 	{
-		this.nextTick = Time.time;
+		this.delay = initialDelay;
 	}
 
-	public void Reset(float delay)
+	public void SetDelay(float delay)
 	{
-		this.nextTick = Time.time + delay;
+		this.delay = delay;
 	}
 
 	public void SetNextTick(float value)
@@ -23,12 +25,13 @@ public class RateLimiter : IRateLimiter
 		this.nextTick = value;
 	}
 
-	public void TryTick(Action<float> action)
+	public void Reset()
 	{
-		if (Time.time >= this.nextTick)
-		{
-			action(this.rate);
-			this.nextTick = Time.time + this.rate;
-		}
+		this.nextTick = Time.time + this.delay;
+	}
+
+	public void Reset(float delay)
+	{
+		this.nextTick = Time.time + delay;
 	}
 }

@@ -1,8 +1,8 @@
-﻿using System;
-
-public interface IRateLimiter
+﻿public interface IRateLimiter
 {
-	void Reset();
+	bool IsReady { get; }
+	void SetDelay(float delay);
 	void SetNextTick(float value);
-	void TryTick(Action<float> action);
+	void Reset();
+	void Reset(float delay);
 }
