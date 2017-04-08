@@ -13,6 +13,8 @@ public class CameraController : MonoBehaviour
 	[SerializeField]
 	private Vector3 offset = new Vector3(0.0f, 0.0f, -20.0f);
 
+	public Transform Target { get { return this.target; } set { this.target = value; } }
+
 	void Update()
 	{
 		if (this.target != null)
@@ -32,11 +34,6 @@ public class CameraController : MonoBehaviour
 
 			this.transform.position += newPos;
 		}
-	}
-
-	public void SetTarget(Transform target)
-	{
-		this.target = target;
 	}
 
 	public void SetPosition(Vector3 position)

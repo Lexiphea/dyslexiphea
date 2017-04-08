@@ -24,7 +24,6 @@ public abstract class BaseMovementController : MonoBehaviour
 	[SerializeField]
 	private bool grounded = false;
 	private float distanceToGround = 0.0f;
-
 	[SerializeField]
 	private List<Transform> groundedRayCastOrigins = new List<Transform>();
 
@@ -108,7 +107,10 @@ public abstract class BaseMovementController : MonoBehaviour
 		}
 	}
 
-	public abstract Vector3 CalculateDirection();
+	public virtual Vector3 CalculateDirection()
+	{
+		return Vector3.zero;
+	}
 	public virtual bool TryJump()
 	{
 		return this.remainingJumps > 0;

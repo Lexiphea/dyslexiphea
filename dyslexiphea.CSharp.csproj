@@ -13,11 +13,13 @@
     <TargetFrameworkIdentifier>.NETFramework</TargetFrameworkIdentifier>
     <TargetFrameworkVersion>v3.5</TargetFrameworkVersion>
     <TargetFrameworkProfile>Unity Subset v3.5</TargetFrameworkProfile>
-    <CompilerResponseFile></CompilerResponseFile>
+    <CompilerResponseFile>
+    </CompilerResponseFile>
     <UnityProjectType>Game:1</UnityProjectType>
     <UnityBuildTarget>StandaloneOSXIntel64:27</UnityBuildTarget>
     <UnityVersion>5.6.0f3</UnityVersion>
-    <RootNamespace></RootNamespace>
+    <RootNamespace>
+    </RootNamespace>
     <LangVersion Condition=" '$(VisualStudioVersion)' != '10.0' ">4</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
@@ -91,19 +93,25 @@
     <Compile Include="Assets\Scripts\Entity\Camera\CameraController.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\Ability\AbilityTemplate.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\Ability\AbilityTemplateDatabase.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Ability\BaseAbilityController.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\AttackInfo.cs" />
-    <Compile Include="Assets\Scripts\Entity\Character\Attribute\CharacterStat.cs" />
-    <Compile Include="Assets\Scripts\Entity\Character\Attribute\IBaseStat.cs" />
-    <Compile Include="Assets\Scripts\Entity\Character\Attribute\ICharacterStat.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\BaseInteractionController.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\PlayerInteractionController.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Stat\CharacterStat.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Stat\IBaseStat.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Stat\ICharacterStat.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\BaseMovementController.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\Buff\Buff.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\Buff\BuffTemplate.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\Buff\BuffTemplateDatabaseEditor.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\ExperienceTable.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Item\BaseItemAttribute.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\Item\ItemTemplate.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\Item\ItemTemplateDatabaseEditor.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\PlayerMovementController.cs" />
     <Compile Include="Assets\Scripts\Entity\IAttackable.cs" />
+    <Compile Include="Assets\Scripts\Entity\Interactable\BaseInteractable.cs" />
+    <Compile Include="Assets\Scripts\Entity\Interactable\TestInteractable.cs" />
     <Compile Include="Assets\Scripts\Extensions\Accumulator\Accumulator.cs" />
     <Compile Include="Assets\Scripts\Extensions\Accumulator\IAccumulator.cs" />
     <Compile Include="Assets\Scripts\Extensions\ArrayExtensions.cs" />
