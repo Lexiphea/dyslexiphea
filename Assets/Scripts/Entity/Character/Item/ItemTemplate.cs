@@ -3,7 +3,7 @@ using UnityEngine;
 using UnityEditor;
 
 [Serializable]
-public class ItemTemplate : DatabaseItem
+public class ItemTemplate : DatabaseTemplate
 {
 	[NonSerialized]
 	private Editor meshEditor;
@@ -24,24 +24,8 @@ public class ItemTemplate : DatabaseItem
 		return template;
 	}
 
-	public override void OnGUILayout()
+	protected override void OnGUILayoutEnd()
 	{
-		EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-		EditorGUILayout.BeginHorizontal();
-		EditorGUILayout.PrefixLabel("Name:");
-		string newName = GUILayout.TextField(this.name);
-		if (newName != this.name)
-		{
-			string path = AssetDatabase.GetAssetPath(this);
-			AssetDatabase.RenameAsset(path, newName);
-		}
-		EditorGUILayout.EndHorizontal();
-
-		EditorGUILayout.BeginHorizontal();
-		EditorGUILayout.PrefixLabel("Identifier:");
-		GUILayout.TextField(this.Identifier.ToString());
-		EditorGUILayout.EndHorizontal();
-
 		EditorGUILayout.BeginHorizontal();
 		EditorGUILayout.PrefixLabel("Mesh Prefab:");
 		GameObject newMeshPrefab = EditorGUILayout.ObjectField(this.MeshPrefab, typeof(GameObject), false) as GameObject;
@@ -71,6 +55,5 @@ public class ItemTemplate : DatabaseItem
 			this.materialEditor.OnPreviewGUI(GUILayoutUtility.GetRect(100, 100), EditorStyles.foldout);
 		}
 		EditorGUILayout.EndHorizontal();
-		EditorGUILayout.EndVertical();
 	}
 }

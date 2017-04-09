@@ -1,16 +1,24 @@
 ﻿using UnityEngine;
 using UnityEditor;
 
-public class AbilityTemplate : DatabaseItem
+public class AbilityTemplate : DatabaseTemplate
 {
 	private string description = "NO_DESCRIPTION";
-	private float startupDuration = 0.0f;
-	private float activeDuration = 0.0f;
-	private float recoveryDuration = 0.0f;
+	private bool interruptable = true;
+	private float hitChance = 100.0f;
 	private float cooldown = 0.0f;
-	private float force = 0.0f;
-	private BuffTemplate[] buffs = null;
-	private GameObject hitbox = null;
+	private float attackForce = 0.0f;
+	private AbilityTarget target = AbilityTarget.Enemy;
+	private GameObject abilityAnimationPrefab = null;
+	private StatusEffectTemplate[] statusEffects = null;
+
+	public string Description { get { return this.description; } }
+	public bool IsInterruptable { get { return this.interruptable; } }
+	public float HitChance { get { return this.hitChance; } }
+	public float Cooldown { get { return this.cooldown; } }
+	public float AttackForce { get { return this.attackForce; } }
+	public AbilityTarget Target { get { return this.target; } }
+	public StatusEffectTemplate[] StatusEffects { get { return this.statusEffects; } }
 
 	[MenuItem("Templates/Ability/New Template")]
 	public static AbilityTemplate Create()
@@ -23,34 +31,13 @@ public class AbilityTemplate : DatabaseItem
 		return template;
 	}
 
-	public override void OnGUILayout()
+	public GameObject Execute(BaseAbilityController abilityController)
 	{
-		EditorGUILayout.BeginVertical(EditorStyles.helpBox);
-		EditorGUILayout.BeginHorizontal();
-		EditorGUILayout.PrefixLabel("Name:");
-		string newName = GUILayout.TextField(this.name);
-		if (newName != this.name)
+		if (this.abilityAnimationPrefab != null)
 		{
-			string path = AssetDatabase.GetAssetPath(this);
-			AssetDatabase.RenameAsset(path, newName);
+			GameObject abilityAnimationObj = Instantiate(this.abilityAnimationPrefab, abilityController.transform.position, abilityController.transform.rotation, abilityController.transform);
+			return abilityAnimationObj;
 		}
-		EditorGUILayout.EndHorizontal();
-
-		EditorGUILayout.BeginHorizontal();
-		EditorGUILayout.PrefixLabel("Identifier:");
-		GUILayout.TextField(this.Identifier.ToString());
-		EditorGUILayout.EndHorizontal();
-
-		EditorGUILayout.EndVertical();
-	}
-
-	void OnApply(GameObject obj)
-	{
-
-	}
-
-	void OnRemove(GameObject obj)
-	{
-
+		return null;
 	}
 }

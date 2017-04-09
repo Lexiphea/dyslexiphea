@@ -7,7 +7,7 @@ public class AttackInfo
 	[SerializeField]
 	private GameObject attacker;
 	[SerializeField]
-	private GameObject weapon;
+	private GameObject attack;
 	[SerializeField]
 	[Tooltip("The position of the attacker when the attack began.")]
 	private Vector3 attackPosition;
@@ -16,10 +16,10 @@ public class AttackInfo
 	private Quaternion attackRotation;
 	private float damage;
 
-	public AttackInfo(GameObject attacker, GameObject weapon, Vector3 attackPosition, Quaternion attackRotation, float damage)
+	public AttackInfo(GameObject attacker, GameObject attack, Vector3 attackPosition, Quaternion attackRotation, float damage)
 	{
 		this.attacker = attacker;
-		this.weapon = weapon;
+		this.attack = attack;
 		this.attackPosition = attackPosition;
 		this.attackRotation = attackRotation;
 		this.damage = damage;

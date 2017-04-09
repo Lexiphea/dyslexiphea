@@ -3,6 +3,8 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2015
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dyslexiphea.CSharp", "dyslexiphea.CSharp.csproj", "{D59A0398-FCC8-D5A0-20DF-D57B5689C76D}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dyslexiphea.CSharp.Editor", "dyslexiphea.CSharp.Editor.csproj", "{9379E6B1-0380-57D7-6DA9-3C79E840306E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -13,6 +15,10 @@ Global
 		{D59A0398-FCC8-D5A0-20DF-D57B5689C76D}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D59A0398-FCC8-D5A0-20DF-D57B5689C76D}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D59A0398-FCC8-D5A0-20DF-D57B5689C76D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9379E6B1-0380-57D7-6DA9-3C79E840306E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9379E6B1-0380-57D7-6DA9-3C79E840306E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9379E6B1-0380-57D7-6DA9-3C79E840306E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9379E6B1-0380-57D7-6DA9-3C79E840306E}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
