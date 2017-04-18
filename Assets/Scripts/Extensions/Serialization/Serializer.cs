@@ -45,121 +45,166 @@ public class Serializer : ISerializer
 		this.data.Add(name, new DataPair(value, type));
 	}
 
-	public void Add(string name, Guid value)
+	public void Add(string name, char value)
 	{
-		Add(name, value.ToByteArray(), typeof(Guid));
+		Add(name, new byte[] { (byte)value }, typeof(char));
 	}
 
-	public void Add(string name, DateTime value)
+	public void Add(string name, byte value)
 	{
-		Add(name, BitConverter.GetBytes(value.ToBinary()), typeof(DateTime));
+		Add(name, new byte[] { value }, typeof(byte));
+	}
+
+	public void Add(string name, sbyte value)
+	{
+		byte[] bytes = new byte[2];
+		int writeOffset = 0;
+		ByteUtility.WriteSByte(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(sbyte));
+	}
+
+	public void Add(string name, bool value)
+	{
+		Add(name, new byte[] { (byte)(value ? 1 : 0) }, typeof(bool));
+	}
+
+	public void Add(string name, short value)
+	{
+		byte[] bytes = new byte[2];
+		int writeOffset = 0;
+		ByteUtility.WriteShort(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(short));
+	}
+
+	public void Add(string name, ushort value)
+	{
+		byte[] bytes = new byte[2];
+		int writeOffset = 0;
+		ByteUtility.WriteUShort(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(ushort));
+	}
+
+	public void Add(string name, int value)
+	{
+		byte[] bytes = new byte[4];
+		int writeOffset = 0;
+		ByteUtility.WriteInt(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(int));
+	}
+
+	public void Add(string name, uint value)
+	{
+		byte[] bytes = new byte[4];
+		int writeOffset = 0;
+		ByteUtility.WriteUInt(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(uint));
+	}
+
+	public void Add(string name, float value)
+	{
+		byte[] bytes = new byte[4];
+		int writeOffset = 0;
+		ByteUtility.WriteFloat(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(float));
+	}
+
+	public void Add(string name, long value)
+	{
+		byte[] bytes = new byte[8];
+		int writeOffset = 0;
+		ByteUtility.WriteLong(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(long));
+	}
+
+	public void Add(string name, ulong value)
+	{
+		byte[] bytes = new byte[8];
+		int writeOffset = 0;
+		ByteUtility.WriteULong(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(ulong));
+	}
+
+	public void Add(string name, double value)
+	{
+		byte[] bytes = new byte[8];
+		int writeOffset = 0;
+		ByteUtility.WriteDouble(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(double));
 	}
 
 	public void Add(string name, string value)
+	{
+		Add(name, value, Encoding.Unicode);
+	}
+
+	public void Add(string name, string value, Encoding encoding)
 	{
 		if (value == null)
 		{
 			value = "";
 		}
-		byte[] bytes = Encoding.ASCII.GetBytes(value);
+		byte[] rawString = encoding.GetBytes(value);
+		byte[] bytes = new byte[4 + rawString.Length];
+		int writeOffset = 0;
+		ByteUtility.WriteBytes(rawString, ref bytes, ref writeOffset);
 		Add(name, bytes, typeof(string));
 	}
 
-	public void Add(string name, char value)
+	public void Add(string name, Guid value)
 	{
-		Add(name, BitConverter.GetBytes(value), typeof(char));
+		byte[] bytes = new byte[16];
+		int writeOffset = 0;
+		ByteUtility.WriteGuid(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(Guid));
 	}
 
-	public void Add(string name, byte value)
+	public void Add(string name, DateTime value)
 	{
-		Add(name, BitConverter.GetBytes(value), typeof(byte));
-	}
-
-	public void Add(string name, sbyte value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(sbyte));
-	}
-
-	public void Add(string name, short value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(short));
-	}
-
-	public void Add(string name, ushort value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(ushort));
-	}
-
-	public void Add(string name, int value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(int));
-	}
-
-	public void Add(string name, uint value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(uint));
-	}
-
-	public void Add(string name, long value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(long));
-	}
-
-	public void Add(string name, ulong value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(ulong));
-	}
-
-	public void Add(string name, bool value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(bool));
-	}
-
-	public void Add(string name, float value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(float));
-	}
-
-	public void Add(string name, double value)
-	{
-		Add(name, BitConverter.GetBytes(value), typeof(double));
+		byte[] bytes = new byte[8];
+		int writeOffset = 0;
+		ByteUtility.WriteDateTime(value, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(DateTime));
 	}
 
 	public void Add(string name, Vector2 value)
 	{
-		List<byte> bytes = new List<byte>();
-		bytes.AddRange(BitConverter.GetBytes(value.x));
-		bytes.AddRange(BitConverter.GetBytes(value.y));
-		Add(name, bytes.ToArray(), typeof(Vector2));
+		byte[] bytes = new byte[8];
+		int writeOffset = 0;
+		ByteUtility.WriteFloat(value.x, ref bytes, ref writeOffset);
+		ByteUtility.WriteFloat(value.y, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(Vector2));
 	}
 
 	public void Add(string name, Vector3 value)
 	{
-		List<byte> bytes = new List<byte>();
-		bytes.AddRange(BitConverter.GetBytes(value.x));
-		bytes.AddRange(BitConverter.GetBytes(value.y));
-		bytes.AddRange(BitConverter.GetBytes(value.z));
-		Add(name, bytes.ToArray(), typeof(Vector3));
+		byte[] bytes = new byte[12];
+		int writeOffset = 0;
+		ByteUtility.WriteFloat(value.x, ref bytes, ref writeOffset);
+		ByteUtility.WriteFloat(value.y, ref bytes, ref writeOffset);
+		ByteUtility.WriteFloat(value.z, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(Vector3));
 	}
 
 	public void Add(string name, Quaternion value)
 	{
-		List<byte> bytes = new List<byte>();
-		bytes.AddRange(BitConverter.GetBytes(value.x));
-		bytes.AddRange(BitConverter.GetBytes(value.y));
-		bytes.AddRange(BitConverter.GetBytes(value.z));
-		bytes.AddRange(BitConverter.GetBytes(value.w));
-		Add(name, bytes.ToArray(), typeof(Quaternion));
+		byte[] bytes = new byte[16];
+		int writeOffset = 0;
+		ByteUtility.WriteFloat(value.x, ref bytes, ref writeOffset);
+		ByteUtility.WriteFloat(value.y, ref bytes, ref writeOffset);
+		ByteUtility.WriteFloat(value.z, ref bytes, ref writeOffset);
+		ByteUtility.WriteFloat(value.w, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(Quaternion));
 	}
 
 	public void Add(string name, Color value)
 	{
-		List<byte> bytes = new List<byte>();
-		bytes.AddRange(BitConverter.GetBytes(value.r));
-		bytes.AddRange(BitConverter.GetBytes(value.g));
-		bytes.AddRange(BitConverter.GetBytes(value.b));
-		bytes.AddRange(BitConverter.GetBytes(value.a));
-		Add(name, bytes.ToArray(), typeof(Color));
+		byte[] bytes = new byte[16];
+		int writeOffset = 0;
+		ByteUtility.WriteFloat(value.r, ref bytes, ref writeOffset);
+		ByteUtility.WriteFloat(value.g, ref bytes, ref writeOffset);
+		ByteUtility.WriteFloat(value.b, ref bytes, ref writeOffset);
+		ByteUtility.WriteFloat(value.a, ref bytes, ref writeOffset);
+		Add(name, bytes, typeof(Color));
 	}
 
 	public void Add(string name, TinyColor value)

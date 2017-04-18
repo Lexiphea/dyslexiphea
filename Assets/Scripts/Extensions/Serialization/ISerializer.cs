@@ -3,21 +3,21 @@ using UnityEngine;
 
 public interface ISerializer
 {
-	void Add(string name, Guid value);
-	void Add(string name, DateTime value);
-	void Add(string name, string value);
 	void Add(string name, char value);
 	void Add(string name, byte value);
 	void Add(string name, sbyte value);
+	void Add(string name, bool value);
 	void Add(string name, short value);
 	void Add(string name, ushort value);
 	void Add(string name, int value);
 	void Add(string name, uint value);
 	void Add(string name, long value);
 	void Add(string name, ulong value);
-	void Add(string name, bool value);
 	void Add(string name, float value);
 	void Add(string name, double value);
+	void Add(string name, string value);
+	void Add(string name, Guid value);
+	void Add(string name, DateTime value);
 	void Add(string name, Vector2 value);
 	void Add(string name, Vector3 value);
 	void Add(string name, Quaternion value);

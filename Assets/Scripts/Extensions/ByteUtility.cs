@@ -3,7 +3,18 @@ using System.Text;
 
 public static class ByteUtility
 {
-	private static bool EnsureCapacity(ref byte[] array, int writeOffset, int requiredCapacity)
+	/// <summary>
+	/// Ensures the array is capable of fitting the requested length. The array is resized to the exact required length if too small.
+	/// </summary>
+	public static bool EnsureCapacity(ref byte[] array, int writeOffset, int requiredCapacity)
+	{
+		return EnsureCapacity(ref array, writeOffset, requiredCapacity, true);
+	}
+
+	/// <summary>
+	/// Ensures the array is capable of fitting the requested length at the writeOffset. Array is resized to fit the capacity if too small. If expandToExactFit is true it will resize the array to the exact required size otherwise it expands by 256.
+	/// </summary>
+	public static bool EnsureCapacity(ref byte[] array, int writeOffset, int requiredCapacity, bool expandToExactFit)
 	{
 		const int ExpansionSize = 256;
 
@@ -15,10 +26,18 @@ public static class ByteUtility
 		int remainingBytes = array.Length - writeOffset;
 		if (remainingBytes < requiredCapacity)
 		{
-			int newSize = array.Length + ExpansionSize;
-			while (newSize < writeOffset + requiredCapacity)
+			int newSize;
+			if (expandToExactFit)
 			{
-				newSize += ExpansionSize;
+				newSize = array.Length + requiredCapacity - remainingBytes;
+			}
+			else
+			{
+				newSize = array.Length + ExpansionSize;
+				while (newSize < writeOffset + requiredCapacity)
+				{
+					newSize += ExpansionSize;
+				}
 			}
 			Array.Resize<byte>(ref array, newSize);
 		}
@@ -660,7 +679,7 @@ public static class ByteUtility
 	#endregion
 
 	#region DateTime
-	public static void WriteDateTime(ref byte[] destination, ref int writeOffset, DateTime dateTime)
+	public static void WriteDateTime(DateTime dateTime, ref byte[] destination, ref int writeOffset)
 	{
 		long s = dateTime.ToBinary();
 		WriteLong(s, ref destination, ref writeOffset);
