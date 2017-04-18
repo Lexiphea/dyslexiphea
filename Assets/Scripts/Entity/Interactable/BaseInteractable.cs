@@ -4,7 +4,7 @@ public abstract class BaseInteractable : MonoBehaviour
 {
 	void OnTriggerEnter(Collider other)
 	{
-		BaseInteractionController interactionController = other.gameObject.GetComponent<BaseInteractionController>();
+		InteractionController interactionController = other.gameObject.GetComponent<InteractionController>();
 		if (interactionController != null)
 		{
 			interactionController.CurrentInteractable = this;
@@ -13,18 +13,18 @@ public abstract class BaseInteractable : MonoBehaviour
 
 	void OnTriggerExit(Collider other)
 	{
-		BaseInteractionController interactionController = other.gameObject.GetComponent<BaseInteractionController>();
+		InteractionController interactionController = other.gameObject.GetComponent<InteractionController>();
 		if (interactionController != null)
 		{
 			interactionController.CurrentInteractable = null;
 		}
 	}
 
-	public void Interact(BaseInteractionController controller)
+	public void Interact(InteractionController controller)
 	{
 		this.OnInteractStart(controller);
 		this.OnInteractEnd(controller);
 	}
-	public virtual void OnInteractStart(BaseInteractionController controller) { }
-	public virtual void OnInteractEnd(BaseInteractionController controller) { }
+	public virtual void OnInteractStart(InteractionController controller) { }
+	public virtual void OnInteractEnd(InteractionController controller) { }
 }

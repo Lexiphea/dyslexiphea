@@ -12,7 +12,7 @@ internal class DataPair
 		Type = type.Name;
 	}
 
-	public static bool Read(out DataPair pair, DataBuffer buffer)
+	public static bool Read(out DataPair pair, ByteBuffer buffer)
 	{
 		pair = new DataPair();
 		if (!buffer.ReadBytes(out pair.Data) ||
@@ -23,7 +23,7 @@ internal class DataPair
 		return true;
 	}
 
-	public void Write(DataBuffer buffer)
+	public void Write(ByteBuffer buffer)
 	{
 		//string test = Encoding.ASCII.GetString(Data);
 		//pBuffer.WriteString("[Value:" + test + "]");

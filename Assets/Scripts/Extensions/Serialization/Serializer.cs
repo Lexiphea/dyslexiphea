@@ -24,14 +24,6 @@ public class Serializer : ISerializer
 		}
 	}
 
-	private void CheckEndianness(byte[] array)
-	{
-		if (!BitConverter.IsLittleEndian)
-		{
-			Array.Reverse(array);
-		}
-	}
-
 	private void Add(string name, byte[] value, Type type)
 	{
 		if (name == null || name.Length < 1)
@@ -50,7 +42,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Serializer does not support duplicate keys " + name);
 		}
-		CheckEndianness(value);
 		this.data.Add(name, new DataPair(value, type));
 	}
 
@@ -275,7 +266,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(short)");
 		}
-		CheckEndianness(pair.Data);
 		return BitConverter.ToInt16(pair.Data, 0);
 	}
 
@@ -290,7 +280,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(ushort)");
 		}
-		CheckEndianness(pair.Data);
 		return BitConverter.ToUInt16(pair.Data, 0);
 	}
 
@@ -305,7 +294,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(int)");
 		}
-		CheckEndianness(pair.Data);
 		return BitConverter.ToInt32(pair.Data, 0);
 	}
 
@@ -320,7 +308,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(uint)");
 		}
-		CheckEndianness(pair.Data);
 		return BitConverter.ToUInt32(pair.Data, 0);
 	}
 
@@ -335,7 +322,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(long)");
 		}
-		CheckEndianness(pair.Data);
 		return BitConverter.ToInt64(pair.Data, 0);
 	}
 
@@ -350,7 +336,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(ulong)");
 		}
-		CheckEndianness(pair.Data);
 		return BitConverter.ToUInt64(pair.Data, 0);
 	}
 
@@ -365,7 +350,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(bool)");
 		}
-		CheckEndianness(pair.Data);
 		return BitConverter.ToBoolean(pair.Data, 0);
 	}
 
@@ -380,7 +364,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(float)");
 		}
-		CheckEndianness(pair.Data);
 		return BitConverter.ToSingle(pair.Data, 0);
 	}
 
@@ -395,7 +378,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(double)");
 		}
-		CheckEndianness(pair.Data);
 		return BitConverter.ToDouble(pair.Data, 0);
 	}
 
@@ -410,7 +392,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(Vector2)");
 		}
-		CheckEndianness(pair.Data);
 		return new Vector2(BitConverter.ToSingle(pair.Data, 0), BitConverter.ToSingle(pair.Data, 4));
 	}
 
@@ -425,7 +406,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(Vector3)");
 		}
-		CheckEndianness(pair.Data);
 		return new Vector3(BitConverter.ToSingle(pair.Data, 0), BitConverter.ToSingle(pair.Data, 4), BitConverter.ToSingle(pair.Data, 8));
 	}
 
@@ -440,7 +420,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(Quaternion)");
 		}
-		CheckEndianness(pair.Data);
 		return new Quaternion(BitConverter.ToSingle(pair.Data, 0), BitConverter.ToSingle(pair.Data, 4), BitConverter.ToSingle(pair.Data, 8), BitConverter.ToSingle(pair.Data, 12));
 	}
 
@@ -455,7 +434,6 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(Color)");
 		}
-		CheckEndianness(pair.Data);
 		return new Color(BitConverter.ToSingle(pair.Data, 0), BitConverter.ToSingle(pair.Data, 4), BitConverter.ToSingle(pair.Data, 8), BitConverter.ToSingle(pair.Data, 12));
 	}
 
@@ -470,11 +448,10 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(TinyColor)");
 		}
-		CheckEndianness(pair.Data);
 		return new TinyColor(pair.Data[0], pair.Data[1], pair.Data[2], pair.Data[3]);
 	}
 
-	public static bool Read(DataBuffer buffer, out Serializer data)
+	public static bool Read(ByteBuffer buffer, out Serializer data)
 	{
 		data = new Serializer();
 		int count;
@@ -496,7 +473,7 @@ public class Serializer : ISerializer
 		return true;
 	}
 
-	public void Write(DataBuffer buffer)
+	public void Write(ByteBuffer buffer)
 	{
 		buffer.WriteInt(this.data.Count);
 		if (this.data.Count < 1)

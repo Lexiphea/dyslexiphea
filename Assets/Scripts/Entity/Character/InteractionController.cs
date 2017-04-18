@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public abstract class BaseInteractionController : MonoBehaviour
+public class InteractionController : MonoBehaviour
 {
 	[SerializeField]
 	private BaseInteractable currentInteractable;
@@ -10,15 +10,13 @@ public abstract class BaseInteractionController : MonoBehaviour
 	public BaseInteractable CurrentInteractable { get { return this.currentInteractable; } set { this.currentInteractable = value; } }
 	public bool IsInteracting { get { return this.isInteracting; } }
 
-	void Update()
+	public void Interact()
 	{
-		if (!this.isInteracting && this.currentInteractable != null && this.TryInteract())
+		if (!this.isInteracting && this.currentInteractable != null)
 		{
 			this.isInteracting = true;
 			this.currentInteractable.Interact(this);
 			this.isInteracting = false;
 		}
 	}
-
-	public abstract bool TryInteract();
 }

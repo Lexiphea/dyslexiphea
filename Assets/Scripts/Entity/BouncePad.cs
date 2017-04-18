@@ -7,16 +7,15 @@ public class BouncePad : MonoBehaviour
 
 	void OnTriggerEnter(Collider other)
 	{
-		Rigidbody rb = other.gameObject.GetComponent<Rigidbody>();
-		if (rb != null)
+		Rigidbody rigidbody = other.gameObject.GetComponent<Rigidbody>();
+		if (rigidbody != null)
 		{
-			BaseMovementController movement = other.gameObject.GetComponent<BaseMovementController>();
-			if (movement != null)
+			MovementController movementController = other.gameObject.GetComponent<MovementController>();
+			if (movementController != null)
 			{
-				movement.ResetRemainingJumps(-1);
+				movementController.ResetRemainingJumps(-1);
 			}
-			rb.velocity = new Vector3(rb.velocity.x, 0.0f, rb.velocity.y);
-			rb.AddForce(this.transform.up * bounceForce, ForceMode.Impulse);
+			rigidbody.velocity = new Vector3(rigidbody.velocity.x, this.bounceForce, rigidbody.velocity.y);
 		}
 	}
 }

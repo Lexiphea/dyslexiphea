@@ -2,46 +2,46 @@
 
 public class BitArray64<T>
 {
-	public long Flags = 0;
+	private long flags = 0;
 
-	public BitArray64(long pFlags)
+	public BitArray64(long flags)
 	{
-		Flags = pFlags;
+		this.flags = flags;
 	}
 
-	public bool IsFlagged(long pFlagType)
+	public bool IsFlagged(long flagType)
 	{
-		long f = Convert.ToInt64(pFlagType);
-		return ((Flags & f) == f);
+		long f = Convert.ToInt64(flagType);
+		return ((this.flags & f) == f);
 	}
 
-	public bool IsFlagged(T pFlagType)
+	public bool IsFlagged(T flagType)
 	{
-		long f = Convert.ToInt64(pFlagType);
-		return ((Flags & f) == f);
+		long f = Convert.ToInt64(flagType);
+		return ((this.flags & f) == f);
 	}
 
-	public void Disable(T pFlagType)
+	public void Disable(T flagType)
 	{
-		Flags &= ~(Convert.ToInt64(pFlagType));
+		this.flags &= ~(Convert.ToInt64(flagType));
 	}
 
-	public void Disable(long pFlagType)
+	public void Disable(long flagType)
 	{
-		Flags &= ~pFlagType;
+		this.flags &= ~flagType;
 	}
 
-	public void Enable(T pFlagType)
+	public void Enable(T flagType)
 	{
-		Flags |= (Convert.ToInt64(pFlagType));
+		this.flags |= (Convert.ToInt64(flagType));
 	}
 
-	public void Enable(long pFlagType)
+	public void Enable(long flagType)
 	{
-		Flags |= pFlagType;
+		this.flags |= flagType;
 	}
 
-	public static bool Read(DataBuffer buffer, out BitArray64<T> array)
+	public static bool Read(ByteBuffer buffer, out BitArray64<T> array)
 	{
 		long flags;
 		if (!buffer.ReadLong(out flags))
@@ -53,8 +53,8 @@ public class BitArray64<T>
 		return true;
 	}
 
-	public void Write(DataBuffer buffer)
+	public void Write(ByteBuffer buffer)
 	{
-		buffer.WriteLong(Flags);
+		buffer.WriteLong(this.flags);
 	}
 }

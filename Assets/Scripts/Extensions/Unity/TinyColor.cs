@@ -286,7 +286,7 @@ public struct TinyColor
 		}
 	}
 
-	public static bool Read(DataBuffer buffer, out TinyColor tinyColor)
+	public static bool Read(ByteBuffer buffer, out TinyColor tinyColor)
 	{
 		byte r, g, b, a;
 		if (!buffer.ReadByte(out r) ||
@@ -301,7 +301,7 @@ public struct TinyColor
 		return true;
 	}
 
-	public void Write(DataBuffer buffer)
+	public void Write(ByteBuffer buffer)
 	{
 		buffer.WriteByte(r);
 		buffer.WriteByte(g);

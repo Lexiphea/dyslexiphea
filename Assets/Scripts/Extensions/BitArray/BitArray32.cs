@@ -2,46 +2,46 @@
 
 public class BitArray32<T>
 {
-	public int Flags = 0;
+	private int flags = 0;
 
-	public BitArray32(int pFlags)
+	public BitArray32(int flags)
 	{
-		Flags = pFlags;
+		this.flags = flags;
 	}
 
-	public bool IsFlagged(int pFlagType)
+	public bool IsFlagged(int flagType)
 	{
-		int f = Convert.ToInt32(pFlagType);
-		return ((Flags & f) == f);
+		int f = Convert.ToInt32(flagType);
+		return ((this.flags & f) == f);
 	}
 
-	public bool IsFlagged(T pFlagType)
+	public bool IsFlagged(T flagType)
 	{
-		int f = Convert.ToInt32(pFlagType);
-		return ((Flags & f) == f);
+		int f = Convert.ToInt32(flagType);
+		return ((this.flags & f) == f);
 	}
 
-	public void Disable(T pFlagType)
+	public void Disable(T flagType)
 	{
-		Flags &= ~(Convert.ToInt32(pFlagType));
+		this.flags &= ~(Convert.ToInt32(flagType));
 	}
 
-	public void Disable(int pFlagType)
+	public void Disable(int flagType)
 	{
-		Flags &= ~pFlagType;
+		this.flags &= ~flagType;
 	}
 
-	public void Enable(T pFlagType)
+	public void Enable(T flagType)
 	{
-		Flags |= (Convert.ToInt32(pFlagType));
+		this.flags |= (Convert.ToInt32(flagType));
 	}
 
-	public void Enable(int pFlagType)
+	public void Enable(int flagType)
 	{
-		Flags |= pFlagType;
+		this.flags |= flagType;
 	}
 
-	public static bool Read(DataBuffer buffer, out BitArray32<T> array)
+	public static bool Read(ByteBuffer buffer, out BitArray32<T> array)
 	{
 		int flags = 0;
 		if (!buffer.ReadInt(out flags))
@@ -53,8 +53,8 @@ public class BitArray32<T>
 		return true;
 	}
 
-	public void Write(DataBuffer buffer)
+	public void Write(ByteBuffer buffer)
 	{
-		buffer.WriteInt((int)Flags);
+		buffer.WriteInt((int)this.flags);
 	}
 }

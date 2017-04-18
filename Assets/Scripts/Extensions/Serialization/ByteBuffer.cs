@@ -3,28 +3,28 @@ using System.Text;
 using System.IO;
 using UnityEngine;
 
-public class DataBuffer
+public class ByteBuffer
 {
 	private const int DEFAULT_SIZE = 256;
-	//protected static MessageLog Log = new MessageLog("[DataBuffer]");
+	//protected static MessageLog Log = new MessageLog("[ByteBuffer]");
 
 	private byte[] data = null;
 	private int writeCursor = 0;
 	private int readCursor = 0;
 	private bool isFixedSize = false;
 
-	public DataBuffer()
+	public ByteBuffer()
 	{
 		this.data = new byte[DEFAULT_SIZE];
 	}
 
-	public DataBuffer(byte[] data)
+	public ByteBuffer(byte[] data)
 	{
 		this.data = new byte[data.Length];
 		WriteRawBytes(data, 0, this.data.Length);
 	}
 
-	internal DataBuffer(byte[] data, int start, int length)
+	internal ByteBuffer(byte[] data, int start, int length)
 	{
 		this.data = new byte[length];
 		WriteRawBytes(data, start, length);
@@ -45,10 +45,6 @@ public class DataBuffer
 		get
 		{
 			return this.isFixedSize;
-		}
-		set
-		{
-			this.isFixedSize = value;
 		}
 	}
 
@@ -270,15 +266,17 @@ public class DataBuffer
 	#endregion
 
 	#region Float
-	public void WriteFloat(float value)
+	public unsafe void WriteFloat(float value)
 	{
-		byte[] buffer = BitConverter.GetBytes(value);
-		if (!BitConverter.IsLittleEndian)
-			Array.Reverse(buffer);
-		WriteRawBytes(buffer);
+		Prepare(4);
+		uint tmp = *(uint*)(&value);
+		this.data[this.writeCursor++] = (byte)(tmp & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 8) & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 16) & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 24) & 0xFF);
 	}
 
-	public bool ReadFloat(out float value)
+	public unsafe bool ReadFloat(out float value)
 	{
 		value = 0;
 		byte[] buffer;
@@ -286,11 +284,11 @@ public class DataBuffer
 		{
 			return false;
 		}
-		if (!BitConverter.IsLittleEndian)
-		{
-			Array.Reverse(buffer);
-		}
-		value = BitConverter.ToSingle(buffer, 0);
+		uint tmp = this.data[this.readCursor++];
+		tmp |= (uint)(this.data[this.readCursor++] << 8);
+		tmp |= (uint)(this.data[this.readCursor++] << 16);
+		tmp |= (uint)(this.data[this.readCursor++] << 24);
+		value = *(float*)(&tmp);
 		return true;
 	}
 	#endregion
@@ -445,17 +443,21 @@ public class DataBuffer
 	#endregion
 
 	#region Double
-	public void WriteDouble(double value)
+	public unsafe void WriteDouble(double value)
 	{
-		byte[] buffer = BitConverter.GetBytes(value);
-		if (!BitConverter.IsLittleEndian)
-		{
-			Array.Reverse(buffer);
-		}
-		WriteRawBytes(buffer);
+		Prepare(8);
+		ulong tmp = *(ulong*)(&value);
+		this.data[this.writeCursor++] = (byte)(tmp & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 8) & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 16) & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 24) & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 32) & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 40) & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 48) & 0xFF);
+		this.data[this.writeCursor++] = (byte)((tmp >> 56) & 0xFF);
 	}
 
-	public bool ReadDouble(out double value)
+	public unsafe bool ReadDouble(out double value)
 	{
 		value = 0;
 		byte[] buffer;
@@ -463,11 +465,15 @@ public class DataBuffer
 		{
 			return false;
 		}
-		if (!BitConverter.IsLittleEndian)
-		{
-			Array.Reverse(buffer);
-		}
-		value = BitConverter.ToDouble(buffer, 0);
+		ulong tmp = this.data[this.readCursor++];
+		tmp |= (uint)(this.data[this.readCursor++] << 8);
+		tmp |= (uint)(this.data[this.readCursor++] << 16);
+		tmp |= (uint)(this.data[this.readCursor++] << 24);
+		tmp |= (uint)(this.data[this.readCursor++] << 32);
+		tmp |= (uint)(this.data[this.readCursor++] << 40);
+		tmp |= (uint)(this.data[this.readCursor++] << 48);
+		tmp |= (uint)(this.data[this.readCursor++] << 56);
+		value = *(double*)(&tmp);
 		return true;
 	}
 	#endregion
@@ -867,8 +873,8 @@ public class DataBuffer
 	}
 	#endregion
 
-	//DataBuffer read/write
-	public static bool ReadFromDisk(string path, out DataBuffer dataBuffer)
+	//ByteBuffer read/write
+	public static bool ReadFromDisk(string path, out ByteBuffer dataBuffer)
 	{
 		const int STREAM_READ_LENGTH = short.MaxValue;
 
@@ -903,7 +909,7 @@ public class DataBuffer
 					remaining -= bytesRead;
 				}
 			}
-			dataBuffer = new DataBuffer(buffer);
+			dataBuffer = new ByteBuffer(buffer);
 		}
 
 		if (dataBuffer == null || dataBuffer.Length < 1)
