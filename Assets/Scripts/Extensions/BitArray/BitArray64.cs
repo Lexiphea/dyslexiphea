@@ -41,10 +41,10 @@ public class BitArray64<T>
 		this.flags |= flagType;
 	}
 
-	public static bool Read(ByteBuffer buffer, out BitArray64<T> array)
+	public static bool Read(byte[] buffer, ref int readOffset, out BitArray64<T> array)
 	{
-		long flags;
-		if (!buffer.ReadLong(out flags))
+		long flags = 0;
+		if (!ByteUtility.ReadLong(buffer, ref readOffset, out flags))
 		{
 			array = null;
 			return false;
@@ -53,8 +53,8 @@ public class BitArray64<T>
 		return true;
 	}
 
-	public void Write(ByteBuffer buffer)
+	public void Write(ref byte[] buffer, ref int writeOffset)
 	{
-		buffer.WriteLong(this.flags);
+		ByteUtility.WriteLong((int)this.flags, ref buffer, ref writeOffset);
 	}
 }

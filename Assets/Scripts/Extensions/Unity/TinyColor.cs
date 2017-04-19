@@ -286,13 +286,13 @@ public struct TinyColor
 		}
 	}
 
-	public static bool Read(ByteBuffer buffer, out TinyColor tinyColor)
+	public static bool Read(byte[] buffer, ref int readOffset, out TinyColor tinyColor)
 	{
 		byte r, g, b, a;
-		if (!buffer.ReadByte(out r) ||
-			!buffer.ReadByte(out g) ||
-			!buffer.ReadByte(out b) ||
-			!buffer.ReadByte(out a))
+		if (!ByteUtility.ReadByte(buffer, ref readOffset, out r) ||
+			!ByteUtility.ReadByte(buffer, ref readOffset, out g) ||
+			!ByteUtility.ReadByte(buffer, ref readOffset, out b) ||
+			!ByteUtility.ReadByte(buffer, ref readOffset, out a))
 		{
 			tinyColor = default(TinyColor);
 			return false;
@@ -301,11 +301,11 @@ public struct TinyColor
 		return true;
 	}
 
-	public void Write(ByteBuffer buffer)
+	public void Write(ref byte[] buffer, ref int writeOffset)
 	{
-		buffer.WriteByte(r);
-		buffer.WriteByte(g);
-		buffer.WriteByte(b);
-		buffer.WriteByte(a);
+		ByteUtility.WriteByte(r, ref buffer, ref writeOffset);
+		ByteUtility.WriteByte(g, ref buffer, ref writeOffset);
+		ByteUtility.WriteByte(b, ref buffer, ref writeOffset);
+		ByteUtility.WriteByte(a, ref buffer, ref writeOffset);
 	}
 }

@@ -41,10 +41,10 @@ public class BitArray32<T>
 		this.flags |= flagType;
 	}
 
-	public static bool Read(ByteBuffer buffer, out BitArray32<T> array)
+	public static bool Read(byte[] buffer, ref int readOffset, out BitArray32<T> array)
 	{
 		int flags = 0;
-		if (!buffer.ReadInt(out flags))
+		if (!ByteUtility.ReadInt(buffer, ref readOffset, out flags))
 		{
 			array = null;
 			return false;
@@ -53,8 +53,8 @@ public class BitArray32<T>
 		return true;
 	}
 
-	public void Write(ByteBuffer buffer)
+	public void Write(ref byte[] buffer, ref int writeOffset)
 	{
-		buffer.WriteInt((int)this.flags);
+		ByteUtility.WriteInt((int)this.flags, ref buffer, ref writeOffset);
 	}
 }

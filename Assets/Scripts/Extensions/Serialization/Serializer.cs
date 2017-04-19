@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
-using UnityEngine;
 
 public class Serializer : ISerializer
 {
@@ -22,6 +21,25 @@ public class Serializer : ISerializer
 		{
 			return this.data.Count;
 		}
+	}
+
+	public Serializer()
+	{
+	}
+
+	public Serializer(ISerializable serializable)
+	{
+		serializable.Serialize(this);
+	}
+
+	public void Serialize(ISerializable serializable)
+	{
+		serializable.Serialize(this);
+	}
+
+	public void Deserialize(ISerializable serializable)
+	{
+		serializable.Deserialize(this);
 	}
 
 	private void Add(string name, byte[] value, Type type)
@@ -45,9 +63,9 @@ public class Serializer : ISerializer
 		this.data.Add(name, new DataPair(value, type));
 	}
 
-	public void Add(string name, char value)
+	public void Add(string name, bool value)
 	{
-		Add(name, new byte[] { (byte)value }, typeof(char));
+		Add(name, new byte[] { (byte)(value ? 1 : 0) }, typeof(bool));
 	}
 
 	public void Add(string name, byte value)
@@ -58,78 +76,78 @@ public class Serializer : ISerializer
 	public void Add(string name, sbyte value)
 	{
 		byte[] bytes = new byte[2];
-		int writeOffset = 0;
-		ByteUtility.WriteSByte(value, ref bytes, ref writeOffset);
+		ByteUtility.WriteSByte(value, ref bytes);
 		Add(name, bytes, typeof(sbyte));
 	}
 
-	public void Add(string name, bool value)
-	{
-		Add(name, new byte[] { (byte)(value ? 1 : 0) }, typeof(bool));
-	}
-
-	public void Add(string name, short value)
+	public void Add(string name, char value)
 	{
 		byte[] bytes = new byte[2];
-		int writeOffset = 0;
-		ByteUtility.WriteShort(value, ref bytes, ref writeOffset);
-		Add(name, bytes, typeof(short));
+		ByteUtility.WriteChar(value, ref bytes);
+		Add(name, bytes, typeof(char));
 	}
 
 	public void Add(string name, ushort value)
 	{
 		byte[] bytes = new byte[2];
-		int writeOffset = 0;
-		ByteUtility.WriteUShort(value, ref bytes, ref writeOffset);
+		ByteUtility.WriteUShort(value, ref bytes);
 		Add(name, bytes, typeof(ushort));
 	}
 
-	public void Add(string name, int value)
+	public void Add(string name, short value)
 	{
-		byte[] bytes = new byte[4];
-		int writeOffset = 0;
-		ByteUtility.WriteInt(value, ref bytes, ref writeOffset);
-		Add(name, bytes, typeof(int));
+		byte[] bytes = new byte[2];
+		ByteUtility.WriteShort(value, ref bytes);
+		Add(name, bytes, typeof(short));
 	}
 
 	public void Add(string name, uint value)
 	{
 		byte[] bytes = new byte[4];
-		int writeOffset = 0;
-		ByteUtility.WriteUInt(value, ref bytes, ref writeOffset);
+		ByteUtility.WriteUInt(value, ref bytes);
 		Add(name, bytes, typeof(uint));
 	}
 
-	public void Add(string name, float value)
+	public void Add(string name, int value)
 	{
 		byte[] bytes = new byte[4];
-		int writeOffset = 0;
-		ByteUtility.WriteFloat(value, ref bytes, ref writeOffset);
-		Add(name, bytes, typeof(float));
-	}
-
-	public void Add(string name, long value)
-	{
-		byte[] bytes = new byte[8];
-		int writeOffset = 0;
-		ByteUtility.WriteLong(value, ref bytes, ref writeOffset);
-		Add(name, bytes, typeof(long));
+		ByteUtility.WriteInt(value, ref bytes);
+		Add(name, bytes, typeof(int));
 	}
 
 	public void Add(string name, ulong value)
 	{
 		byte[] bytes = new byte[8];
-		int writeOffset = 0;
-		ByteUtility.WriteULong(value, ref bytes, ref writeOffset);
+		ByteUtility.WriteULong(value, ref bytes);
 		Add(name, bytes, typeof(ulong));
+	}
+
+	public void Add(string name, long value)
+	{
+		byte[] bytes = new byte[8];
+		ByteUtility.WriteLong(value, ref bytes);
+		Add(name, bytes, typeof(long));
+	}
+
+	public void Add(string name, float value)
+	{
+		byte[] bytes = new byte[4];
+		ByteUtility.WriteFloat(value, ref bytes);
+		Add(name, bytes, typeof(float));
 	}
 
 	public void Add(string name, double value)
 	{
 		byte[] bytes = new byte[8];
-		int writeOffset = 0;
-		ByteUtility.WriteDouble(value, ref bytes, ref writeOffset);
+		ByteUtility.WriteDouble(value, ref bytes);
 		Add(name, bytes, typeof(double));
+	}
+
+	public void Add(string name, decimal value)
+	{
+		byte[] bytes = new byte[16];
+		ByteUtility.WriteDecimal(value, ref bytes);
+		Add(name, bytes, typeof(decimal));
 	}
 
 	public void Add(string name, string value)
@@ -141,247 +159,26 @@ public class Serializer : ISerializer
 	{
 		if (value == null)
 		{
-			value = "";
+			value = default(string);
 		}
 		byte[] rawString = encoding.GetBytes(value);
 		byte[] bytes = new byte[4 + rawString.Length];
-		int writeOffset = 0;
-		ByteUtility.WriteBytes(rawString, ref bytes, ref writeOffset);
+		ByteUtility.WriteBytes(rawString, ref bytes);
 		Add(name, bytes, typeof(string));
 	}
 
 	public void Add(string name, Guid value)
 	{
 		byte[] bytes = new byte[16];
-		int writeOffset = 0;
-		ByteUtility.WriteGuid(value, ref bytes, ref writeOffset);
+		ByteUtility.WriteGuid(value, ref bytes);
 		Add(name, bytes, typeof(Guid));
 	}
 
 	public void Add(string name, DateTime value)
 	{
 		byte[] bytes = new byte[8];
-		int writeOffset = 0;
-		ByteUtility.WriteDateTime(value, ref bytes, ref writeOffset);
+		ByteUtility.WriteDateTime(value, ref bytes);
 		Add(name, bytes, typeof(DateTime));
-	}
-
-	public void Add(string name, Vector2 value)
-	{
-		byte[] bytes = new byte[8];
-		int writeOffset = 0;
-		ByteUtility.WriteFloat(value.x, ref bytes, ref writeOffset);
-		ByteUtility.WriteFloat(value.y, ref bytes, ref writeOffset);
-		Add(name, bytes, typeof(Vector2));
-	}
-
-	public void Add(string name, Vector3 value)
-	{
-		byte[] bytes = new byte[12];
-		int writeOffset = 0;
-		ByteUtility.WriteFloat(value.x, ref bytes, ref writeOffset);
-		ByteUtility.WriteFloat(value.y, ref bytes, ref writeOffset);
-		ByteUtility.WriteFloat(value.z, ref bytes, ref writeOffset);
-		Add(name, bytes, typeof(Vector3));
-	}
-
-	public void Add(string name, Quaternion value)
-	{
-		byte[] bytes = new byte[16];
-		int writeOffset = 0;
-		ByteUtility.WriteFloat(value.x, ref bytes, ref writeOffset);
-		ByteUtility.WriteFloat(value.y, ref bytes, ref writeOffset);
-		ByteUtility.WriteFloat(value.z, ref bytes, ref writeOffset);
-		ByteUtility.WriteFloat(value.w, ref bytes, ref writeOffset);
-		Add(name, bytes, typeof(Quaternion));
-	}
-
-	public void Add(string name, Color value)
-	{
-		byte[] bytes = new byte[16];
-		int writeOffset = 0;
-		ByteUtility.WriteFloat(value.r, ref bytes, ref writeOffset);
-		ByteUtility.WriteFloat(value.g, ref bytes, ref writeOffset);
-		ByteUtility.WriteFloat(value.b, ref bytes, ref writeOffset);
-		ByteUtility.WriteFloat(value.a, ref bytes, ref writeOffset);
-		Add(name, bytes, typeof(Color));
-	}
-
-	public void Add(string name, TinyColor value)
-	{
-		Add(name, new byte[] { value.r, value.g, value.b, value.a }, typeof(TinyColor));
-	}
-
-	public Guid GetGuid(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return Guid.Empty;
-		}
-		if (pair.Type != typeof(Guid).Name)
-		{
-			throw new ArgumentException("Type is not typeof(int)");
-		}
-		return new Guid(pair.Data);
-	}
-
-	public DateTime GetDateTime(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return DateTime.Now;
-		}
-		if (pair.Type != typeof(DateTime).Name)
-		{
-			throw new ArgumentException("Type is not typeof(DateTime)");
-		}
-		return DateTime.FromBinary(BitConverter.ToInt64(pair.Data, 0));
-	}
-
-	public string GetString(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return "";
-		}
-		if (pair.Type != typeof(string).Name)
-		{
-			throw new ArgumentException("Type is not typeof(string)");
-		}
-		if (pair.Data == null || pair.Data.Length < 1)
-		{
-			return "";
-		}
-		return Encoding.ASCII.GetString(pair.Data, 0, pair.Data.Length);
-	}
-
-	public char GetChar(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return default(char);
-		}
-		if (pair.Type != typeof(char).Name)
-		{
-			throw new ArgumentException("Type is not typeof(char)");
-		}
-		return BitConverter.ToChar(pair.Data, 0);
-	}
-
-	public byte GetByte(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return default(byte);
-		}
-		if (pair.Type != typeof(byte).Name)
-		{
-			throw new ArgumentException("Type is not typeof(byte)");
-		}
-		return pair.Data[0];
-	}
-
-	public sbyte GetSByte(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return default(sbyte);
-		}
-		if (pair.Type != typeof(sbyte).Name)
-		{
-			throw new ArgumentException("Type is not typeof(sbyte)");
-		}
-		return (sbyte)pair.Data[0];
-	}
-
-	public short GetShort(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return default(short);
-		}
-		if (pair.Type != typeof(short).Name)
-		{
-			throw new ArgumentException("Type is not typeof(short)");
-		}
-		return BitConverter.ToInt16(pair.Data, 0);
-	}
-
-	public ushort GetUShort(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return default(ushort);
-		}
-		if (pair.Type != typeof(ushort).Name)
-		{
-			throw new ArgumentException("Type is not typeof(ushort)");
-		}
-		return BitConverter.ToUInt16(pair.Data, 0);
-	}
-
-	public int GetInt(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return default(int);
-		}
-		if (pair.Type != typeof(int).Name)
-		{
-			throw new ArgumentException("Type is not typeof(int)");
-		}
-		return BitConverter.ToInt32(pair.Data, 0);
-	}
-
-	public uint GetUInt(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return default(uint);
-		}
-		if (pair.Type != typeof(uint).Name)
-		{
-			throw new ArgumentException("Type is not typeof(uint)");
-		}
-		return BitConverter.ToUInt32(pair.Data, 0);
-	}
-
-	public long GetLong(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return default(long);
-		}
-		if (pair.Type != typeof(long).Name)
-		{
-			throw new ArgumentException("Type is not typeof(long)");
-		}
-		return BitConverter.ToInt64(pair.Data, 0);
-	}
-
-	public ulong GetULong(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return default(ulong);
-		}
-		if (pair.Type != typeof(ulong).Name)
-		{
-			throw new ArgumentException("Type is not typeof(ulong)");
-		}
-		return BitConverter.ToUInt64(pair.Data, 0);
 	}
 
 	public bool GetBool(string name)
@@ -395,7 +192,183 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(bool)");
 		}
-		return BitConverter.ToBoolean(pair.Data, 0);
+		bool value;
+		if (!ByteUtility.ReadBool(pair.Data, out value))
+		{
+			value = default(bool);
+		}
+		return value;
+	}
+
+	public byte GetByte(string name)
+	{
+		DataPair pair;
+		if (!this.data.TryGetValue(name, out pair))
+		{
+			return default(byte);
+		}
+		if (pair.Type != typeof(byte).Name)
+		{
+			throw new ArgumentException("Type is not typeof(byte)");
+		}
+		byte value;
+		if (!ByteUtility.ReadByte(pair.Data, out value))
+		{
+			value = default(byte);
+		}
+		return value;
+	}
+
+	public sbyte GetSByte(string name)
+	{
+		DataPair pair;
+		if (!this.data.TryGetValue(name, out pair))
+		{
+			return default(sbyte);
+		}
+		if (pair.Type != typeof(sbyte).Name)
+		{
+			throw new ArgumentException("Type is not typeof(sbyte)");
+		}
+		sbyte value;
+		if (!ByteUtility.ReadSByte(pair.Data, out value))
+		{
+			value = default(sbyte);
+		}
+		return value;
+	}
+
+	public char GetChar(string name)
+	{
+		DataPair pair;
+		if (!this.data.TryGetValue(name, out pair))
+		{
+			return default(char);
+		}
+		if (pair.Type != typeof(char).Name)
+		{
+			throw new ArgumentException("Type is not typeof(char)");
+		}
+		char value;
+		if (!ByteUtility.ReadChar(pair.Data, out value))
+		{
+			value = default(char);
+		}
+		return value;
+	}
+
+	public ushort GetUShort(string name)
+	{
+		DataPair pair;
+		if (!this.data.TryGetValue(name, out pair))
+		{
+			return default(ushort);
+		}
+		if (pair.Type != typeof(ushort).Name)
+		{
+			throw new ArgumentException("Type is not typeof(ushort)");
+		}
+		ushort value;
+		if (!ByteUtility.ReadUShort(pair.Data, out value))
+		{
+			value = default(ushort);
+		}
+		return value;
+	}
+
+	public short GetShort(string name)
+	{
+		DataPair pair;
+		if (!this.data.TryGetValue(name, out pair))
+		{
+			return default(short);
+		}
+		if (pair.Type != typeof(short).Name)
+		{
+			throw new ArgumentException("Type is not typeof(short)");
+		}
+		short value;
+		if (!ByteUtility.ReadShort(pair.Data, out value))
+		{
+			value = default(short);
+		}
+		return value;
+	}
+
+	public uint GetUInt(string name)
+	{
+		DataPair pair;
+		if (!this.data.TryGetValue(name, out pair))
+		{
+			return default(uint);
+		}
+		if (pair.Type != typeof(uint).Name)
+		{
+			throw new ArgumentException("Type is not typeof(uint)");
+		}
+		uint value;
+		if (!ByteUtility.ReadUInt(pair.Data, out value))
+		{
+			value = default(uint);
+		}
+		return value;
+	}
+
+	public int GetInt(string name)
+	{
+		DataPair pair;
+		if (!this.data.TryGetValue(name, out pair))
+		{
+			return default(int);
+		}
+		if (pair.Type != typeof(int).Name)
+		{
+			throw new ArgumentException("Type is not typeof(int)");
+		}
+		int value;
+		if (!ByteUtility.ReadInt(pair.Data, out value))
+		{
+			value = default(int);
+		}
+		return value;
+	}
+
+	public ulong GetULong(string name)
+	{
+		DataPair pair;
+		if (!this.data.TryGetValue(name, out pair))
+		{
+			return default(ulong);
+		}
+		if (pair.Type != typeof(ulong).Name)
+		{
+			throw new ArgumentException("Type is not typeof(ulong)");
+		}
+		ulong value;
+		if (!ByteUtility.ReadULong(pair.Data, out value))
+		{
+			value = default(ulong);
+		}
+		return value;
+	}
+
+	public long GetLong(string name)
+	{
+		DataPair pair;
+		if (!this.data.TryGetValue(name, out pair))
+		{
+			return default(long);
+		}
+		if (pair.Type != typeof(long).Name)
+		{
+			throw new ArgumentException("Type is not typeof(long)");
+		}
+		long value;
+		if (!ByteUtility.ReadLong(pair.Data, out value))
+		{
+			value = default(long);
+		}
+		return value;
 	}
 
 	public float GetFloat(string name)
@@ -409,7 +382,12 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(float)");
 		}
-		return BitConverter.ToSingle(pair.Data, 0);
+		float value;
+		if (!ByteUtility.ReadFloat(pair.Data, out value))
+		{
+			value = default(float);
+		}
+		return value;
 	}
 
 	public double GetDouble(string name)
@@ -423,84 +401,104 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Type is not typeof(double)");
 		}
-		return BitConverter.ToDouble(pair.Data, 0);
+		double value;
+		if (!ByteUtility.ReadDouble(pair.Data, out value))
+		{
+			value = default(double);
+		}
+		return value;
 	}
 
-	public Vector2 GetVector2(string name)
+	public decimal GetDecimal(string name)
 	{
 		DataPair pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
-			return Vector2.zero;
+			return default(decimal);
 		}
-		if (pair.Type != typeof(Vector2).Name)
+		if (pair.Type != typeof(decimal).Name)
 		{
-			throw new ArgumentException("Type is not typeof(Vector2)");
+			throw new ArgumentException("Type is not typeof(decimal)");
 		}
-		return new Vector2(BitConverter.ToSingle(pair.Data, 0), BitConverter.ToSingle(pair.Data, 4));
+		decimal value;
+		if (!ByteUtility.ReadDecimal(pair.Data, out value))
+		{
+			value = default(decimal);
+		}
+		return value;
 	}
 
-	public Vector3 GetVector3(string name)
+	public string GetString(string name)
+	{
+		return GetString(name, Encoding.Unicode);
+	}
+
+	public string GetString(string name, Encoding encoding)
 	{
 		DataPair pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
-			return Vector3.zero;
+			return default(string);
 		}
-		if (pair.Type != typeof(Vector3).Name)
+		if (pair.Type != typeof(string).Name)
 		{
-			throw new ArgumentException("Type is not typeof(Vector3)");
+			throw new ArgumentException("Type is not typeof(string)");
 		}
-		return new Vector3(BitConverter.ToSingle(pair.Data, 0), BitConverter.ToSingle(pair.Data, 4), BitConverter.ToSingle(pair.Data, 8));
+		if (pair.Data == null || pair.Data.Length < 1)
+		{
+			return default(string);
+		}
+		string value;
+		if (!ByteUtility.ReadString(pair.Data, encoding, out value))
+		{
+			value = default(string);
+		}
+		return value;
 	}
 
-	public Quaternion GetQuaternion(string name)
+	public Guid GetGuid(string name)
 	{
 		DataPair pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
-			return Quaternion.identity;
+			return Guid.Empty;
 		}
-		if (pair.Type != typeof(Quaternion).Name)
+		if (pair.Type != typeof(Guid).Name)
 		{
-			throw new ArgumentException("Type is not typeof(Quaternion)");
+			throw new ArgumentException("Type is not typeof(int)");
 		}
-		return new Quaternion(BitConverter.ToSingle(pair.Data, 0), BitConverter.ToSingle(pair.Data, 4), BitConverter.ToSingle(pair.Data, 8), BitConverter.ToSingle(pair.Data, 12));
+		Guid value;
+		if (!ByteUtility.ReadGuid(pair.Data, out value))
+		{
+			value = default(Guid);
+		}
+		return value;
 	}
 
-	public Color GetColor(string name)
+	public DateTime GetDateTime(string name)
 	{
 		DataPair pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
-			return Color.white;
+			return DateTime.Now;
 		}
-		if (pair.Type != typeof(Color).Name)
+		if (pair.Type != typeof(DateTime).Name)
 		{
-			throw new ArgumentException("Type is not typeof(Color)");
+			throw new ArgumentException("Type is not typeof(DateTime)");
 		}
-		return new Color(BitConverter.ToSingle(pair.Data, 0), BitConverter.ToSingle(pair.Data, 4), BitConverter.ToSingle(pair.Data, 8), BitConverter.ToSingle(pair.Data, 12));
+		DateTime value;
+		if (!ByteUtility.ReadDateTime(pair.Data, out value))
+		{
+			value = default(DateTime);
+		}
+		return value;
 	}
 
-	public TinyColor GetTinyColor(string name)
-	{
-		DataPair pair;
-		if (!this.data.TryGetValue(name, out pair))
-		{
-			return TinyColor.white;
-		}
-		if (pair.Type != typeof(TinyColor).Name)
-		{
-			throw new ArgumentException("Type is not typeof(TinyColor)");
-		}
-		return new TinyColor(pair.Data[0], pair.Data[1], pair.Data[2], pair.Data[3]);
-	}
-
-	public static bool Read(ByteBuffer buffer, out Serializer data)
+	public static bool Read(byte[] buffer, ref int readOffset, out Serializer data)
 	{
 		data = new Serializer();
 		int count;
-		if (!buffer.ReadInt(out count))
+		if (!ByteUtility.ReadInt(buffer, ref readOffset, out count))
 		{
 			return false;
 		}
@@ -508,8 +506,8 @@ public class Serializer : ISerializer
 		{
 			string key;
 			DataPair pair;
-			if (!buffer.ReadString(out key) ||
-				!DataPair.Read(out pair, buffer))
+			if (!ByteUtility.ReadString(buffer, ref readOffset, out key) ||
+				!DataPair.Read(buffer, ref readOffset, out pair))
 			{
 				return false;
 			}
@@ -518,19 +516,19 @@ public class Serializer : ISerializer
 		return true;
 	}
 
-	public void Write(ByteBuffer buffer)
+	public void Write(ref byte[] buffer, ref int writeOffset)
 	{
-		buffer.WriteInt(this.data.Count);
+		ByteUtility.WriteInt(this.data.Count, ref buffer, ref writeOffset);
 		if (this.data.Count < 1)
 		{
 			return;
 		}
-		//pBuffer.WriteString("-------------NEW OBJECT-------------\r\n");
+		//ByteUtility.WriteString("-------------NEW OBJECT-------------\r\n", ref buffer, ref writeOffset);
 		foreach (KeyValuePair<string, DataPair> pair in this.data)
 		{
-			//pBuffer.WriteString("[VariableName:" + pair.Key + "]");
-			buffer.WriteString(pair.Key);
-			pair.Value.Write(buffer);
+			//ByteUtility.WriteString("[VariableName:" + pair.Key + "]", ref buffer, ref writeOffset);
+			ByteUtility.WriteString(pair.Key, ref buffer, ref writeOffset);
+			pair.Value.Write(ref buffer, ref writeOffset);
 		}
 	}
 }
