@@ -1004,7 +1004,22 @@ public static class ByteUtility
 
 	public static void WriteGuid(Guid source, ref byte[] destination, ref int writeOffset)
 	{
-		WriteRawBytes(source.ToByteArray(), ref destination, ref writeOffset);
+		byte[] raw = source.ToByteArray();
+		//Microsoft set up ToByteArray incorrectly and Guid.ToByteArray() returns the first few bytes as little endian instead of big endian.
+		byte[] tmp = new byte[8];
+		tmp[0] = raw[3];
+		tmp[1] = raw[2];
+		tmp[2] = raw[1];
+		tmp[3] = raw[0];
+		tmp[4] = raw[5];
+		tmp[5] = raw[4];
+		tmp[6] = raw[6];
+		tmp[7] = raw[7];
+		for (int i = 0; i < tmp.Length; ++i)
+		{
+			raw[i] = tmp[i];
+		}
+		WriteRawBytes(raw, ref destination, ref writeOffset);
 	}
 
 	public static bool ReadGuid(byte[] source, out Guid destination)
@@ -1015,13 +1030,27 @@ public static class ByteUtility
 
 	public static bool ReadGuid(byte[] source, ref int readOffset, out Guid destination)
 	{
-		byte[] buffer;
-		if (!ReadRawBytes(source, ref readOffset, 16, out buffer))
+		byte[] raw;
+		if (!ReadRawBytes(source, ref readOffset, 16, out raw))
 		{
 			destination = Guid.Empty;
 			return false;
 		}
-		destination = new Guid(buffer);
+		//Microsoft set up ToByteArray incorrectly and Guid.ToByteArray() returns the first few bytes as little endian instead of big endian.
+		byte[] tmp = new byte[8];
+		for (int i = 0; i < tmp.Length; ++i)
+		{
+			tmp[i] = raw[i];
+		}
+		raw[3] = tmp[0];
+		raw[2] = tmp[1];
+		raw[1] = tmp[2];
+		raw[0] = tmp[3];
+		raw[5] = tmp[4];
+		raw[4] = tmp[5];
+		raw[6] = tmp[6];
+		raw[7] = tmp[7];
+		destination = new Guid(raw);
 		return true;
 	}
 	#endregion

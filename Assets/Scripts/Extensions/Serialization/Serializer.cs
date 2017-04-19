@@ -465,7 +465,7 @@ public class Serializer : ISerializer
 		}
 		if (pair.Item2 != typeof(Guid).Name)
 		{
-			throw new ArgumentException("Type is not typeof(int)");
+			throw new ArgumentException("Type is not typeof(Guid)");
 		}
 		Guid value;
 		if (!ByteUtility.ReadGuid(pair.Item1, out value))
