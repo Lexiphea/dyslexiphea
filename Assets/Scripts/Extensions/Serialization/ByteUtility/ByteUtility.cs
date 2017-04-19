@@ -746,7 +746,7 @@ public static class ByteUtility
 		return ReadDecimal(source, ref readOffset, out destination);
 	}
 
-	public static unsafe bool ReadDecimal(byte[] source, ref int readOffset, out decimal destination)
+	public static bool ReadDecimal(byte[] source, ref int readOffset, out decimal destination)
 	{
 		if (readOffset + 16 > source.Length)
 		{
