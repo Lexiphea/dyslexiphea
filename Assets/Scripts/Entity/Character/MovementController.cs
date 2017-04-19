@@ -101,16 +101,14 @@ public class MovementController : MonoBehaviour
 		this.direction *= this.grounded ? this.groundedMoveSpeed : this.airMoveSpeed;
 		if (!this.grounded)
 		{
-			float downForce = 0.0f;
 			if (this.useGravity)
 			{
-				downForce += this.gravity;
+				this.direction.y += this.gravity;
 			}
 			if (this.fastFalling)
 			{
-				downForce += this.gravity * this.fastFallModifier;
+				this.direction.y += this.gravity * this.fastFallModifier;
 			}
-			this.direction.y = downForce;
 		}
 		///this.cachedRigidbody.velocity
 		this.cachedRigidbody.AddForce(this.direction);
@@ -227,7 +225,7 @@ public class MovementController : MonoBehaviour
 		{
 			Vector3 rayOrigin = this.raycastOrigins.BottomLeft + Vector3.right * this.raycastSpacing.x * x;
 			RaycastHit hit;
-			if (Physics.Raycast(rayOrigin, Vector3.down, out hit, 1.0f, rayLayermask))
+			if (Physics.Raycast(rayOrigin, Vector3.down, out hit, this.cachedRigidbody.velocity.y + 1.0f, rayLayermask))
 			{
 				//Debug.DrawRay(rayOrigin, Vector3.down * hit.distance, Color.red);
 				if (hit.distance < MovementController.MinimumDistanceFromGround)

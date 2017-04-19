@@ -705,7 +705,7 @@ public static class ByteUtility
 	}
 	#endregion
 
-	#region Double
+	#region Decimal
 	public static void WriteDecimal(decimal source, ref byte[] destination)
 	{
 		int writeOffset = 0;

@@ -4,15 +4,15 @@ using System.Text;
 
 public class Serializer : ISerializer
 {
-	private Dictionary<string, DataPair> data = new Dictionary<string, DataPair>();
+	private Dictionary<string, Tuple<byte[], string>> data = new Dictionary<string, Tuple<byte[], string>>();
 
-	private void Add(string key, DataPair data)
+	private void Add(string key, Tuple<byte[], string> pair)
 	{
 		if (this.data.ContainsKey(key))
 		{
 			throw new ArgumentException("SerializedData does not support duplicate keys");
 		}
-		this.data.Add(key, data);
+		this.data.Add(key, pair);
 	}
 
 	public int Count
@@ -60,7 +60,7 @@ public class Serializer : ISerializer
 		{
 			throw new ArgumentException("Serializer does not support duplicate keys " + name);
 		}
-		this.data.Add(name, new DataPair(value, type));
+		this.data.Add(name, new Tuple<byte[], string>(value, type.Name));
 	}
 
 	public void Add(string name, bool value)
@@ -183,17 +183,17 @@ public class Serializer : ISerializer
 
 	public bool GetBool(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(bool);
 		}
-		if (pair.Type != typeof(bool).Name)
+		if (pair.Item2 != typeof(bool).Name)
 		{
 			throw new ArgumentException("Type is not typeof(bool)");
 		}
 		bool value;
-		if (!ByteUtility.ReadBool(pair.Data, out value))
+		if (!ByteUtility.ReadBool(pair.Item1, out value))
 		{
 			value = default(bool);
 		}
@@ -202,17 +202,17 @@ public class Serializer : ISerializer
 
 	public byte GetByte(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(byte);
 		}
-		if (pair.Type != typeof(byte).Name)
+		if (pair.Item2 != typeof(byte).Name)
 		{
 			throw new ArgumentException("Type is not typeof(byte)");
 		}
 		byte value;
-		if (!ByteUtility.ReadByte(pair.Data, out value))
+		if (!ByteUtility.ReadByte(pair.Item1, out value))
 		{
 			value = default(byte);
 		}
@@ -221,17 +221,17 @@ public class Serializer : ISerializer
 
 	public sbyte GetSByte(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(sbyte);
 		}
-		if (pair.Type != typeof(sbyte).Name)
+		if (pair.Item2 != typeof(sbyte).Name)
 		{
 			throw new ArgumentException("Type is not typeof(sbyte)");
 		}
 		sbyte value;
-		if (!ByteUtility.ReadSByte(pair.Data, out value))
+		if (!ByteUtility.ReadSByte(pair.Item1, out value))
 		{
 			value = default(sbyte);
 		}
@@ -240,17 +240,17 @@ public class Serializer : ISerializer
 
 	public char GetChar(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(char);
 		}
-		if (pair.Type != typeof(char).Name)
+		if (pair.Item2 != typeof(char).Name)
 		{
 			throw new ArgumentException("Type is not typeof(char)");
 		}
 		char value;
-		if (!ByteUtility.ReadChar(pair.Data, out value))
+		if (!ByteUtility.ReadChar(pair.Item1, out value))
 		{
 			value = default(char);
 		}
@@ -259,17 +259,17 @@ public class Serializer : ISerializer
 
 	public ushort GetUShort(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(ushort);
 		}
-		if (pair.Type != typeof(ushort).Name)
+		if (pair.Item2 != typeof(ushort).Name)
 		{
 			throw new ArgumentException("Type is not typeof(ushort)");
 		}
 		ushort value;
-		if (!ByteUtility.ReadUShort(pair.Data, out value))
+		if (!ByteUtility.ReadUShort(pair.Item1, out value))
 		{
 			value = default(ushort);
 		}
@@ -278,17 +278,17 @@ public class Serializer : ISerializer
 
 	public short GetShort(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(short);
 		}
-		if (pair.Type != typeof(short).Name)
+		if (pair.Item2 != typeof(short).Name)
 		{
 			throw new ArgumentException("Type is not typeof(short)");
 		}
 		short value;
-		if (!ByteUtility.ReadShort(pair.Data, out value))
+		if (!ByteUtility.ReadShort(pair.Item1, out value))
 		{
 			value = default(short);
 		}
@@ -297,17 +297,17 @@ public class Serializer : ISerializer
 
 	public uint GetUInt(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(uint);
 		}
-		if (pair.Type != typeof(uint).Name)
+		if (pair.Item2 != typeof(uint).Name)
 		{
 			throw new ArgumentException("Type is not typeof(uint)");
 		}
 		uint value;
-		if (!ByteUtility.ReadUInt(pair.Data, out value))
+		if (!ByteUtility.ReadUInt(pair.Item1, out value))
 		{
 			value = default(uint);
 		}
@@ -316,17 +316,17 @@ public class Serializer : ISerializer
 
 	public int GetInt(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(int);
 		}
-		if (pair.Type != typeof(int).Name)
+		if (pair.Item2 != typeof(int).Name)
 		{
 			throw new ArgumentException("Type is not typeof(int)");
 		}
 		int value;
-		if (!ByteUtility.ReadInt(pair.Data, out value))
+		if (!ByteUtility.ReadInt(pair.Item1, out value))
 		{
 			value = default(int);
 		}
@@ -335,17 +335,17 @@ public class Serializer : ISerializer
 
 	public ulong GetULong(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(ulong);
 		}
-		if (pair.Type != typeof(ulong).Name)
+		if (pair.Item2 != typeof(ulong).Name)
 		{
 			throw new ArgumentException("Type is not typeof(ulong)");
 		}
 		ulong value;
-		if (!ByteUtility.ReadULong(pair.Data, out value))
+		if (!ByteUtility.ReadULong(pair.Item1, out value))
 		{
 			value = default(ulong);
 		}
@@ -354,17 +354,17 @@ public class Serializer : ISerializer
 
 	public long GetLong(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(long);
 		}
-		if (pair.Type != typeof(long).Name)
+		if (pair.Item2 != typeof(long).Name)
 		{
 			throw new ArgumentException("Type is not typeof(long)");
 		}
 		long value;
-		if (!ByteUtility.ReadLong(pair.Data, out value))
+		if (!ByteUtility.ReadLong(pair.Item1, out value))
 		{
 			value = default(long);
 		}
@@ -373,17 +373,17 @@ public class Serializer : ISerializer
 
 	public float GetFloat(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(float);
 		}
-		if (pair.Type != typeof(float).Name)
+		if (pair.Item2 != typeof(float).Name)
 		{
 			throw new ArgumentException("Type is not typeof(float)");
 		}
 		float value;
-		if (!ByteUtility.ReadFloat(pair.Data, out value))
+		if (!ByteUtility.ReadFloat(pair.Item1, out value))
 		{
 			value = default(float);
 		}
@@ -392,17 +392,17 @@ public class Serializer : ISerializer
 
 	public double GetDouble(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(double);
 		}
-		if (pair.Type != typeof(double).Name)
+		if (pair.Item2 != typeof(double).Name)
 		{
 			throw new ArgumentException("Type is not typeof(double)");
 		}
 		double value;
-		if (!ByteUtility.ReadDouble(pair.Data, out value))
+		if (!ByteUtility.ReadDouble(pair.Item1, out value))
 		{
 			value = default(double);
 		}
@@ -411,17 +411,17 @@ public class Serializer : ISerializer
 
 	public decimal GetDecimal(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(decimal);
 		}
-		if (pair.Type != typeof(decimal).Name)
+		if (pair.Item2 != typeof(decimal).Name)
 		{
 			throw new ArgumentException("Type is not typeof(decimal)");
 		}
 		decimal value;
-		if (!ByteUtility.ReadDecimal(pair.Data, out value))
+		if (!ByteUtility.ReadDecimal(pair.Item1, out value))
 		{
 			value = default(decimal);
 		}
@@ -435,21 +435,21 @@ public class Serializer : ISerializer
 
 	public string GetString(string name, Encoding encoding)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return default(string);
 		}
-		if (pair.Type != typeof(string).Name)
+		if (pair.Item2 != typeof(string).Name)
 		{
 			throw new ArgumentException("Type is not typeof(string)");
 		}
-		if (pair.Data == null || pair.Data.Length < 1)
+		if (pair.Item1 == null || pair.Item1.Length < 1)
 		{
 			return default(string);
 		}
 		string value;
-		if (!ByteUtility.ReadString(pair.Data, encoding, out value))
+		if (!ByteUtility.ReadString(pair.Item1, encoding, out value))
 		{
 			value = default(string);
 		}
@@ -458,17 +458,17 @@ public class Serializer : ISerializer
 
 	public Guid GetGuid(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return Guid.Empty;
 		}
-		if (pair.Type != typeof(Guid).Name)
+		if (pair.Item2 != typeof(Guid).Name)
 		{
 			throw new ArgumentException("Type is not typeof(int)");
 		}
 		Guid value;
-		if (!ByteUtility.ReadGuid(pair.Data, out value))
+		if (!ByteUtility.ReadGuid(pair.Item1, out value))
 		{
 			value = default(Guid);
 		}
@@ -477,17 +477,17 @@ public class Serializer : ISerializer
 
 	public DateTime GetDateTime(string name)
 	{
-		DataPair pair;
+		Tuple<byte[], string> pair;
 		if (!this.data.TryGetValue(name, out pair))
 		{
 			return DateTime.Now;
 		}
-		if (pair.Type != typeof(DateTime).Name)
+		if (pair.Item2 != typeof(DateTime).Name)
 		{
 			throw new ArgumentException("Type is not typeof(DateTime)");
 		}
 		DateTime value;
-		if (!ByteUtility.ReadDateTime(pair.Data, out value))
+		if (!ByteUtility.ReadDateTime(pair.Item1, out value))
 		{
 			value = default(DateTime);
 		}
@@ -505,13 +505,15 @@ public class Serializer : ISerializer
 		for (int i = 0; i < count; ++i)
 		{
 			string key;
-			DataPair pair;
+			byte[] bytes;
+			string type;
 			if (!ByteUtility.ReadString(buffer, ref readOffset, out key) ||
-				!DataPair.Read(buffer, ref readOffset, out pair))
+				!ByteUtility.ReadBytes(buffer, ref readOffset, out bytes) ||
+				!ByteUtility.ReadString(buffer, ref readOffset, out type))
 			{
 				return false;
 			}
-			data.Add(key, pair);
+			data.Add(key, new Tuple<byte[], string>(bytes, type));
 		}
 		return true;
 	}
@@ -524,11 +526,12 @@ public class Serializer : ISerializer
 			return;
 		}
 		//ByteUtility.WriteString("-------------NEW OBJECT-------------\r\n", ref buffer, ref writeOffset);
-		foreach (KeyValuePair<string, DataPair> pair in this.data)
+		foreach (KeyValuePair<string, Tuple<byte[], string>> pair in this.data)
 		{
 			//ByteUtility.WriteString("[VariableName:" + pair.Key + "]", ref buffer, ref writeOffset);
 			ByteUtility.WriteString(pair.Key, ref buffer, ref writeOffset);
-			pair.Value.Write(ref buffer, ref writeOffset);
+			ByteUtility.WriteBytes(pair.Value.Item1, ref buffer, ref writeOffset);
+			ByteUtility.WriteString(pair.Value.Item2, ref buffer, ref writeOffset);
 		}
 	}
 }

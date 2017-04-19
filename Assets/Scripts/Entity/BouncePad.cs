@@ -15,7 +15,7 @@ public class BouncePad : MonoBehaviour
 			{
 				movementController.ResetRemainingJumps(-1);
 			}
-			rigidbody.velocity = new Vector3(rigidbody.velocity.x, this.bounceForce, rigidbody.velocity.y);
+			rigidbody.velocity = new Vector3(rigidbody.velocity.x, 0.0f, rigidbody.velocity.y) + (this.transform.up * this.bounceForce);
 		}
 	}
 }
