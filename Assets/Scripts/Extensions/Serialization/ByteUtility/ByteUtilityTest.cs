@@ -24,6 +24,8 @@ public class ByteUtilityTest : MonoBehaviour
 		sb.Append(GuidTest());
 		sb.Append(DateTimeTest());
 		Debug.Log(sb.ToString());
+
+		Debug.Log("IsLittleEndian: " + BitConverter.IsLittleEndian);
 	}
 
 	public string BoolTest()
