@@ -117,6 +117,8 @@
     <Compile Include="Assets\Scripts\Extensions\Hash.cs" />
     <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\BigEndianReader.cs" />
     <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\BigEndianWriter.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\ByteReader.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\Endianness.cs" />
     <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\LittleEndianWriter.cs" />
     <Compile Include="Assets\Scripts\Extensions\Collections\Queue\BlockingQueue.cs" />
     <Compile Include="Assets\Scripts\Extensions\Collections\Queue\ConcurrentQueue.cs" />
