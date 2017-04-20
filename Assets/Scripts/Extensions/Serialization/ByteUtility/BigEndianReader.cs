@@ -3,6 +3,100 @@ using System.Text;
 
 public static class BigEndianReader
 {
+	public static bool ToInt16(byte[] source, ref int readOffset, out short result)
+	{
+		if (source == null || readOffset + 2 > source.Length)
+		{
+			result = 0;
+			return false;
+		}
+		int d = source[readOffset++] << 8;
+		d |= source[readOffset++];
+		result = (short)d;
+		return true;
+	}
+
+	public static bool ToInt32(byte[] source, ref int readOffset, out int result)
+	{
+		if (source == null || readOffset + 4 > source.Length)
+		{
+			result = 0;
+			return false;
+		}
+		int d = source[readOffset++] << 24;
+		d |= source[readOffset++] << 16;
+		d |= source[readOffset++] << 8;
+		d |= source[readOffset++];
+		result = d;
+		return true;
+	}
+
+	public static bool ToInt64(byte[] source, ref int readOffset, out long result)
+	{
+		if (source == null || readOffset + 8 > source.Length)
+		{
+			result = 0;
+			return false;
+		}
+		int d = source[readOffset++] << 24;
+		d |= source[readOffset++] << 16;
+		d |= source[readOffset++] << 8;
+		d |= source[readOffset++];
+		int d2 = source[readOffset++] << 24;
+		d2 |= source[readOffset++] << 16;
+		d2 |= source[readOffset++] << 8;
+		d2 |= source[readOffset++];
+		result = (uint)d2 | ((long)d << 32);
+		return true;
+	}
+
+	public static bool ToUInt16(byte[] source, ref int readOffset, out ushort result)
+	{
+		if (source == null || readOffset + 2 > source.Length)
+		{
+			result = 0;
+			return false;
+		}
+		int d = source[readOffset++] << 8;
+		d |= source[readOffset++];
+		result = (ushort)d;
+		return true;
+	}
+
+	public static bool ToUInt32(byte[] source, ref int readOffset, out uint result)
+	{
+		if (source == null || readOffset + 4 > source.Length)
+		{
+			result = 0;
+			return false;
+		}
+		int d = source[readOffset++] << 24;
+		d |= source[readOffset++] << 16;
+		d |= source[readOffset++] << 8;
+		d |= source[readOffset++];
+		result = (uint)d;
+		return true;
+	}
+
+	public static bool ToUInt64(byte[] source, ref int readOffset, out ulong result)
+	{
+		if (source == null || readOffset + 8 > source.Length)
+		{
+			result = 0;
+			return false;
+		}
+		int d = source[readOffset++] << 24;
+		d |= source[readOffset++] << 16;
+		d |= source[readOffset++] << 8;
+		d |= source[readOffset++];
+		int d2 = source[readOffset++] << 24;
+		d2 |= source[readOffset++] << 16;
+		d2 |= source[readOffset++] << 8;
+		d2 |= source[readOffset++];
+		result = (uint)d2 | ((ulong)d << 32);
+		return true;
+	}
+
 	#region RawBytes
 	public static bool ReadRawBytes(byte[] source, int length, out byte[] destination)
 	{
@@ -34,7 +128,7 @@ public static class BigEndianReader
 	public static bool ReadBytes(byte[] source, ref int readOffset, out byte[] destination)
 	{
 		int length;
-		if (!ReadInt(source, ref readOffset, out length) || readOffset + length > source.Length)
+		if (!ToInt32(source, ref readOffset, out length) || readOffset + length > source.Length)
 		{
 			destination = default(byte[]);
 			return false;
@@ -109,13 +203,13 @@ public static class BigEndianReader
 
 	public static bool ReadChar(byte[] source, ref int readOffset, out char destination)
 	{
-		if (readOffset + 2 > source.Length)
+		short tmp;
+		if (!ToInt16(source, ref readOffset, out tmp))
 		{
 			destination = default(char);
 			return false;
 		}
-		destination = (char)(source[readOffset++] << 8);
-		destination |= (char)source[readOffset++];
+		destination = (char)tmp;
 		return true;
 	}
 	#endregion
@@ -129,13 +223,11 @@ public static class BigEndianReader
 
 	public static bool ReadUShort(byte[] source, ref int readOffset, out ushort destination)
 	{
-		if (readOffset + 2 > source.Length)
+		if (!ToUInt16(source, ref readOffset, out destination))
 		{
 			destination = default(ushort);
 			return false;
 		}
-		destination = (ushort)(source[readOffset++] << 8);
-		destination |= source[readOffset++];
 		return true;
 	}
 	#endregion
@@ -149,13 +241,11 @@ public static class BigEndianReader
 
 	public static bool ReadShort(byte[] source, ref int readOffset, out short destination)
 	{
-		if (readOffset + 2 > source.Length)
+		if (!ToInt16(source, ref readOffset, out destination))
 		{
 			destination = default(short);
 			return false;
 		}
-		destination = (short)(source[readOffset++] << 8);
-		destination |= (short)source[readOffset++];
 		return true;
 	}
 	#endregion
@@ -169,15 +259,11 @@ public static class BigEndianReader
 
 	public static bool ReadUInt(byte[] source, ref int readOffset, out uint destination)
 	{
-		if (readOffset + 4 > source.Length)
+		if (!ToUInt32(source, ref readOffset, out destination))
 		{
 			destination = default(uint);
 			return false;
 		}
-		destination = (uint)source[readOffset++] << 24;
-		destination |= (uint)source[readOffset++] << 16;
-		destination |= (uint)source[readOffset++] << 8;
-		destination |= (uint)source[readOffset++];
 		return true;
 	}
 	#endregion
@@ -192,7 +278,7 @@ public static class BigEndianReader
 	public static bool ReadUIntArray(byte[] source, ref int readOffset, out uint[] destination)
 	{
 		int length;
-		if (!ReadInt(source, ref readOffset, out length))
+		if (!ToInt32(source, ref readOffset, out length))
 		{
 			destination = default(uint[]);
 			return false;
@@ -200,7 +286,7 @@ public static class BigEndianReader
 		destination = new uint[length];
 		for (int i = 0; i < length; ++i)
 		{
-			if (!ReadUInt(source, ref readOffset, out destination[i]))
+			if (!ToUInt32(source, ref readOffset, out destination[i]))
 			{
 				return false;
 			}
@@ -218,15 +304,11 @@ public static class BigEndianReader
 
 	public static bool ReadInt(byte[] source, ref int readOffset, out int destination)
 	{
-		if (readOffset + 4 > source.Length)
+		if (!ToInt32(source, ref readOffset, out destination))
 		{
 			destination = default(int);
 			return false;
 		}
-		destination = source[readOffset++] << 24;
-		destination |= source[readOffset++] << 16;
-		destination |= source[readOffset++] << 8;
-		destination |= source[readOffset++];
 		return true;
 	}
 	#endregion
@@ -241,7 +323,7 @@ public static class BigEndianReader
 	public static bool ReadIntArray(byte[] source, ref int readOffset, out int[] destination)
 	{
 		int length;
-		if (!ReadInt(source, ref readOffset, out length))
+		if (!ToInt32(source, ref readOffset, out length))
 		{
 			destination = default(int[]);
 			return false;
@@ -249,7 +331,7 @@ public static class BigEndianReader
 		destination = new int[length];
 		for (int i = 0; i < length; ++i)
 		{
-			if (!ReadInt(source, ref readOffset, out destination[i]))
+			if (!ToInt32(source, ref readOffset, out destination[i]))
 			{
 				return false;
 			}
@@ -267,19 +349,13 @@ public static class BigEndianReader
 
 	public static bool ReadULong(byte[] source, ref int readOffset, out ulong destination)
 	{
-		if (readOffset + 8 > source.Length)
+		int low, high;
+		if (!ToInt32(source, ref readOffset, out low) || !ToInt32(source, ref readOffset, out high))
 		{
 			destination = default(ulong);
 			return false;
 		}
-		destination = (ulong)source[readOffset++] << 56;
-		destination |= (ulong)source[readOffset++] << 48;
-		destination |= (ulong)source[readOffset++] << 40;
-		destination |= (ulong)source[readOffset++] << 32;
-		destination |= (ulong)source[readOffset++] << 24;
-		destination |= (ulong)source[readOffset++] << 16;
-		destination |= (ulong)source[readOffset++] << 8;
-		destination |= source[readOffset++];
+		destination = (uint)low | ((ulong)high << 32);
 		return true;
 	}
 	#endregion
@@ -293,19 +369,13 @@ public static class BigEndianReader
 
 	public static bool ReadLong(byte[] source, ref int readOffset, out long destination)
 	{
-		if (readOffset + 8 > source.Length)
+		int low, high;
+		if (!ToInt32(source, ref readOffset, out low) || !ToInt32(source, ref readOffset, out high))
 		{
 			destination = default(long);
 			return false;
 		}
-		destination = (long)source[readOffset++] << 56;
-		destination |= (long)source[readOffset++] << 48;
-		destination |= (long)source[readOffset++] << 40;
-		destination |= (long)source[readOffset++] << 32;
-		destination |= (long)source[readOffset++] << 24;
-		destination |= (long)source[readOffset++] << 16;
-		destination |= (long)source[readOffset++] << 8;
-		destination |= source[readOffset++];
+		destination = (uint)low | ((long)high << 32);
 		return true;
 	}
 	#endregion
@@ -319,15 +389,12 @@ public static class BigEndianReader
 
 	public static unsafe bool ReadFloat(byte[] source, ref int readOffset, out float destination)
 	{
-		if (readOffset + 4 > source.Length)
+		int tmp;
+		if (!ToInt32(source, ref readOffset, out tmp))
 		{
-			destination = default(float);
+			destination = default(ulong);
 			return false;
 		}
-		uint tmp = (uint)source[readOffset++] << 24;
-		tmp |= (uint)source[readOffset++] << 16;
-		tmp |= (uint)source[readOffset++] << 8;
-		tmp |= source[readOffset++];
 		destination = *(float*)(&tmp);
 		return true;
 	}
@@ -342,19 +409,13 @@ public static class BigEndianReader
 
 	public static unsafe bool ReadDouble(byte[] source, ref int readOffset, out double destination)
 	{
-		if (readOffset + 8 > source.Length)
+		int low, high;
+		if (!ToInt32(source, ref readOffset, out low) || !ToInt32(source, ref readOffset, out high))
 		{
-			destination = default(double);
+			destination = default(ulong);
 			return false;
 		}
-		ulong tmp = (ulong)source[readOffset++] << 56;
-		tmp |= (ulong)source[readOffset++] << 48;
-		tmp |= (ulong)source[readOffset++] << 40;
-		tmp |= (ulong)source[readOffset++] << 32;
-		tmp |= (ulong)source[readOffset++] << 24;
-		tmp |= (ulong)source[readOffset++] << 16;
-		tmp |= (ulong)source[readOffset++] << 8;
-		tmp |= source[readOffset++];
+		ulong tmp = (uint)low | ((ulong)high << 32);
 		destination = *(double*)&tmp;
 		return true;
 	}
@@ -369,32 +430,15 @@ public static class BigEndianReader
 
 	public static bool ReadDecimal(byte[] source, ref int readOffset, out decimal destination)
 	{
-		if (readOffset + 16 > source.Length)
+		int[] decimalInts = new int[4];
+		if (!ToInt32(source, ref readOffset, out decimalInts[0]) ||
+			!ToInt32(source, ref readOffset, out decimalInts[1]) ||
+			!ToInt32(source, ref readOffset, out decimalInts[2]) ||
+			!ToInt32(source, ref readOffset, out decimalInts[3]))
 		{
 			destination = default(decimal);
 			return false;
 		}
-		int[] decimalInts = new int[4];
-		//Low
-		decimalInts[0] |= source[readOffset++] << 24;
-		decimalInts[0] |= source[readOffset++] << 16;
-		decimalInts[0] |= source[readOffset++] << 8;
-		decimalInts[0] |= source[readOffset++];
-		//Mid
-		decimalInts[1] |= source[readOffset++] << 24;
-		decimalInts[1] |= source[readOffset++] << 16;
-		decimalInts[1] |= source[readOffset++] << 8;
-		decimalInts[1] |= source[readOffset++];
-		//High
-		decimalInts[2] |= source[readOffset++] << 24;
-		decimalInts[2] |= source[readOffset++] << 16;
-		decimalInts[2] |= source[readOffset++] << 8;
-		decimalInts[2] |= source[readOffset++];
-		//Flags
-		decimalInts[3] |= source[readOffset++] << 24;
-		decimalInts[3] |= source[readOffset++] << 16;
-		decimalInts[3] |= source[readOffset++] << 8;
-		decimalInts[3] |= source[readOffset++];
 		destination = new decimal(decimalInts);
 		return true;
 	}
@@ -421,7 +465,7 @@ public static class BigEndianReader
 	public static bool ReadString(byte[] source, ref int readOffset, Encoding encoding, out string destination)
 	{
 		int length;
-		if (!ReadInt(source, ref readOffset, out length))
+		if (!ToInt32(source, ref readOffset, out length))
 		{
 			destination = default(string);
 			return false;
@@ -465,7 +509,7 @@ public static class BigEndianReader
 	public static bool ReadStringArray(byte[] source, ref int readOffset, Encoding encoding, out string[] destination)
 	{
 		int length;
-		if (!ReadInt(source, ref readOffset, out length))
+		if (!ToInt32(source, ref readOffset, out length))
 		{
 			destination = default(string[]);
 			return false;
@@ -569,7 +613,7 @@ public static class BigEndianReader
 	public static bool ReadGuidArray(byte[] source, ref int readOffset, out Guid[] destination)
 	{
 		int length;
-		if (!ReadInt(source, ref readOffset, out length))
+		if (!ToInt32(source, ref readOffset, out length))
 		{
 			destination = default(Guid[]);
 			return false;
