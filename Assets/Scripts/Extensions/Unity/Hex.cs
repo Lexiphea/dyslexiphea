@@ -64,4 +64,32 @@ public static class Hex
 
 		return string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
 	}
+
+	private static string[] byteToHexLookupTable = CreateByteToHexLookupTable();
+
+	public static string[] CreateByteToHexLookupTable()
+	{
+		string[] result = new string[256];
+		for (int i = 0; i < 256; ++i)
+		{
+			result[i] = i.ToString("X2");
+		}
+		return result;
+	}
+
+	public static string ToString(byte[] bytes)
+	{
+		if (bytes == null || bytes.Length < 1)
+		{
+			return default(string);
+		}
+		string[] lookupTable = byteToHexLookupTable;
+		char[] c = new char[bytes.Length * 2];
+		for (int i = 0; i < bytes.Length; ++i)
+		{
+			c[2 * i] = lookupTable[bytes[i]][0];
+			c[2 * i + 1] = lookupTable[bytes[i]][1];
+		}
+		return new string(c);
+	}
 }

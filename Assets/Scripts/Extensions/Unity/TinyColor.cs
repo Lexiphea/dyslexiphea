@@ -289,10 +289,10 @@ public struct TinyColor
 	public static bool Read(byte[] buffer, ref int readOffset, out TinyColor tinyColor)
 	{
 		byte r, g, b, a;
-		if (!ByteUtility.ReadByte(buffer, ref readOffset, out r) ||
-			!ByteUtility.ReadByte(buffer, ref readOffset, out g) ||
-			!ByteUtility.ReadByte(buffer, ref readOffset, out b) ||
-			!ByteUtility.ReadByte(buffer, ref readOffset, out a))
+		if (!LittleEndianReader.ReadByte(buffer, ref readOffset, out r) ||
+			!LittleEndianReader.ReadByte(buffer, ref readOffset, out g) ||
+			!LittleEndianReader.ReadByte(buffer, ref readOffset, out b) ||
+			!LittleEndianReader.ReadByte(buffer, ref readOffset, out a))
 		{
 			tinyColor = default(TinyColor);
 			return false;
@@ -303,9 +303,9 @@ public struct TinyColor
 
 	public void Write(ref byte[] buffer, ref int writeOffset)
 	{
-		ByteUtility.WriteByte(r, ref buffer, ref writeOffset);
-		ByteUtility.WriteByte(g, ref buffer, ref writeOffset);
-		ByteUtility.WriteByte(b, ref buffer, ref writeOffset);
-		ByteUtility.WriteByte(a, ref buffer, ref writeOffset);
+		LittleEndianWriter.WriteByte(r, ref buffer, ref writeOffset);
+		LittleEndianWriter.WriteByte(g, ref buffer, ref writeOffset);
+		LittleEndianWriter.WriteByte(b, ref buffer, ref writeOffset);
+		LittleEndianWriter.WriteByte(a, ref buffer, ref writeOffset);
 	}
 }
