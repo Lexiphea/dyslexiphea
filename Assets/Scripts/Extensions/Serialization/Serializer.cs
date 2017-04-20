@@ -76,77 +76,77 @@ public class Serializer : ISerializer
 	public void Add(string name, sbyte value)
 	{
 		byte[] bytes = new byte[2];
-		LittleEndianWriter.WriteSByte(value, ref bytes);
+		ByteWriter.LittleEndian.WriteSByte(value, ref bytes);
 		Add(name, bytes, typeof(sbyte));
 	}
 
 	public void Add(string name, char value)
 	{
 		byte[] bytes = new byte[2];
-		LittleEndianWriter.WriteChar(value, ref bytes);
+		ByteWriter.LittleEndian.WriteChar(value, ref bytes);
 		Add(name, bytes, typeof(char));
 	}
 
 	public void Add(string name, ushort value)
 	{
 		byte[] bytes = new byte[2];
-		LittleEndianWriter.WriteUShort(value, ref bytes);
+		ByteWriter.LittleEndian.WriteUShort(value, ref bytes);
 		Add(name, bytes, typeof(ushort));
 	}
 
 	public void Add(string name, short value)
 	{
 		byte[] bytes = new byte[2];
-		LittleEndianWriter.WriteShort(value, ref bytes);
+		ByteWriter.LittleEndian.WriteShort(value, ref bytes);
 		Add(name, bytes, typeof(short));
 	}
 
 	public void Add(string name, uint value)
 	{
 		byte[] bytes = new byte[4];
-		LittleEndianWriter.WriteUInt(value, ref bytes);
+		ByteWriter.LittleEndian.WriteUInt(value, ref bytes);
 		Add(name, bytes, typeof(uint));
 	}
 
 	public void Add(string name, int value)
 	{
 		byte[] bytes = new byte[4];
-		LittleEndianWriter.WriteInt(value, ref bytes);
+		ByteWriter.LittleEndian.WriteInt(value, ref bytes);
 		Add(name, bytes, typeof(int));
 	}
 
 	public void Add(string name, ulong value)
 	{
 		byte[] bytes = new byte[8];
-		LittleEndianWriter.WriteULong(value, ref bytes);
+		ByteWriter.LittleEndian.WriteULong(value, ref bytes);
 		Add(name, bytes, typeof(ulong));
 	}
 
 	public void Add(string name, long value)
 	{
 		byte[] bytes = new byte[8];
-		LittleEndianWriter.WriteLong(value, ref bytes);
+		ByteWriter.LittleEndian.WriteLong(value, ref bytes);
 		Add(name, bytes, typeof(long));
 	}
 
 	public void Add(string name, float value)
 	{
 		byte[] bytes = new byte[4];
-		LittleEndianWriter.WriteFloat(value, ref bytes);
+		ByteWriter.LittleEndian.WriteFloat(value, ref bytes);
 		Add(name, bytes, typeof(float));
 	}
 
 	public void Add(string name, double value)
 	{
 		byte[] bytes = new byte[8];
-		LittleEndianWriter.WriteDouble(value, ref bytes);
+		ByteWriter.LittleEndian.WriteDouble(value, ref bytes);
 		Add(name, bytes, typeof(double));
 	}
 
 	public void Add(string name, decimal value)
 	{
 		byte[] bytes = new byte[16];
-		LittleEndianWriter.WriteDecimal(value, ref bytes);
+		ByteWriter.LittleEndian.WriteDecimal(value, ref bytes);
 		Add(name, bytes, typeof(decimal));
 	}
 
@@ -163,21 +163,21 @@ public class Serializer : ISerializer
 		}
 		byte[] rawString = encoding.GetBytes(value);
 		byte[] bytes = new byte[4 + rawString.Length];
-		LittleEndianWriter.WriteBytes(rawString, ref bytes);
+		ByteWriter.LittleEndian.WriteBytes(rawString, ref bytes);
 		Add(name, bytes, typeof(string));
 	}
 
 	public void Add(string name, Guid value)
 	{
 		byte[] bytes = new byte[16];
-		LittleEndianWriter.WriteGuid(value, ref bytes);
+		ByteWriter.LittleEndian.WriteGuid(value, ref bytes);
 		Add(name, bytes, typeof(Guid));
 	}
 
 	public void Add(string name, DateTime value)
 	{
 		byte[] bytes = new byte[8];
-		LittleEndianWriter.WriteDateTime(value, ref bytes);
+		ByteWriter.LittleEndian.WriteDateTime(value, ref bytes);
 		Add(name, bytes, typeof(DateTime));
 	}
 
@@ -193,7 +193,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(bool)");
 		}
 		bool value;
-		if (!LittleEndianReader.ReadBool(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadBool(pair.Item1, out value))
 		{
 			value = default(bool);
 		}
@@ -212,7 +212,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(byte)");
 		}
 		byte value;
-		if (!LittleEndianReader.ReadByte(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadByte(pair.Item1, out value))
 		{
 			value = default(byte);
 		}
@@ -231,7 +231,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(sbyte)");
 		}
 		sbyte value;
-		if (!LittleEndianReader.ReadSByte(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadSByte(pair.Item1, out value))
 		{
 			value = default(sbyte);
 		}
@@ -250,7 +250,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(char)");
 		}
 		char value;
-		if (!LittleEndianReader.ReadChar(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadChar(pair.Item1, out value))
 		{
 			value = default(char);
 		}
@@ -269,7 +269,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(ushort)");
 		}
 		ushort value;
-		if (!LittleEndianReader.ReadUShort(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadUShort(pair.Item1, out value))
 		{
 			value = default(ushort);
 		}
@@ -288,7 +288,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(short)");
 		}
 		short value;
-		if (!LittleEndianReader.ReadShort(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadShort(pair.Item1, out value))
 		{
 			value = default(short);
 		}
@@ -307,7 +307,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(uint)");
 		}
 		uint value;
-		if (!LittleEndianReader.ReadUInt(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadUInt(pair.Item1, out value))
 		{
 			value = default(uint);
 		}
@@ -326,7 +326,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(int)");
 		}
 		int value;
-		if (!LittleEndianReader.ReadInt(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadInt(pair.Item1, out value))
 		{
 			value = default(int);
 		}
@@ -345,7 +345,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(ulong)");
 		}
 		ulong value;
-		if (!LittleEndianReader.ReadULong(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadULong(pair.Item1, out value))
 		{
 			value = default(ulong);
 		}
@@ -364,7 +364,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(long)");
 		}
 		long value;
-		if (!LittleEndianReader.ReadLong(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadLong(pair.Item1, out value))
 		{
 			value = default(long);
 		}
@@ -383,7 +383,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(float)");
 		}
 		float value;
-		if (!LittleEndianReader.ReadFloat(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadFloat(pair.Item1, out value))
 		{
 			value = default(float);
 		}
@@ -402,7 +402,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(double)");
 		}
 		double value;
-		if (!LittleEndianReader.ReadDouble(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadDouble(pair.Item1, out value))
 		{
 			value = default(double);
 		}
@@ -421,7 +421,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(decimal)");
 		}
 		decimal value;
-		if (!LittleEndianReader.ReadDecimal(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadDecimal(pair.Item1, out value))
 		{
 			value = default(decimal);
 		}
@@ -449,7 +449,7 @@ public class Serializer : ISerializer
 			return default(string);
 		}
 		string value;
-		if (!LittleEndianReader.ReadString(pair.Item1, encoding, out value))
+		if (!ByteReader.LittleEndian.ReadString(pair.Item1, encoding, out value))
 		{
 			value = default(string);
 		}
@@ -468,7 +468,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(Guid)");
 		}
 		Guid value;
-		if (!LittleEndianReader.ReadGuid(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadGuid(pair.Item1, out value))
 		{
 			value = default(Guid);
 		}
@@ -487,7 +487,7 @@ public class Serializer : ISerializer
 			throw new ArgumentException("Type is not typeof(DateTime)");
 		}
 		DateTime value;
-		if (!LittleEndianReader.ReadDateTime(pair.Item1, out value))
+		if (!ByteReader.LittleEndian.ReadDateTime(pair.Item1, out value))
 		{
 			value = default(DateTime);
 		}
@@ -498,7 +498,7 @@ public class Serializer : ISerializer
 	{
 		data = new Serializer();
 		int count;
-		if (!LittleEndianReader.ReadInt(buffer, ref readOffset, out count))
+		if (!ByteReader.LittleEndian.ReadInt(buffer, ref readOffset, out count))
 		{
 			return false;
 		}
@@ -507,9 +507,9 @@ public class Serializer : ISerializer
 			string key;
 			byte[] bytes;
 			string type;
-			if (!LittleEndianReader.ReadString(buffer, ref readOffset, out key) ||
-				!LittleEndianReader.ReadBytes(buffer, ref readOffset, out bytes) ||
-				!LittleEndianReader.ReadString(buffer, ref readOffset, out type))
+			if (!ByteReader.LittleEndian.ReadString(buffer, ref readOffset, out key) ||
+				!ByteReader.LittleEndian.ReadBytes(buffer, ref readOffset, out bytes) ||
+				!ByteReader.LittleEndian.ReadString(buffer, ref readOffset, out type))
 			{
 				return false;
 			}
@@ -520,7 +520,7 @@ public class Serializer : ISerializer
 
 	public void Write(ref byte[] buffer, ref int writeOffset)
 	{
-		LittleEndianWriter.WriteInt(this.data.Count, ref buffer, ref writeOffset);
+		ByteWriter.LittleEndian.WriteInt(this.data.Count, ref buffer, ref writeOffset);
 		if (this.data.Count < 1)
 		{
 			return;
@@ -529,9 +529,9 @@ public class Serializer : ISerializer
 		foreach (KeyValuePair<string, Tuple<byte[], string>> pair in this.data)
 		{
 			//LittleEndianByteUtility.WriteString("[VariableName:" + pair.Key + "]", ref buffer, ref writeOffset);
-			LittleEndianWriter.WriteString(pair.Key, ref buffer, ref writeOffset);
-			LittleEndianWriter.WriteBytes(pair.Value.Item1, ref buffer, ref writeOffset);
-			LittleEndianWriter.WriteString(pair.Value.Item2, ref buffer, ref writeOffset);
+			ByteWriter.LittleEndian.WriteString(pair.Key, ref buffer, ref writeOffset);
+			ByteWriter.LittleEndian.WriteBytes(pair.Value.Item1, ref buffer, ref writeOffset);
+			ByteWriter.LittleEndian.WriteString(pair.Value.Item2, ref buffer, ref writeOffset);
 		}
 	}
 }

@@ -267,7 +267,7 @@ public class ByteReader
 
 	public bool ReadRawBytes(byte[] source, ref int readOffset, int length, out byte[] destination)
 	{
-		if (length < 1 || readOffset + length > source.Length)
+		if (source == null || length < 1 || readOffset + length > source.Length)
 		{
 			destination = default(byte[]);
 			return false;
@@ -307,7 +307,7 @@ public class ByteReader
 
 	public bool ReadBool(byte[] source, ref int readOffset, out bool destination)
 	{
-		if (readOffset + 1 > source.Length)
+		if (source == null || readOffset + 1 > source.Length)
 		{
 			destination = default(bool);
 			return false;
@@ -326,7 +326,7 @@ public class ByteReader
 
 	public bool ReadByte(byte[] source, ref int readOffset, out byte destination)
 	{
-		if (readOffset + 1 > source.Length)
+		if (source == null || readOffset + 1 > source.Length)
 		{
 			destination = default(byte);
 			return false;
@@ -345,7 +345,7 @@ public class ByteReader
 
 	public bool ReadSByte(byte[] source, ref int readOffset, out sbyte destination)
 	{
-		if (readOffset + 1 > source.Length)
+		if (source == null || readOffset + 1 > source.Length)
 		{
 			destination = default(sbyte);
 			return false;
@@ -556,7 +556,7 @@ public class ByteReader
 			destination = default(ulong);
 			return false;
 		}
-		destination = *(float*)(&tmp);
+		destination = *(float*)&tmp;
 		return true;
 	}
 	#endregion
@@ -744,6 +744,23 @@ public class ByteReader
 		{
 			destination = Guid.Empty;
 			return false;
+		}
+		if (this.endianness == Endianness.BigEndian)
+		{
+			//Guid.ToByteArray() returns the first few bytes as little endian instead of big endian.
+			byte[] tmp = new byte[8];
+			for (int i = 0; i < tmp.Length; ++i)
+			{
+				tmp[i] = raw[i];
+			}
+			raw[3] = tmp[0];
+			raw[2] = tmp[1];
+			raw[1] = tmp[2];
+			raw[0] = tmp[3];
+			raw[5] = tmp[4];
+			raw[4] = tmp[5];
+			raw[6] = tmp[6];
+			raw[7] = tmp[7];
 		}
 		destination = new Guid(raw);
 		return true;

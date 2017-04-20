@@ -32,12 +32,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		bool test = true;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteBool(test, ref buffer);
+		ByteWriter.LittleEndian.WriteBool(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteBool(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteBool(test, ref BEbuffer);
 
 		bool test2;
-		LittleEndianReader.ReadBool(buffer, out test2);
+		ByteReader.LittleEndian.ReadBool(buffer, out test2);
 
 		return "Bool Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -46,12 +46,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		byte test = byte.MaxValue;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteByte(test, ref buffer);
+		ByteWriter.LittleEndian.WriteByte(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteByte(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteByte(test, ref BEbuffer);
 
 		byte test2;
-		LittleEndianReader.ReadByte(buffer, out test2);
+		ByteReader.LittleEndian.ReadByte(buffer, out test2);
 
 		return "Byte Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -60,12 +60,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		sbyte test = sbyte.MaxValue;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteSByte(test, ref buffer);
+		ByteWriter.LittleEndian.WriteSByte(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteSByte(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteSByte(test, ref BEbuffer);
 
 		sbyte test2;
-		LittleEndianReader.ReadSByte(buffer, out test2);
+		ByteReader.LittleEndian.ReadSByte(buffer, out test2);
 
 		return "SByte Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -74,12 +74,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		char test = '!';
 		byte[] buffer = null;
-		LittleEndianWriter.WriteChar(test, ref buffer);
+		ByteWriter.LittleEndian.WriteChar(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteChar(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteChar(test, ref BEbuffer);
 
 		char test2;
-		LittleEndianReader.ReadChar(buffer, out test2);
+		ByteReader.LittleEndian.ReadChar(buffer, out test2);
 
 		return "Char Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -88,12 +88,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		ushort test = 42415;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteUShort(test, ref buffer);
+		ByteWriter.LittleEndian.WriteUShort(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteUShort(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteUShort(test, ref BEbuffer);
 
 		ushort test2;
-		LittleEndianReader.ReadUShort(buffer, out test2);
+		ByteReader.LittleEndian.ReadUShort(buffer, out test2);
 
 		return "UShort Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -102,12 +102,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		short test = 12552;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteShort(test, ref buffer);
+		ByteWriter.LittleEndian.WriteShort(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteShort(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteShort(test, ref BEbuffer);
 
 		short test2;
-		LittleEndianReader.ReadShort(buffer, out test2);
+		ByteReader.LittleEndian.ReadShort(buffer, out test2);
 
 		return "Short Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -116,12 +116,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		uint test = 3678678677;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteUInt(test, ref buffer);
+		ByteWriter.LittleEndian.WriteUInt(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteUInt(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteUInt(test, ref BEbuffer);
 
 		uint test2;
-		LittleEndianReader.ReadUInt(buffer, out test2);
+		ByteReader.LittleEndian.ReadUInt(buffer, out test2);
 
 		return "UInt Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -130,12 +130,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		int test = 1231242345;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteInt(test, ref buffer);
+		ByteWriter.LittleEndian.WriteInt(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteInt(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteInt(test, ref BEbuffer);
 
 		int test2;
-		LittleEndianReader.ReadInt(buffer, out test2);
+		ByteReader.LittleEndian.ReadInt(buffer, out test2);
 
 		return "Int Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -144,12 +144,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		ulong test = 14254535353445486777;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteULong(test, ref buffer);
+		ByteWriter.LittleEndian.WriteULong(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteULong(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteULong(test, ref BEbuffer);
 
 		ulong test2;
-		LittleEndianReader.ReadULong(buffer, out test2);
+		ByteReader.LittleEndian.ReadULong(buffer, out test2);
 
 		return "ULong Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -158,12 +158,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		long test = 2342341758562542432;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteLong(test, ref buffer);
+		ByteWriter.LittleEndian.WriteLong(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteLong(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteLong(test, ref BEbuffer);
 
 		long test2;
-		LittleEndianReader.ReadLong(buffer, out test2);
+		ByteReader.LittleEndian.ReadLong(buffer, out test2);
 
 		return "Long Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -172,12 +172,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		float test = 123.456789f;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteFloat(test, ref buffer);
+		ByteWriter.LittleEndian.WriteFloat(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteFloat(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteFloat(test, ref BEbuffer);
 
 		float test2;
-		LittleEndianReader.ReadFloat(buffer, out test2);
+		ByteReader.LittleEndian.ReadFloat(buffer, out test2);
 
 		return "Float Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -186,12 +186,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		double test = 456.7890123f;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteDouble(test, ref buffer);
+		ByteWriter.LittleEndian.WriteDouble(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteDouble(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteDouble(test, ref BEbuffer);
 
 		double test2;
-		LittleEndianReader.ReadDouble(buffer, out test2);
+		ByteReader.LittleEndian.ReadDouble(buffer, out test2);
 
 		return "Double Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -200,12 +200,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		decimal test = 7890.1234567890m;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteDecimal(test, ref buffer);
+		ByteWriter.LittleEndian.WriteDecimal(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteDecimal(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteDecimal(test, ref BEbuffer);
 
 		decimal test2;
-		LittleEndianReader.ReadDecimal(buffer, out test2);
+		ByteReader.LittleEndian.ReadDecimal(buffer, out test2);
 
 		return "Decimal Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -214,12 +214,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		string test = "SKDJFLSDJ";
 		byte[] buffer = null;
-		LittleEndianWriter.WriteString(test, ref buffer);
+		ByteWriter.LittleEndian.WriteString(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteString(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteString(test, ref BEbuffer);
 
 		string test2;
-		LittleEndianReader.ReadString(buffer, out test2);
+		ByteReader.LittleEndian.ReadString(buffer, out test2);
 
 		return "String Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -228,12 +228,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		Guid test = Guid.NewGuid();
 		byte[] buffer = null;
-		LittleEndianWriter.WriteGuid(test, ref buffer);
+		ByteWriter.LittleEndian.WriteGuid(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteGuid(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteGuid(test, ref BEbuffer);
 
 		Guid test2;
-		LittleEndianReader.ReadGuid(buffer, out test2);
+		ByteReader.LittleEndian.ReadGuid(buffer, out test2);
 
 		return "Guid Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}
@@ -242,12 +242,12 @@ public class ByteUtilityTest : MonoBehaviour
 	{
 		DateTime test = DateTime.Now;
 		byte[] buffer = null;
-		LittleEndianWriter.WriteDateTime(test, ref buffer);
+		ByteWriter.LittleEndian.WriteDateTime(test, ref buffer);
 		byte[] BEbuffer = null;
-		BigEndianWriter.WriteDateTime(test, ref BEbuffer);
+		ByteWriter.BigEndian.WriteDateTime(test, ref BEbuffer);
 
 		DateTime test2;
-		LittleEndianReader.ReadDateTime(buffer, out test2);
+		ByteReader.LittleEndian.ReadDateTime(buffer, out test2);
 
 		return "DateTime Test:\r\n\tInitial  <" + test + ">\r\n\tResult <" + test2 + ">\r\n\tLEBytes  <" + Hex.ToString(buffer) + ">\r\n\tBEBytes  <" + Hex.ToString(BEbuffer) + ">\r\n";
 	}

@@ -115,11 +115,9 @@
     <Compile Include="Assets\Scripts\Extensions\BitArray\BitArray32.cs" />
     <Compile Include="Assets\Scripts\Extensions\BitArray\BitArray64.cs" />
     <Compile Include="Assets\Scripts\Extensions\Hash.cs" />
-    <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\BigEndianReader.cs" />
-    <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\BigEndianWriter.cs" />
     <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\ByteReader.cs" />
+    <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\ByteWriter.cs" />
     <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\Endianness.cs" />
-    <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\LittleEndianWriter.cs" />
     <Compile Include="Assets\Scripts\Extensions\Collections\Queue\BlockingQueue.cs" />
     <Compile Include="Assets\Scripts\Extensions\Collections\Queue\ConcurrentQueue.cs" />
     <Compile Include="Assets\Scripts\Extensions\Collections\Queue\LockFreeQueue.cs" />
@@ -142,7 +140,6 @@
     <Compile Include="Assets\Scripts\Extensions\RateLimiter\IRateLimiter.cs" />
     <Compile Include="Assets\Scripts\Extensions\RateLimiter\RateLimiter.cs" />
     <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\ByteUtilityTest.cs" />
-    <Compile Include="Assets\Scripts\Extensions\Serialization\ByteUtility\LittleEndianReader.cs" />
     <Compile Include="Assets\Scripts\Extensions\Serialization\ISerializable.cs" />
     <Compile Include="Assets\Scripts\Extensions\Serialization\ISerializer.cs" />
     <Compile Include="Assets\Scripts\Extensions\Serialization\Serializer.cs" />

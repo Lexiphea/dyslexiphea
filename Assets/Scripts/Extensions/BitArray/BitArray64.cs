@@ -44,7 +44,7 @@ public class BitArray64<T>
 	public static bool Read(byte[] buffer, ref int readOffset, out BitArray64<T> array)
 	{
 		long flags = 0;
-		if (!LittleEndianReader.ReadLong(buffer, ref readOffset, out flags))
+		if (!ByteReader.LittleEndian.ReadLong(buffer, ref readOffset, out flags))
 		{
 			array = null;
 			return false;
@@ -55,6 +55,6 @@ public class BitArray64<T>
 
 	public void Write(ref byte[] buffer, ref int writeOffset)
 	{
-		LittleEndianWriter.WriteLong((int)this.flags, ref buffer, ref writeOffset);
+		ByteWriter.LittleEndian.WriteLong((int)this.flags, ref buffer, ref writeOffset);
 	}
 }

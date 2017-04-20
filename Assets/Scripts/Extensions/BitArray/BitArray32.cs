@@ -44,7 +44,7 @@ public class BitArray32<T>
 	public static bool Read(byte[] buffer, ref int readOffset, out BitArray32<T> array)
 	{
 		int flags = 0;
-		if (!LittleEndianReader.ReadInt(buffer, ref readOffset, out flags))
+		if (!ByteReader.LittleEndian.ReadInt(buffer, ref readOffset, out flags))
 		{
 			array = null;
 			return false;
@@ -55,6 +55,6 @@ public class BitArray32<T>
 
 	public void Write(ref byte[] buffer, ref int writeOffset)
 	{
-		LittleEndianWriter.WriteInt((int)this.flags, ref buffer, ref writeOffset);
+		ByteWriter.LittleEndian.WriteInt((int)this.flags, ref buffer, ref writeOffset);
 	}
 }
