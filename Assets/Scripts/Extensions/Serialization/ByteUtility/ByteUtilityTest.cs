@@ -86,7 +86,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string UShortTest()
 	{
-		ushort test = ushort.MaxValue;
+		ushort test = 42415;
 		byte[] buffer = null;
 		LittleEndianWriter.WriteUShort(test, ref buffer);
 		byte[] BEbuffer = null;
@@ -100,7 +100,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string ShortTest()
 	{
-		short test = short.MaxValue;
+		short test = 12552;
 		byte[] buffer = null;
 		LittleEndianWriter.WriteShort(test, ref buffer);
 		byte[] BEbuffer = null;
@@ -114,7 +114,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string UIntTest()
 	{
-		uint test = uint.MaxValue;
+		uint test = 3678678677;
 		byte[] buffer = null;
 		LittleEndianWriter.WriteUInt(test, ref buffer);
 		byte[] BEbuffer = null;
@@ -128,7 +128,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string IntTest()
 	{
-		int test = int.MaxValue;
+		int test = 1231242345;
 		byte[] buffer = null;
 		LittleEndianWriter.WriteInt(test, ref buffer);
 		byte[] BEbuffer = null;
@@ -142,7 +142,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string ULongTest()
 	{
-		ulong test = ulong.MaxValue;
+		ulong test = 14254535353445486777;
 		byte[] buffer = null;
 		LittleEndianWriter.WriteULong(test, ref buffer);
 		byte[] BEbuffer = null;
@@ -156,7 +156,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string LongTest()
 	{
-		long test = long.MaxValue;
+		long test = 2342341758562542432;
 		byte[] buffer = null;
 		LittleEndianWriter.WriteLong(test, ref buffer);
 		byte[] BEbuffer = null;
@@ -170,7 +170,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string FloatTest()
 	{
-		float test = float.MaxValue;
+		float test = 123.456789f;
 		byte[] buffer = null;
 		LittleEndianWriter.WriteFloat(test, ref buffer);
 		byte[] BEbuffer = null;
@@ -184,7 +184,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string DoubleTest()
 	{
-		double test = double.MaxValue;
+		double test = 456.7890123f;
 		byte[] buffer = null;
 		LittleEndianWriter.WriteDouble(test, ref buffer);
 		byte[] BEbuffer = null;
@@ -198,7 +198,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string DecimalTest()
 	{
-		decimal test = decimal.MaxValue;
+		decimal test = 7890.1234567890m;
 		byte[] buffer = null;
 		LittleEndianWriter.WriteDecimal(test, ref buffer);
 		byte[] BEbuffer = null;
@@ -212,7 +212,7 @@ public class ByteUtilityTest : MonoBehaviour
 
 	public string StringTest()
 	{
-		string test = "SKDJFLSDJKFKLSDFJ&#$*(&8a7sd7a9sd!)(";
+		string test = "SKDJFLSDJ";
 		byte[] buffer = null;
 		LittleEndianWriter.WriteString(test, ref buffer);
 		byte[] BEbuffer = null;

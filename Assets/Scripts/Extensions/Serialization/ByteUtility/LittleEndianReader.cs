@@ -46,7 +46,7 @@ public static class LittleEndianReader
 		d2 |= source[readOffset++] << 8;
 		d2 |= source[readOffset++] << 16;
 		d2 |= source[readOffset++] << 24;
-		result = (uint)d | ((long)d2 << 32);
+		result = (d | d2 << 32);
 		return true;
 	}
 
@@ -93,7 +93,7 @@ public static class LittleEndianReader
 		d2 |= source[readOffset++] << 8;
 		d2 |= source[readOffset++] << 16;
 		d2 |= source[readOffset++] << 24;
-		result = (uint)d | ((ulong)d2 << 32);
+		result = (ulong)(d | d2 << 32);
 		return true;
 	}
 

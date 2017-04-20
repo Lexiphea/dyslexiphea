@@ -46,7 +46,7 @@ public static class BigEndianReader
 		d2 |= source[readOffset++] << 16;
 		d2 |= source[readOffset++] << 8;
 		d2 |= source[readOffset++];
-		result = (uint)d2 | ((long)d << 32);
+		result = (d2 | d << 32);
 		return true;
 	}
 
@@ -93,7 +93,7 @@ public static class BigEndianReader
 		d2 |= source[readOffset++] << 16;
 		d2 |= source[readOffset++] << 8;
 		d2 |= source[readOffset++];
-		result = (uint)d2 | ((ulong)d << 32);
+		result = (ulong)(d2 | d << 32);
 		return true;
 	}
 
