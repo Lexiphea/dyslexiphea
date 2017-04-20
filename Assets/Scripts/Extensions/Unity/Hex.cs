@@ -38,10 +38,6 @@ public static class Hex
 	{
 		return ColorNormalize(color.r, color.g, color.b, color.a);
 	}
-	public static Color ColorNormalize(float r, float g, float b)
-	{
-		return ColorNormalize(r, g, b, 1.0f);
-	}
 	public static Color ColorNormalize(float r, float g, float b, float a)
 	{
 		float max = 255.0f;
@@ -67,20 +63,20 @@ public static class Hex
 		return 0;
 	}
 
-	public static Color ToColor(string s)
+	public static Color ToColor(string hexString)
 	{
-		if (s.Length < 6)
+		if (hexString.Length < 6)
 		{
 			return Color.white;
 		}
-		float r = ToInt(s.Substring(0, 2));
-		float g = ToInt(s.Substring(2, 2));
-		float b = ToInt(s.Substring(4, 2));
-		if (s.Length < 8)
+		float r = ToInt(hexString.Substring(0, 2));
+		float g = ToInt(hexString.Substring(2, 2));
+		float b = ToInt(hexString.Substring(4, 2));
+		if (hexString.Length < 8)
 		{
 			return ColorNormalize(r, g, b, 255.0f);
 		}
-		float a = ToInt(s.Substring(6, 2));
+		float a = ToInt(hexString.Substring(6, 2));
 		return ColorNormalize(r, g, b, a);
 	}
 
