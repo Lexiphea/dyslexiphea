@@ -87,8 +87,9 @@ public static class Hex
 		char[] c = new char[bytes.Length * 2];
 		for (int i = 0; i < bytes.Length; ++i)
 		{
-			c[2 * i] = lookupTable[bytes[i]][0];
-			c[2 * i + 1] = lookupTable[bytes[i]][1];
+			string hex = lookupTable[bytes[i]];
+			c[2 * i] = hex[0];
+			c[2 * i + 1] = hex[1];
 		}
 		return new string(c);
 	}
