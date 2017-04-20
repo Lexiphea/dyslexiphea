@@ -3,6 +3,37 @@ using UnityEngine;
 
 public static class Hex
 {
+	private readonly static uint[] byteToHexLookupTable = CreateByteToHexLookupTable();
+
+	public static uint[] CreateByteToHexLookupTable()
+	{
+		uint[] result = new uint[256];
+		for (int i = 0; i < 256; ++i)
+		{
+			string s = i.ToString("X2");
+			result[i] = s[0];
+			result[i] |= (uint)s[1] << 16;
+		}
+		return result;
+	}
+
+	public static string ToString(byte[] bytes)
+	{
+		if (bytes == null || bytes.Length < 1)
+		{
+			return default(string);
+		}
+		uint[] lookupTable = byteToHexLookupTable;
+		char[] c = new char[bytes.Length * 2];
+		for (int i = 0, resultIndex = 0; i < bytes.Length; ++i)
+		{
+			uint hex = lookupTable[bytes[i]];
+			c[resultIndex++] = (char)hex;
+			c[resultIndex++] = (char)(hex >> 16);
+		}
+		return new string(c);
+	}
+
 	public static Color ColorNormalize(Color color)
 	{
 		return ColorNormalize(color.r, color.g, color.b, color.a);
@@ -42,7 +73,6 @@ public static class Hex
 		{
 			return Color.white;
 		}
-
 		float r = ToInt(s.Substring(0, 2));
 		float g = ToInt(s.Substring(2, 2));
 		float b = ToInt(s.Substring(4, 2));
@@ -51,46 +81,14 @@ public static class Hex
 			return ColorNormalize(r, g, b, 255.0f);
 		}
 		float a = ToInt(s.Substring(6, 2));
-
 		return ColorNormalize(r, g, b, a);
 	}
 
 	public static string ColorToHex(Color color)
 	{
-		int r = (int)(color.r * 255.0f);
-		int g = (int)(color.g * 255.0f);
-		int b = (int)(color.b * 255.0f);
-		int a = (int)(color.a * 255.0f);
-
-		return string.Format("{0:X2}{1:X2}{2:X2}{3:X2}", r, g, b, a);
-	}
-
-	private static string[] byteToHexLookupTable = CreateByteToHexLookupTable();
-
-	public static string[] CreateByteToHexLookupTable()
-	{
-		string[] result = new string[256];
-		for (int i = 0; i < 256; ++i)
-		{
-			result[i] = i.ToString("X2");
-		}
-		return result;
-	}
-
-	public static string ToString(byte[] bytes)
-	{
-		if (bytes == null || bytes.Length < 1)
-		{
-			return default(string);
-		}
-		string[] lookupTable = byteToHexLookupTable;
-		char[] c = new char[bytes.Length * 2];
-		for (int i = 0; i < bytes.Length; ++i)
-		{
-			string hex = lookupTable[bytes[i]];
-			c[2 * i] = hex[0];
-			c[2 * i + 1] = hex[1];
-		}
-		return new string(c);
+		return ToString(new byte[] { (byte)(color.r * 255.0f),
+									 (byte)(color.g * 255.0f),
+									 (byte)(color.b * 255.0f),
+									 (byte)(color.a * 255.0f), });
 	}
 }
