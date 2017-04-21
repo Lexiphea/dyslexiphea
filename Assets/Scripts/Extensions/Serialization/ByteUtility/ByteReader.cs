@@ -6,19 +6,19 @@ public class ByteReader
 	public static readonly ByteReader LittleEndian = new ByteReader(Endianness.LittleEndian);
 	public static readonly ByteReader BigEndian = new ByteReader(Endianness.BigEndian);
 
-	private delegate bool ToInt16Delegate(byte[] source, ref int readOffset, out short result);
-	private delegate bool ToInt32Delegate(byte[] source, ref int readOffset, out int result);
-	private delegate bool ToInt64Delegate(byte[] source, ref int readOffset, out long result);
-	private delegate bool ToUInt16Delegate(byte[] source, ref int readOffset, out ushort result);
-	private delegate bool ToUInt32Delegate(byte[] source, ref int readOffset, out uint result);
-	private delegate bool ToUInt64Delegate(byte[] source, ref int readOffset, out ulong result);
+	private delegate bool ReadInt16Delegate(byte[] source, ref int readOffset, out short result);
+	private delegate bool ReadInt32Delegate(byte[] source, ref int readOffset, out int result);
+	private delegate bool ReadInt64Delegate(byte[] source, ref int readOffset, out long result);
+	private delegate bool ReadUInt16Delegate(byte[] source, ref int readOffset, out ushort result);
+	private delegate bool ReadUInt32Delegate(byte[] source, ref int readOffset, out uint result);
+	private delegate bool ReadUInt64Delegate(byte[] source, ref int readOffset, out ulong result);
 
-	private ToInt16Delegate toInt16 = null;
-	private ToInt32Delegate toInt32 = null;
-	private ToInt64Delegate toInt64 = null;
-	private ToUInt16Delegate toUInt16 = null;
-	private ToUInt32Delegate toUInt32 = null;
-	private ToUInt64Delegate toUInt64 = null;
+	private ReadInt16Delegate readInt16 = null;
+	private ReadInt32Delegate readInt32 = null;
+	private ReadInt64Delegate readInt64 = null;
+	private ReadUInt16Delegate readUInt16 = null;
+	private ReadUInt32Delegate readUInt32 = null;
+	private ReadUInt64Delegate readUInt64 = null;
 
 	private Endianness endianness = Endianness.LittleEndian;
 
@@ -33,23 +33,24 @@ public class ByteReader
 			switch (value)
 			{
 				case Endianness.BigEndian:
-					this.toInt16 = ToBigEndianInt16;
-					this.toInt32 = ToBigEndianInt32;
-					this.toInt64 = ToBigEndianInt64;
-					this.toUInt16 = ToBigEndianUInt16;
-					this.toUInt32 = ToBigEndianUInt32;
-					this.toUInt64 = ToBigEndianUInt64;
+					this.readInt16 = ReadBigEndianInt16;
+					this.readInt32 = ReadBigEndianInt32;
+					this.readInt64 = ReadBigEndianInt64;
+					this.readUInt16 = ReadBigEndianUInt16;
+					this.readUInt32 = ReadBigEndianUInt32;
+					this.readUInt64 = ReadBigEndianUInt64;
 					break;
 				case Endianness.LittleEndian:
 				default:
-					this.toInt16 = ToLittleEndianInt16;
-					this.toInt32 = ToLittleEndianInt32;
-					this.toInt64 = ToLittleEndianInt64;
-					this.toUInt16 = ToLittleEndianUInt16;
-					this.toUInt32 = ToLittleEndianUInt32;
-					this.toUInt64 = ToLittleEndianUInt64;
+					this.readInt16 = ReadLittleEndianInt16;
+					this.readInt32 = ReadLittleEndianInt32;
+					this.readInt64 = ReadLittleEndianInt64;
+					this.readUInt16 = ReadLittleEndianUInt16;
+					this.readUInt32 = ReadLittleEndianUInt32;
+					this.readUInt64 = ReadLittleEndianUInt64;
 					break;
 			}
+			this.endianness = value;
 		}
 	}
 
@@ -67,7 +68,7 @@ public class ByteReader
 	}
 
 	#region LittleEndian
-	public bool ToLittleEndianInt16(byte[] source, ref int readOffset, out short result)
+	public bool ReadLittleEndianInt16(byte[] source, ref int readOffset, out short result)
 	{
 		if (source == null || readOffset + 2 > source.Length)
 		{
@@ -80,22 +81,21 @@ public class ByteReader
 		return true;
 	}
 
-	public bool ToLittleEndianInt32(byte[] source, ref int readOffset, out int result)
+	public bool ReadLittleEndianInt32(byte[] source, ref int readOffset, out int result)
 	{
 		if (source == null || readOffset + 4 > source.Length)
 		{
 			result = 0;
 			return false;
 		}
-		int d = source[readOffset++];
-		d |= source[readOffset++] << 8;
-		d |= source[readOffset++] << 16;
-		d |= source[readOffset++] << 24;
-		result = d;
+		result = source[readOffset++];
+		result |= source[readOffset++] << 8;
+		result |= source[readOffset++] << 16;
+		result |= source[readOffset++] << 24;
 		return true;
 	}
 
-	public bool ToLittleEndianInt64(byte[] source, ref int readOffset, out long result)
+	public bool ReadLittleEndianInt64(byte[] source, ref int readOffset, out long result)
 	{
 		if (source == null || readOffset + 8 > source.Length)
 		{
@@ -110,11 +110,11 @@ public class ByteReader
 		d2 |= source[readOffset++] << 8;
 		d2 |= source[readOffset++] << 16;
 		d2 |= source[readOffset++] << 24;
-		result = (d | d2 << 32);
+		result = (uint)d | ((long)d2 << 32);
 		return true;
 	}
 
-	public bool ToLittleEndianUInt16(byte[] source, ref int readOffset, out ushort result)
+	public bool ReadLittleEndianUInt16(byte[] source, ref int readOffset, out ushort result)
 	{
 		if (source == null || readOffset + 2 > source.Length)
 		{
@@ -127,7 +127,7 @@ public class ByteReader
 		return true;
 	}
 
-	public bool ToLittleEndianUInt32(byte[] source, ref int readOffset, out uint result)
+	public bool ReadLittleEndianUInt32(byte[] source, ref int readOffset, out uint result)
 	{
 		if (source == null || readOffset + 4 > source.Length)
 		{
@@ -142,7 +142,7 @@ public class ByteReader
 		return true;
 	}
 
-	public bool ToLittleEndianUInt64(byte[] source, ref int readOffset, out ulong result)
+	public bool ReadLittleEndianUInt64(byte[] source, ref int readOffset, out ulong result)
 	{
 		if (source == null || readOffset + 8 > source.Length)
 		{
@@ -157,13 +157,13 @@ public class ByteReader
 		d2 |= source[readOffset++] << 8;
 		d2 |= source[readOffset++] << 16;
 		d2 |= source[readOffset++] << 24;
-		result = (ulong)(d | d2 << 32);
+		result = (uint)d | ((ulong)d2 << 32);
 		return true;
 	}
 	#endregion
 
 	#region BigEndian
-	public bool ToBigEndianInt16(byte[] source, ref int readOffset, out short result)
+	public bool ReadBigEndianInt16(byte[] source, ref int readOffset, out short result)
 	{
 		if (source == null || readOffset + 2 > source.Length)
 		{
@@ -176,22 +176,21 @@ public class ByteReader
 		return true;
 	}
 
-	public bool ToBigEndianInt32(byte[] source, ref int readOffset, out int result)
+	public bool ReadBigEndianInt32(byte[] source, ref int readOffset, out int result)
 	{
 		if (source == null || readOffset + 4 > source.Length)
 		{
 			result = 0;
 			return false;
 		}
-		int d = source[readOffset++] << 24;
-		d |= source[readOffset++] << 16;
-		d |= source[readOffset++] << 8;
-		d |= source[readOffset++];
-		result = d;
+		result = source[readOffset++] << 24;
+		result |= source[readOffset++] << 16;
+		result |= source[readOffset++] << 8;
+		result |= source[readOffset++];
 		return true;
 	}
 
-	public bool ToBigEndianInt64(byte[] source, ref int readOffset, out long result)
+	public bool ReadBigEndianInt64(byte[] source, ref int readOffset, out long result)
 	{
 		if (source == null || readOffset + 8 > source.Length)
 		{
@@ -206,11 +205,11 @@ public class ByteReader
 		d2 |= source[readOffset++] << 16;
 		d2 |= source[readOffset++] << 8;
 		d2 |= source[readOffset++];
-		result = (d2 | d << 32);
+		result = (uint)d2 | ((long)d << 32);
 		return true;
 	}
 
-	public bool ToBigEndianUInt16(byte[] source, ref int readOffset, out ushort result)
+	public bool ReadBigEndianUInt16(byte[] source, ref int readOffset, out ushort result)
 	{
 		if (source == null || readOffset + 2 > source.Length)
 		{
@@ -223,7 +222,7 @@ public class ByteReader
 		return true;
 	}
 
-	public bool ToBigEndianUInt32(byte[] source, ref int readOffset, out uint result)
+	public bool ReadBigEndianUInt32(byte[] source, ref int readOffset, out uint result)
 	{
 		if (source == null || readOffset + 4 > source.Length)
 		{
@@ -238,7 +237,7 @@ public class ByteReader
 		return true;
 	}
 
-	public bool ToBigEndianUInt64(byte[] source, ref int readOffset, out ulong result)
+	public bool ReadBigEndianUInt64(byte[] source, ref int readOffset, out ulong result)
 	{
 		if (source == null || readOffset + 8 > source.Length)
 		{
@@ -253,7 +252,7 @@ public class ByteReader
 		d2 |= source[readOffset++] << 16;
 		d2 |= source[readOffset++] << 8;
 		d2 |= source[readOffset++];
-		result = (ulong)(d2 | d << 32);
+		result = (uint)d2 | ((ulong)d << 32);
 		return true;
 	}
 	#endregion
@@ -289,7 +288,7 @@ public class ByteReader
 	public bool ReadBytes(byte[] source, ref int readOffset, out byte[] destination)
 	{
 		int length;
-		if (!this.toInt32(source, ref readOffset, out length) || readOffset + length > source.Length)
+		if (!this.readInt32(source, ref readOffset, out length) || readOffset + length > source.Length)
 		{
 			destination = default(byte[]);
 			return false;
@@ -365,7 +364,7 @@ public class ByteReader
 	public bool ReadChar(byte[] source, ref int readOffset, out char destination)
 	{
 		short tmp;
-		if (!this.toInt16(source, ref readOffset, out tmp))
+		if (!this.readInt16(source, ref readOffset, out tmp))
 		{
 			destination = default(char);
 			return false;
@@ -384,7 +383,7 @@ public class ByteReader
 
 	public bool ReadUShort(byte[] source, ref int readOffset, out ushort destination)
 	{
-		if (!this.toUInt16(source, ref readOffset, out destination))
+		if (!this.readUInt16(source, ref readOffset, out destination))
 		{
 			destination = default(ushort);
 			return false;
@@ -402,7 +401,7 @@ public class ByteReader
 
 	public bool ReadShort(byte[] source, ref int readOffset, out short destination)
 	{
-		if (!this.toInt16(source, ref readOffset, out destination))
+		if (!this.readInt16(source, ref readOffset, out destination))
 		{
 			destination = default(short);
 			return false;
@@ -420,7 +419,7 @@ public class ByteReader
 
 	public bool ReadUInt(byte[] source, ref int readOffset, out uint destination)
 	{
-		if (!this.toUInt32(source, ref readOffset, out destination))
+		if (!this.readUInt32(source, ref readOffset, out destination))
 		{
 			destination = default(uint);
 			return false;
@@ -439,7 +438,7 @@ public class ByteReader
 	public bool ReadUIntArray(byte[] source, ref int readOffset, out uint[] destination)
 	{
 		int length;
-		if (!this.toInt32(source, ref readOffset, out length))
+		if (!this.readInt32(source, ref readOffset, out length))
 		{
 			destination = default(uint[]);
 			return false;
@@ -447,7 +446,7 @@ public class ByteReader
 		destination = new uint[length];
 		for (int i = 0; i < length; ++i)
 		{
-			if (!this.toUInt32(source, ref readOffset, out destination[i]))
+			if (!this.readUInt32(source, ref readOffset, out destination[i]))
 			{
 				return false;
 			}
@@ -465,7 +464,7 @@ public class ByteReader
 
 	public bool ReadInt(byte[] source, ref int readOffset, out int destination)
 	{
-		if (!this.toInt32(source, ref readOffset, out destination))
+		if (!this.readInt32(source, ref readOffset, out destination))
 		{
 			destination = default(int);
 			return false;
@@ -484,7 +483,7 @@ public class ByteReader
 	public bool ReadIntArray(byte[] source, ref int readOffset, out int[] destination)
 	{
 		int length;
-		if (!this.toInt32(source, ref readOffset, out length))
+		if (!this.readInt32(source, ref readOffset, out length))
 		{
 			destination = default(int[]);
 			return false;
@@ -492,7 +491,7 @@ public class ByteReader
 		destination = new int[length];
 		for (int i = 0; i < length; ++i)
 		{
-			if (!this.toInt32(source, ref readOffset, out destination[i]))
+			if (!this.readInt32(source, ref readOffset, out destination[i]))
 			{
 				return false;
 			}
@@ -510,13 +509,11 @@ public class ByteReader
 
 	public bool ReadULong(byte[] source, ref int readOffset, out ulong destination)
 	{
-		int low, high;
-		if (!this.toInt32(source, ref readOffset, out low) || !this.toInt32(source, ref readOffset, out high))
+		if (!this.readUInt64(source, ref readOffset, out destination))
 		{
 			destination = default(ulong);
 			return false;
 		}
-		destination = (uint)low | ((ulong)high << 32);
 		return true;
 	}
 	#endregion
@@ -530,13 +527,11 @@ public class ByteReader
 
 	public bool ReadLong(byte[] source, ref int readOffset, out long destination)
 	{
-		int low, high;
-		if (!this.toInt32(source, ref readOffset, out low) || !this.toInt32(source, ref readOffset, out high))
+		if (!this.readInt64(source, ref readOffset, out destination))
 		{
 			destination = default(long);
 			return false;
 		}
-		destination = (uint)low | ((long)high << 32);
 		return true;
 	}
 	#endregion
@@ -551,7 +546,7 @@ public class ByteReader
 	public unsafe bool ReadFloat(byte[] source, ref int readOffset, out float destination)
 	{
 		int tmp;
-		if (!this.toInt32(source, ref readOffset, out tmp))
+		if (!this.readInt32(source, ref readOffset, out tmp))
 		{
 			destination = default(ulong);
 			return false;
@@ -570,13 +565,12 @@ public class ByteReader
 
 	public unsafe bool ReadDouble(byte[] source, ref int readOffset, out double destination)
 	{
-		int low, high;
-		if (!this.toInt32(source, ref readOffset, out low) || !this.toInt32(source, ref readOffset, out high))
+		ulong tmp;
+		if (!this.readUInt64(source, ref readOffset, out tmp))
 		{
 			destination = default(ulong);
 			return false;
 		}
-		ulong tmp = (uint)low | ((ulong)high << 32);
 		destination = *(double*)&tmp;
 		return true;
 	}
@@ -592,10 +586,10 @@ public class ByteReader
 	public bool ReadDecimal(byte[] source, ref int readOffset, out decimal destination)
 	{
 		int[] decimalInts = new int[4];
-		if (!this.toInt32(source, ref readOffset, out decimalInts[0]) ||
-			!this.toInt32(source, ref readOffset, out decimalInts[1]) ||
-			!this.toInt32(source, ref readOffset, out decimalInts[2]) ||
-			!this.toInt32(source, ref readOffset, out decimalInts[3]))
+		if (!this.readInt32(source, ref readOffset, out decimalInts[0]) ||
+			!this.readInt32(source, ref readOffset, out decimalInts[1]) ||
+			!this.readInt32(source, ref readOffset, out decimalInts[2]) ||
+			!this.readInt32(source, ref readOffset, out decimalInts[3]))
 		{
 			destination = default(decimal);
 			return false;
@@ -626,7 +620,7 @@ public class ByteReader
 	public bool ReadString(byte[] source, ref int readOffset, Encoding encoding, out string destination)
 	{
 		int length;
-		if (!this.toInt32(source, ref readOffset, out length))
+		if (!this.readInt32(source, ref readOffset, out length))
 		{
 			destination = default(string);
 			return false;
@@ -670,7 +664,7 @@ public class ByteReader
 	public bool ReadStringArray(byte[] source, ref int readOffset, Encoding encoding, out string[] destination)
 	{
 		int length;
-		if (!this.toInt32(source, ref readOffset, out length))
+		if (!this.readInt32(source, ref readOffset, out length))
 		{
 			destination = default(string[]);
 			return false;
@@ -777,7 +771,7 @@ public class ByteReader
 	public bool ReadGuidArray(byte[] source, ref int readOffset, out Guid[] destination)
 	{
 		int length;
-		if (!this.toInt32(source, ref readOffset, out length))
+		if (!this.readInt32(source, ref readOffset, out length))
 		{
 			destination = default(Guid[]);
 			return false;
@@ -804,7 +798,7 @@ public class ByteReader
 	public bool ReadDateTime(byte[] source, ref int readOffset, out DateTime destination)
 	{
 		long tmp;
-		if (readOffset + 8 > source.Length || !ReadLong(source, ref readOffset, out tmp))
+		if (!this.readInt64(source, ref readOffset, out tmp))
 		{
 			destination = default(DateTime);
 			return false;

@@ -50,6 +50,7 @@ public class ByteWriter
 					this.writeUInt64 = WriteLittleEndianUInt64;
 					break;
 			}
+			this.endianness = value;
 		}
 	}
 
