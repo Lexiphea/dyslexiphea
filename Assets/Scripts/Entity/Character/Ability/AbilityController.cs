@@ -1,14 +1,25 @@
 ﻿using System.Collections.Generic;
 using UnityEngine;
 
-public abstract class BaseAbilityController : MonoBehaviour
+public class AbilityController : MonoBehaviour
 {
 	private Dictionary<string, AbilityTemplate> knownAbilities = new Dictionary<string, AbilityTemplate>();
 	private List<AbilityTemplate> abilityHotkeys = new List<AbilityTemplate>();
 
+	[SerializeField]
 	private AbilityTemplate currentAbilityTemplate = null;
+	[SerializeField]
 	private GameObject currentAbilityAnimationObject = null;
+	[SerializeField]
 	private float cooldownEndTime = 0.0f;
+
+	public int HotkeyCount
+	{
+		get
+		{
+			return this.abilityHotkeys.Count;
+		}
+	}
 
 	void Awake()
 	{
@@ -18,16 +29,6 @@ public abstract class BaseAbilityController : MonoBehaviour
 			attackable.OnAttacked += OnAttacked;
 		}
 	}
-
-	void Update()
-	{
-		this.UseAbility(this.TryUseAbility());
-	}
-
-	/// <summary>
-	/// Triggers the usage of an ability by returning the correct ability hotkey number to execute. Return -1 for no ability execution.
-	/// </summary>
-	public abstract int TryUseAbility();
 
 	/// <summary>
 	/// Attempts to execute the requested ability.

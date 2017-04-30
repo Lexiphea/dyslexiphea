@@ -93,7 +93,7 @@
     <Compile Include="Assets\Scripts\Entity\Camera\CameraController.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\Ability\AbilityTarget.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\Ability\AbilityTemplate.cs" />
-    <Compile Include="Assets\Scripts\Entity\Character\Ability\BaseAbilityController.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Ability\AbilityController.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\AttackInfo.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\ExperienceTable.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\InteractionController.cs" />
@@ -108,6 +108,7 @@
     <Compile Include="Assets\Scripts\Entity\Character\StatusEffect\StatusEffectTemplate.cs" />
     <Compile Include="Assets\Scripts\Entity\IAttackable.cs" />
     <Compile Include="Assets\Scripts\Entity\Interactable\BaseInteractable.cs" />
+    <Compile Include="Assets\Scripts\Entity\Interactable\Teleporter.cs" />
     <Compile Include="Assets\Scripts\Entity\Interactable\TestInteractable.cs" />
     <Compile Include="Assets\Scripts\Extensions\Accumulator\Accumulator.cs" />
     <Compile Include="Assets\Scripts\Extensions\Accumulator\IAccumulator.cs" />

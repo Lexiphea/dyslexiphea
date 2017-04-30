@@ -1,6 +1,9 @@
 ﻿using System;
 
-public class BitArray32<T>
+/// <summary>
+/// TEnum should be an enum with a maximum element count of 32 for ease of use.
+/// </summary>
+public class BitArray32<TEnum>
 {
 	private int flags = 0;
 
@@ -15,13 +18,13 @@ public class BitArray32<T>
 		return ((this.flags & f) == f);
 	}
 
-	public bool IsFlagged(T flagType)
+	public bool IsFlagged(TEnum flagType)
 	{
 		int f = Convert.ToInt32(flagType);
 		return ((this.flags & f) == f);
 	}
 
-	public void Disable(T flagType)
+	public void Disable(TEnum flagType)
 	{
 		this.flags &= ~(Convert.ToInt32(flagType));
 	}
@@ -31,7 +34,7 @@ public class BitArray32<T>
 		this.flags &= ~flagType;
 	}
 
-	public void Enable(T flagType)
+	public void Enable(TEnum flagType)
 	{
 		this.flags |= (Convert.ToInt32(flagType));
 	}
@@ -41,7 +44,7 @@ public class BitArray32<T>
 		this.flags |= flagType;
 	}
 
-	public static bool Read(byte[] buffer, ref int readOffset, out BitArray32<T> array)
+	public static bool Read(byte[] buffer, ref int readOffset, out BitArray32<TEnum> array)
 	{
 		int flags = 0;
 		if (!ByteReader.LittleEndian.ReadInt(buffer, ref readOffset, out flags))
@@ -49,7 +52,7 @@ public class BitArray32<T>
 			array = null;
 			return false;
 		}
-		array = new BitArray32<T>(flags);
+		array = new BitArray32<TEnum>(flags);
 		return true;
 	}
 

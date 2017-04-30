@@ -6,6 +6,23 @@ public class PlayerInputController : MonoBehaviour
 	private MovementController movementController;
 	[SerializeField]
 	private InteractionController interactionController;
+	[SerializeField]
+	private AbilityController abilityController;
+	[SerializeField]
+	private KeyCode[] abilityHotkeys = new KeyCode[]
+	{
+		KeyCode.Alpha0,
+		KeyCode.Alpha1,
+		KeyCode.Alpha2,
+		KeyCode.Alpha3,
+		KeyCode.Alpha4,
+		KeyCode.Alpha5,
+		KeyCode.Alpha6,
+		KeyCode.Alpha7,
+		KeyCode.Alpha8,
+		KeyCode.Alpha9,
+		KeyCode.Alpha0,
+	};
 
 	void Update()
 	{
@@ -26,6 +43,16 @@ public class PlayerInputController : MonoBehaviour
 			if (Input.GetKeyDown(KeyCode.E))
 			{
 				this.interactionController.Interact();
+			}
+		}
+		if (this.abilityController != null)
+		{
+			for (int i = 0; i < this.abilityController.HotkeyCount && i < this.abilityHotkeys.Length; ++i)
+			{
+				if (Input.GetKeyDown(this.abilityHotkeys[i]))
+				{
+					this.abilityController.UseAbility(i);
+				}
 			}
 		}
 	}

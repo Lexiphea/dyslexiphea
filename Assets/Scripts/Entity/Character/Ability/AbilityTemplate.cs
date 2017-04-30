@@ -31,7 +31,7 @@ public class AbilityTemplate : DatabaseTemplate
 		return template;
 	}
 
-	public GameObject Execute(BaseAbilityController abilityController)
+	public GameObject Execute(AbilityController abilityController)
 	{
 		if (this.abilityAnimationPrefab != null)
 		{

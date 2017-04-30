@@ -34,7 +34,7 @@ public class GUIObject3D : MonoBehaviour
 			Color c = Style.normal.textColor;
 			c.a = Mathf.Lerp(OldColor.a, ClearColor.a, t);
 			Style.normal.textColor = c;
-			PixelOffset.y = Mathf.Lerp(OldY, IncreaseY, t);
+			PixelOffset = new Vector2(PixelOffset.x, Mathf.Lerp(OldY, IncreaseY, t));
 		}
 	}
 

@@ -1,13 +1,13 @@
 ﻿public static class Hash
 {
-	private const int InitialHash = 17;
-	private const int Prime = 31;
+	private const int FirstPrime = 17;
+	private const int SecondPrime = 31;
 
 	public static int GetHashCode<T1>(T1 item1)
 	{
 		unchecked
 		{
-			return InitialHash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
+			return FirstPrime * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
 		}
 	}
 
@@ -15,9 +15,9 @@
 	{
 		unchecked
 		{
-			int hash = InitialHash;
-			hash = hash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
-			hash = hash * Prime + ((item2 != null) ? item2.GetHashCode() : 2);
+			int hash = FirstPrime;
+			hash = hash * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
+			hash = hash * SecondPrime + ((item2 != null) ? item2.GetHashCode() : 2);
 			return hash;
 		}
 	}
@@ -26,10 +26,10 @@
 	{
 		unchecked
 		{
-			int hash = InitialHash;
-			hash = hash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
-			hash = hash * Prime + ((item2 != null) ? item2.GetHashCode() : 2);
-			hash = hash * Prime + ((item3 != null) ? item3.GetHashCode() : 3);
+			int hash = FirstPrime;
+			hash = hash * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
+			hash = hash * SecondPrime + ((item2 != null) ? item2.GetHashCode() : 2);
+			hash = hash * SecondPrime + ((item3 != null) ? item3.GetHashCode() : 3);
 			return hash;
 		}
 	}
@@ -38,11 +38,11 @@
 	{
 		unchecked
 		{
-			int hash = InitialHash;
-			hash = hash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
-			hash = hash * Prime + ((item2 != null) ? item2.GetHashCode() : 2);
-			hash = hash * Prime + ((item3 != null) ? item3.GetHashCode() : 3);
-			hash = hash * Prime + ((item4 != null) ? item4.GetHashCode() : 4);
+			int hash = FirstPrime;
+			hash = hash * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
+			hash = hash * SecondPrime + ((item2 != null) ? item2.GetHashCode() : 2);
+			hash = hash * SecondPrime + ((item3 != null) ? item3.GetHashCode() : 3);
+			hash = hash * SecondPrime + ((item4 != null) ? item4.GetHashCode() : 4);
 			return hash;
 		}
 	}
@@ -51,12 +51,12 @@
 	{
 		unchecked
 		{
-			int hash = InitialHash;
-			hash = hash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
-			hash = hash * Prime + ((item2 != null) ? item2.GetHashCode() : 2);
-			hash = hash * Prime + ((item3 != null) ? item3.GetHashCode() : 3);
-			hash = hash * Prime + ((item4 != null) ? item4.GetHashCode() : 4);
-			hash = hash * Prime + ((item5 != null) ? item5.GetHashCode() : 5);
+			int hash = FirstPrime;
+			hash = hash * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
+			hash = hash * SecondPrime + ((item2 != null) ? item2.GetHashCode() : 2);
+			hash = hash * SecondPrime + ((item3 != null) ? item3.GetHashCode() : 3);
+			hash = hash * SecondPrime + ((item4 != null) ? item4.GetHashCode() : 4);
+			hash = hash * SecondPrime + ((item5 != null) ? item5.GetHashCode() : 5);
 			return hash;
 		}
 	}
@@ -65,13 +65,13 @@
 	{
 		unchecked
 		{
-			int hash = InitialHash;
-			hash = hash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
-			hash = hash * Prime + ((item2 != null) ? item2.GetHashCode() : 2);
-			hash = hash * Prime + ((item3 != null) ? item3.GetHashCode() : 3);
-			hash = hash * Prime + ((item4 != null) ? item4.GetHashCode() : 4);
-			hash = hash * Prime + ((item5 != null) ? item5.GetHashCode() : 5);
-			hash = hash * Prime + ((item6 != null) ? item6.GetHashCode() : 6);
+			int hash = FirstPrime;
+			hash = hash * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
+			hash = hash * SecondPrime + ((item2 != null) ? item2.GetHashCode() : 2);
+			hash = hash * SecondPrime + ((item3 != null) ? item3.GetHashCode() : 3);
+			hash = hash * SecondPrime + ((item4 != null) ? item4.GetHashCode() : 4);
+			hash = hash * SecondPrime + ((item5 != null) ? item5.GetHashCode() : 5);
+			hash = hash * SecondPrime + ((item6 != null) ? item6.GetHashCode() : 6);
 			return hash;
 		}
 	}
@@ -80,14 +80,14 @@
 	{
 		unchecked
 		{
-			int hash = InitialHash;
-			hash = hash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
-			hash = hash * Prime + ((item2 != null) ? item2.GetHashCode() : 2);
-			hash = hash * Prime + ((item3 != null) ? item3.GetHashCode() : 3);
-			hash = hash * Prime + ((item4 != null) ? item4.GetHashCode() : 4);
-			hash = hash * Prime + ((item5 != null) ? item5.GetHashCode() : 5);
-			hash = hash * Prime + ((item6 != null) ? item6.GetHashCode() : 6);
-			hash = hash * Prime + ((item7 != null) ? item7.GetHashCode() : 7);
+			int hash = FirstPrime;
+			hash = hash * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
+			hash = hash * SecondPrime + ((item2 != null) ? item2.GetHashCode() : 2);
+			hash = hash * SecondPrime + ((item3 != null) ? item3.GetHashCode() : 3);
+			hash = hash * SecondPrime + ((item4 != null) ? item4.GetHashCode() : 4);
+			hash = hash * SecondPrime + ((item5 != null) ? item5.GetHashCode() : 5);
+			hash = hash * SecondPrime + ((item6 != null) ? item6.GetHashCode() : 6);
+			hash = hash * SecondPrime + ((item7 != null) ? item7.GetHashCode() : 7);
 			return hash;
 		}
 	}
@@ -96,15 +96,15 @@
 	{
 		unchecked
 		{
-			int hash = InitialHash;
-			hash = hash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
-			hash = hash * Prime + ((item2 != null) ? item2.GetHashCode() : 2);
-			hash = hash * Prime + ((item3 != null) ? item3.GetHashCode() : 3);
-			hash = hash * Prime + ((item4 != null) ? item4.GetHashCode() : 4);
-			hash = hash * Prime + ((item5 != null) ? item5.GetHashCode() : 5);
-			hash = hash * Prime + ((item6 != null) ? item6.GetHashCode() : 6);
-			hash = hash * Prime + ((item7 != null) ? item7.GetHashCode() : 7);
-			hash = hash * Prime + ((item8 != null) ? item8.GetHashCode() : 8);
+			int hash = FirstPrime;
+			hash = hash * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
+			hash = hash * SecondPrime + ((item2 != null) ? item2.GetHashCode() : 2);
+			hash = hash * SecondPrime + ((item3 != null) ? item3.GetHashCode() : 3);
+			hash = hash * SecondPrime + ((item4 != null) ? item4.GetHashCode() : 4);
+			hash = hash * SecondPrime + ((item5 != null) ? item5.GetHashCode() : 5);
+			hash = hash * SecondPrime + ((item6 != null) ? item6.GetHashCode() : 6);
+			hash = hash * SecondPrime + ((item7 != null) ? item7.GetHashCode() : 7);
+			hash = hash * SecondPrime + ((item8 != null) ? item8.GetHashCode() : 8);
 			return hash;
 		}
 	}
@@ -113,16 +113,16 @@
 	{
 		unchecked
 		{
-			int hash = InitialHash;
-			hash = hash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
-			hash = hash * Prime + ((item2 != null) ? item2.GetHashCode() : 2);
-			hash = hash * Prime + ((item3 != null) ? item3.GetHashCode() : 3);
-			hash = hash * Prime + ((item4 != null) ? item4.GetHashCode() : 4);
-			hash = hash * Prime + ((item5 != null) ? item5.GetHashCode() : 5);
-			hash = hash * Prime + ((item6 != null) ? item6.GetHashCode() : 6);
-			hash = hash * Prime + ((item7 != null) ? item7.GetHashCode() : 7);
-			hash = hash * Prime + ((item8 != null) ? item8.GetHashCode() : 8);
-			hash = hash * Prime + ((item9 != null) ? item9.GetHashCode() : 9);
+			int hash = FirstPrime;
+			hash = hash * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
+			hash = hash * SecondPrime + ((item2 != null) ? item2.GetHashCode() : 2);
+			hash = hash * SecondPrime + ((item3 != null) ? item3.GetHashCode() : 3);
+			hash = hash * SecondPrime + ((item4 != null) ? item4.GetHashCode() : 4);
+			hash = hash * SecondPrime + ((item5 != null) ? item5.GetHashCode() : 5);
+			hash = hash * SecondPrime + ((item6 != null) ? item6.GetHashCode() : 6);
+			hash = hash * SecondPrime + ((item7 != null) ? item7.GetHashCode() : 7);
+			hash = hash * SecondPrime + ((item8 != null) ? item8.GetHashCode() : 8);
+			hash = hash * SecondPrime + ((item9 != null) ? item9.GetHashCode() : 9);
 			return hash;
 		}
 	}
@@ -131,17 +131,17 @@
 	{
 		unchecked
 		{
-			int hash = InitialHash;
-			hash = hash * Prime + ((item1 != null) ? item1.GetHashCode() : 1);
-			hash = hash * Prime + ((item2 != null) ? item2.GetHashCode() : 2);
-			hash = hash * Prime + ((item3 != null) ? item3.GetHashCode() : 3);
-			hash = hash * Prime + ((item4 != null) ? item4.GetHashCode() : 4);
-			hash = hash * Prime + ((item5 != null) ? item5.GetHashCode() : 5);
-			hash = hash * Prime + ((item6 != null) ? item6.GetHashCode() : 6);
-			hash = hash * Prime + ((item7 != null) ? item7.GetHashCode() : 7);
-			hash = hash * Prime + ((item8 != null) ? item8.GetHashCode() : 8);
-			hash = hash * Prime + ((item9 != null) ? item9.GetHashCode() : 9);
-			hash = hash * Prime + ((item10 != null) ? item10.GetHashCode() : 10);
+			int hash = FirstPrime;
+			hash = hash * SecondPrime + ((item1 != null) ? item1.GetHashCode() : 1);
+			hash = hash * SecondPrime + ((item2 != null) ? item2.GetHashCode() : 2);
+			hash = hash * SecondPrime + ((item3 != null) ? item3.GetHashCode() : 3);
+			hash = hash * SecondPrime + ((item4 != null) ? item4.GetHashCode() : 4);
+			hash = hash * SecondPrime + ((item5 != null) ? item5.GetHashCode() : 5);
+			hash = hash * SecondPrime + ((item6 != null) ? item6.GetHashCode() : 6);
+			hash = hash * SecondPrime + ((item7 != null) ? item7.GetHashCode() : 7);
+			hash = hash * SecondPrime + ((item8 != null) ? item8.GetHashCode() : 8);
+			hash = hash * SecondPrime + ((item9 != null) ? item9.GetHashCode() : 9);
+			hash = hash * SecondPrime + ((item10 != null) ? item10.GetHashCode() : 10);
 			return hash;
 		}
 	}
