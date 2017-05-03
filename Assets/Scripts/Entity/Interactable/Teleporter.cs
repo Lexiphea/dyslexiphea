@@ -6,6 +6,8 @@ public class Teleporter : BaseInteractable
 	private Transform destinationTransform = null;
 	[SerializeField]
 	private Vector3 destination = Vector3.zero;
+	[SerializeField]
+	private float teleportDelay = 0.0f;
 
 	public Transform DestinationTransform
 	{
@@ -39,6 +41,7 @@ public class Teleporter : BaseInteractable
 		play teleport activation animation
 		play teleport activation audio
 		freeze input
+		delay
 		*/
 	}
 
@@ -49,6 +52,14 @@ public class Teleporter : BaseInteractable
 		play teleport activated audio
 		resume input
 		*/
-		controller.gameObject.transform.position = this.destination;
+		MovementController movementController = controller.gameObject.GetComponent<MovementController>();
+		if (movementController != null)
+		{
+			controller.gameObject.transform.position = this.destination - new Vector3(0.0f, movementController.Extents.y, 0.0f);
+		}
+		else
+		{
+			controller.gameObject.transform.position = this.destination;
+		}
 	}
 }

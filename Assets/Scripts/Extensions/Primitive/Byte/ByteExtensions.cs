@@ -19,6 +19,30 @@ public static class ByteExtensions
 	}
 
 	/// <summary>
+	/// Returns the number clamped to the specified minimum value.
+	/// </summary>
+	public static byte Min(this byte number, byte minimum)
+	{
+		if (number < minimum)
+		{
+			return minimum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified maximum value.
+	/// </summary>
+	public static byte Max(this byte number, byte maximum)
+	{
+		if (number > maximum)
+		{
+			return maximum;
+		}
+		return number;
+	}
+
+	/// <summary>
 	/// Returns the number of digits of the current value.
 	/// </summary>
 	public static int DigitCount(this byte number)

@@ -11,6 +11,14 @@ public static class IntExtensions
 	}
 
 	/// <summary>
+	/// Returns the sign of the number;
+	/// </summary>
+	public static int Sign(this int number)
+	{
+		return (number < 0) ? -1 : 1;
+	}
+
+	/// <summary>
 	/// Returns the number clamped to the specified minimum and maximum value.
 	/// </summary>
 	public static int Clamp(this int number, int minimum, int maximum)
@@ -19,6 +27,30 @@ public static class IntExtensions
 		{
 			return minimum;
 		}
+		if (number > maximum)
+		{
+			return maximum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified minimum value.
+	/// </summary>
+	public static int Min(this int number, int minimum)
+	{
+		if (number < minimum)
+		{
+			return minimum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified maximum value.
+	/// </summary>
+	public static int Max(this int number, int maximum)
+	{
 		if (number > maximum)
 		{
 			return maximum;

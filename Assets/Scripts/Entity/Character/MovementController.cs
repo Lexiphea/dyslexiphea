@@ -2,58 +2,42 @@
 
 public class MovementController : MonoBehaviour 
 {
-	public class RaycastOrigins
+	public struct CollisionHitInfo
 	{
-		private Vector3 bottomLeft;
-		private Vector3 bottomRight;
-		private Vector3 topLeft;
-		private Vector3 topRight;
+		public readonly float Distance;
+		public readonly Vector3 Normal;
 
-		public Vector3 BottomLeft { get { return this.bottomLeft; } }
-		public Vector3 BottomRight { get { return this.bottomRight; } }
-		public Vector3 TopLeft { get { return this.topLeft; } }
-		public Vector3 TopRight { get { return this.topRight; } }
-
-		public RaycastOrigins(Vector3 bottomLeft, Vector3 bottomRight, Vector3 topLeft, Vector3 topRight)
+		public CollisionHitInfo(float distance, Vector3 normal)
 		{
-			this.bottomLeft = bottomLeft;
-			this.bottomRight = bottomRight;
-			this.topLeft = topLeft;
-			this.topRight = topRight;
+			Distance = distance;
+			Normal = normal;
 		}
 	}
 
-	private const float RaycastOriginExpansionWidth = -0.01f;
-	private const float MinimumDistanceFromGround = 0.01f;
+	private const float MinimumMoveMagnitude = 0.001f;
+	private const float ColliderPadding = 0.01f;
 
 	private Rigidbody cachedRigidbody = null;
 	private Collider cachedCollider = null;
-
+	private Vector3 extents = Vector3.zero;
 	[SerializeField]
 	private LayerMask rayLayermask;
-	private RaycastOrigins raycastOrigins = null;
 	[SerializeField]
-	[Tooltip("RayCount will be automatically calculated based on the objects local scale if set to true.")]
-	private bool calculateRayCount = true;
+	private float groundedMoveSpeed = 32.0f;
 	[SerializeField]
-	private int rayCountX = 2;
+	private float airMoveSpeed = 32.0f;
 	[SerializeField]
-	private int rayCountY = 2;
-	[SerializeField]
-	private int rayCountZ = 2;
-	[SerializeField]
-	private Vector3 raycastSpacing = Vector3.zero;
-
-	[SerializeField]
-	private float groundedMoveSpeed = 8.0f;
-	[SerializeField]
-	private float airMoveSpeed = 8.0f;
+	private float maxFallVelocity = -32.0f;
 	[SerializeField]
 	private bool useGravity = true;
 	[SerializeField]
-	private float gravity;
+	private float gravity = -32.0f;
 	[SerializeField]
 	private bool grounded = false;
+	[SerializeField]
+	private float minGroundedSlope = 0.5f;
+	[SerializeField]
+	private Vector3 groundNormal = Vector3.zero;
 	[SerializeField]
 	private bool fastFalling = false;
 	[SerializeField]
@@ -61,6 +45,8 @@ public class MovementController : MonoBehaviour
 	[SerializeField]
 	[Tooltip("The bonus gravity modifier applied in the air after pressing down. (Ex: 1.0f = 100% more gravity)")]
 	private float fastFallModifier = 0.75f;
+	[SerializeField]
+	private bool isJumping = false;
 	[SerializeField]
 	private float jumpHeight = 4.0f;
 	[SerializeField]
@@ -74,119 +60,202 @@ public class MovementController : MonoBehaviour
 	private IRateLimiter jumpRateLimiter = new RateLimiter(0.33f);
 	private IRateLimiter landingLagLimiter = new RateLimiter(0.066f);
 
-	public Vector3 rbVelocity = Vector3.zero;
-	public Vector3 direction = Vector3.zero;
+	public Vector3 velocity = Vector3.zero;
+	public Vector3 targetDirection = Vector3.zero;
+	public Vector3 deltaMove = Vector3.zero;
+	public Vector3 move = Vector3.zero;
+
+	/// <summary>
+	/// Gets the collider bounding box extents with ColliderPadding subtracted from each axis.
+	/// </summary>
+	public Vector3 Extents
+	{
+		get
+		{
+			return this.extents;
+		}
+	}
+
+	public float Gravity
+	{
+		get
+		{
+			return this.gravity;
+		}
+		set
+		{
+			this.gravity = value;
+			this.jumpVelocity = this.CalculateJumpVelocity();
+		}
+	}
+
+	public float JumpHeight
+	{
+		get
+		{
+			return this.jumpHeight;
+		}
+		set
+		{
+			this.jumpHeight = value;
+			this.gravity = this.CalculateGravity();
+			this.jumpVelocity = this.CalculateJumpVelocity();
+		}
+	}
+
+	public float TimeToJumpApex
+	{
+		get
+		{
+			return this.timeToJumpApex;
+		}
+		set
+		{
+			this.timeToJumpApex = value;
+			this.gravity = this.CalculateGravity();
+			this.jumpVelocity = this.CalculateJumpVelocity();
+		}
+	}
 
 	void Awake()
 	{
 		this.cachedRigidbody = this.gameObject.GetComponent<Rigidbody>();
 		this.cachedCollider = this.gameObject.GetComponent<Collider>();
-		this.raycastOrigins = this.CalculateRaycastOrigins();
-		this.raycastSpacing = this.CalculateRaySpacing();
-
-		this.gravity = -(2.0f * this.jumpHeight) / Mathf.Pow(this.timeToJumpApex, 2.0f);
-		this.jumpVelocity = this.gravity.Absolute() * this.timeToJumpApex;
-	}
-
-	void Update()
-	{
-		this.raycastOrigins = this.CalculateRaycastOrigins();
-		rbVelocity = this.cachedRigidbody.velocity;
-		
-		this.grounded = this.IsGrounded();
+		if (this.cachedCollider != null)
+		{
+			this.extents = new Vector3(this.cachedCollider.bounds.extents.x - ColliderPadding, this.cachedCollider.bounds.extents.y - ColliderPadding, this.cachedCollider.bounds.extents.z - ColliderPadding);
+		}
+		this.gravity = this.CalculateGravity();
+		this.jumpVelocity = this.CalculateJumpVelocity();
 	}
 
 	void FixedUpdate()
 	{
-		this.direction *= this.grounded ? this.groundedMoveSpeed : this.airMoveSpeed;
-		if (!this.grounded)
+		this.targetDirection *= (this.grounded ? this.groundedMoveSpeed : this.airMoveSpeed) * Time.deltaTime;
+
+		if (this.isJumping)
 		{
+			this.isJumping = false;
+			--this.remainingJumps;
+			this.jumpRateLimiter.Reset();
+			this.velocity = new Vector3(this.targetDirection.x, this.jumpVelocity, this.targetDirection.z);
+		}
+		else
+		{
+			this.velocity = new Vector3(this.targetDirection.x, this.CalculateVelocityY(), this.targetDirection.z);
+		}
+		this.deltaMove = this.velocity * Time.deltaTime;
+
+		if (deltaMove.magnitude > MinimumMoveMagnitude)
+		{
+			CollisionHitInfo hit;
+			if (this.CheckCollision(deltaMove, out hit))
+			{
+				this.groundNormal = hit.Normal;
+				if (this.groundNormal.y >= this.minGroundedSlope)
+				{
+					bool prevGrounded = this.grounded;
+					this.grounded = true;
+					if (prevGrounded != this.grounded)
+					{
+						this.OnLanded();
+					}
+				}
+				float projection = Vector3.Dot(this.velocity, hit.Normal);
+				if (projection < 0.0f)
+				{
+					this.velocity -= projection * this.groundNormal;
+				}
+				this.deltaMove = this.deltaMove.normalized * hit.Distance;
+
+				Vector3 groundNormalPerpendicularVector = new Vector3(this.groundNormal.y, -this.groundNormal.x, 0.0f);
+				Vector3 move = groundNormalPerpendicularVector * this.deltaMove.x;
+				move += Vector3.up * deltaMove.y;
+				this.cachedRigidbody.position = this.cachedRigidbody.position + move;
+			}
+			else
+			{
+				this.grounded = false;
+				this.groundNormal = Vector3.zero;
+				this.cachedRigidbody.position = this.cachedRigidbody.position + this.deltaMove;
+			}
+		}
+	}
+
+	private bool CheckCollision(Vector3 deltaMove, out CollisionHitInfo hit)
+	{
+		float distance = deltaMove.magnitude;
+		float sign = distance.Sign();
+		Vector3 direction = deltaMove.normalized;
+		RaycastHit rayHit;
+		if (Physics.BoxCast(this.cachedCollider.bounds.center, this.cachedCollider.bounds.extents, direction, out rayHit, this.cachedRigidbody.rotation, distance + ColliderPadding, this.rayLayermask))
+		{
+			float hitDistance = (rayHit.distance - ColliderPadding) * sign;
+			distance = hitDistance < distance ? hitDistance : distance;
+			hit = new CollisionHitInfo(distance, rayHit.normal);
+			return true;
+		}
+		hit = default(CollisionHitInfo);
+		return false;
+	}
+
+	/// <summary>
+	/// Called when the object lands.
+	/// </summary>
+	protected virtual void OnLanded()
+	{
+		this.fastFalling = false;
+		this.landingLagLimiter.Reset();
+		this.jumpRateLimiter.SetNextTick(0.0f);
+		this.remainingJumps = this.maxJumps;
+	}
+
+	/// <summary>
+	/// Calculates the total Y velocity.
+	/// </summary>
+	private float CalculateVelocityY()
+	{
+		float yVelocity = this.velocity.y;
+		yVelocity += this.CalculateGravityModifier() * Time.deltaTime;
+		yVelocity += this.targetDirection.y;
+		return yVelocity.Min(this.maxFallVelocity);
+	}
+
+	/// <summary>
+	/// Returns the total gravity modifier to apply to velocity.
+	/// </summary>
+	private float CalculateGravityModifier()
+	{
+		if (this.useGravity && !this.grounded)
+		{
+			float gravity = 0.0f;
 			if (this.useGravity)
 			{
-				this.direction.y += this.gravity;
+				gravity += this.gravity;
 			}
 			if (this.fastFalling)
 			{
-				this.direction.y += this.gravity * this.fastFallModifier;
+				gravity += this.gravity * this.fastFallModifier;
 			}
+			return gravity;
 		}
-		///this.cachedRigidbody.velocity
-		this.cachedRigidbody.AddForce(this.direction);
-	}
-
-	private void DebugRaycasts()
-	{
-		//horizontal
-		for (int y = 0; y < this.rayCountY; ++y)
-		{
-			//left
-			Debug.DrawRay(this.raycastOrigins.BottomLeft + Vector3.up * this.raycastSpacing.y * y, Vector3.left, Color.red);
-			//right
-			Debug.DrawRay(this.raycastOrigins.BottomRight + Vector3.up * this.raycastSpacing.y * y, Vector3.right, Color.red);
-		}
-		//vertical
-		for (int x = 0; x < this.rayCountX; ++x)
-		{
-			//up
-			Debug.DrawRay(this.raycastOrigins.TopLeft + Vector3.right * this.raycastSpacing.x * x, Vector3.up, Color.red);
-			//down
-			Debug.DrawRay(this.raycastOrigins.BottomLeft + Vector3.right * this.raycastSpacing.x * x, Vector3.down, Color.red);
-		}
+		return 0.0f;
 	}
 
 	/// <summary>
-	/// Calculates and returns the Raycast Origin positions of the cached collider.
+	/// Sets the desired movement direction on the x and z axis.
 	/// </summary>
-	private RaycastOrigins CalculateRaycastOrigins()
+	public void Move(float x, float z)
 	{
-		if (this.cachedCollider != null)
-		{
-			Bounds bounds = this.cachedCollider.bounds;
-			bounds.Expand(MovementController.RaycastOriginExpansionWidth * 2.0f);
-
-			return new RaycastOrigins(new Vector3(bounds.min.x, bounds.min.y, 0.0f),
-									  new Vector3(bounds.max.x, bounds.min.y, 0.0f),
-									  new Vector3(bounds.min.x, bounds.max.y, 0.0f),
-									  new Vector3(bounds.max.x, bounds.max.y, 0.0f));
-		}
-		return null;
+		this.targetDirection = new Vector3(x, 0.0f, z).normalized;
 	}
 
 	/// <summary>
-	/// Calculates and returns the spacing between each ray for the cached collider. RayCount will be calculated based on localScale if calculateRayCount is true.
+	/// Sets the desired movement direction on the x, y, and z axis.
 	/// </summary>
-	private Vector3 CalculateRaySpacing()
+	public void Move(Vector3 direction)
 	{
-		if (this.cachedCollider != null)
-		{
-			Bounds bounds = this.cachedCollider.bounds;
-			bounds.Expand(MovementController.RaycastOriginExpansionWidth * 2.0f);
-
-			if (this.calculateRayCount)
-			{
-				this.rayCountX = Mathf.RoundToInt(this.transform.localScale.x) + 1;
-				this.rayCountY = Mathf.RoundToInt(this.transform.localScale.y) + 1;
-				this.rayCountZ = Mathf.RoundToInt(this.transform.localScale.z) + 1;
-			}
-
-			//clamp the count to a minimum of 2
-			this.rayCountX = this.rayCountX.Clamp(2, int.MaxValue);
-			this.rayCountY = this.rayCountY.Clamp(2, int.MaxValue);
-			this.rayCountZ = this.rayCountZ.Clamp(2, int.MaxValue);
-
-			return new Vector3(bounds.size.x / (this.rayCountX - 1),
-							   bounds.size.y / (this.rayCountY - 1),
-							   bounds.size.z / (this.rayCountZ - 1));
-		}
-		return Vector3.zero;
-	}
-
-	/// <summary>
-	/// Moves the object on the X and Z axis.
-	/// </summary>
-	public void MoveXZ(float x, float z)
-	{
-		this.direction = new Vector3(x, 0.0f, z).normalized;
+		this.targetDirection = direction.normalized;
 	}
 
 	/// <summary>
@@ -194,11 +263,9 @@ public class MovementController : MonoBehaviour
 	/// </summary>
 	public void Jump()
 	{
-		if (this.remainingJumps > 0 && this.jumpRateLimiter.IsReady && this.landingLagLimiter.IsReady)
+		if (!this.isJumping && this.remainingJumps > 0 && this.jumpRateLimiter.IsReady && this.landingLagLimiter.IsReady)
 		{
-			this.cachedRigidbody.velocity = new Vector3(this.cachedRigidbody.velocity.x, this.jumpVelocity, this.cachedRigidbody.velocity.z);
-			--this.remainingJumps;
-			this.jumpRateLimiter.Reset();
+			this.isJumping = true;
 		}
 	}
 
@@ -214,49 +281,19 @@ public class MovementController : MonoBehaviour
 	}
 
 	/// <summary>
-	/// Checks if the object is grounded. If the object just landed, OnLanded is called.
+	/// Calculates the gravity applied to the controller based on jump height and time to reach the jump apex.
 	/// </summary>
-	private bool IsGrounded()
+	public float CalculateGravity()
 	{
-		bool prevGrounded = this.grounded;
-		bool grounded = false;
-
-		for (int x = 0; x < this.rayCountX; ++x)
-		{
-			Vector3 rayOrigin = this.raycastOrigins.BottomLeft + Vector3.right * this.raycastSpacing.x * x;
-			RaycastHit hit;
-			if (Physics.Raycast(rayOrigin, Vector3.down, out hit, this.cachedRigidbody.velocity.y + 1.0f, rayLayermask))
-			{
-				//Debug.DrawRay(rayOrigin, Vector3.down * hit.distance, Color.red);
-				if (hit.distance < MovementController.MinimumDistanceFromGround)
-				{
-					grounded = true;
-					break;
-				}
-			}
-		}
-		//check if the object just landed
-		if (grounded && prevGrounded != grounded)
-		{
-			OnLanded();
-		}
-		return grounded;
-	}
-
-	private void IsCollidingWithWall()
-	{
-		
+		return -(2.0f * this.jumpHeight) / Mathf.Pow(this.timeToJumpApex, 2.0f);
 	}
 
 	/// <summary>
-	/// Called automatically when the object lands.
+	/// Calculates the jump velocity required to reach the jump apex.
 	/// </summary>
-	protected virtual void OnLanded()
+	public float CalculateJumpVelocity()
 	{
-		this.fastFalling = false;
-		this.landingLagLimiter.Reset();
-		this.jumpRateLimiter.SetNextTick(0.0f);
-		this.remainingJumps = this.maxJumps;
+		return this.gravity.Absolute() * this.timeToJumpApex;
 	}
 
 	public void ResetRemainingJumps()

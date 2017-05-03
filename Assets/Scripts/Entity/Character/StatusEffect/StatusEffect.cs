@@ -17,7 +17,7 @@ public class StatusEffect : MonoBehaviour
 		{
 			this.accumulator.TryUpdate(() =>
 			{
-				this.template.OnTick(this.gameObject, this.stacks);
+				this.template.OnTick(this.gameObject, this, this.stacks);
 			});
 		}
 	}

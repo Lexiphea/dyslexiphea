@@ -11,6 +11,14 @@ public static class DoubleExtensions
 	}
 
 	/// <summary>
+	/// Returns the sign of the number;
+	/// </summary>
+	public static double Sign(this double number)
+	{
+		return (number < 0.0f) ? -1.0f : 1.0f;
+	}
+
+	/// <summary>
 	/// Returns the number clamped to the specified minimum and maximum value.
 	/// </summary>
 	public static double Clamp(this double number, double minimum, double maximum)
@@ -19,6 +27,30 @@ public static class DoubleExtensions
 		{
 			return minimum;
 		}
+		if (number > maximum)
+		{
+			return maximum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified minimum value.
+	/// </summary>
+	public static double Min(this double number, double minimum)
+	{
+		if (number < minimum)
+		{
+			return minimum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified maximum value.
+	/// </summary>
+	public static double Max(this double number, double maximum)
+	{
 		if (number > maximum)
 		{
 			return maximum;

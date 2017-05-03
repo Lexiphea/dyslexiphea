@@ -11,6 +11,14 @@ public static class LongExtensions
 	}
 
 	/// <summary>
+	/// Returns the sign of the number;
+	/// </summary>
+	public static long Sign(this long number)
+	{
+		return (number < 0) ? -1 : 1;
+	}
+
+	/// <summary>
 	/// Returns the number clamped to the specified minimum and maximum value.
 	/// </summary>
 	public static long Clamp(this long number, long minimum, long maximum)
@@ -19,6 +27,30 @@ public static class LongExtensions
 		{
 			return minimum;
 		}
+		if (number > maximum)
+		{
+			return maximum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified minimum value.
+	/// </summary>
+	public static long Min(this long number, long minimum)
+	{
+		if (number < minimum)
+		{
+			return minimum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified maximum value.
+	/// </summary>
+	public static long Max(this long number, long maximum)
+	{
 		if (number > maximum)
 		{
 			return maximum;

@@ -11,6 +11,14 @@ public static class SByteExtensions
 	}
 
 	/// <summary>
+	/// Returns the sign of the number;
+	/// </summary>
+	public static sbyte Sign(this sbyte number)
+	{
+		return (sbyte)((number < 0) ? -1 : 1);
+	}
+
+	/// <summary>
 	/// Returns the number clamped to the specified minimum and maximum value.
 	/// </summary>
 	public static sbyte Clamp(this sbyte number, sbyte minimum, sbyte maximum)
@@ -19,6 +27,30 @@ public static class SByteExtensions
 		{
 			return minimum;
 		}
+		if (number > maximum)
+		{
+			return maximum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified minimum value.
+	/// </summary>
+	public static sbyte Min(this sbyte number, sbyte minimum)
+	{
+		if (number < minimum)
+		{
+			return minimum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified maximum value.
+	/// </summary>
+	public static sbyte Max(this sbyte number, sbyte maximum)
+	{
 		if (number > maximum)
 		{
 			return maximum;

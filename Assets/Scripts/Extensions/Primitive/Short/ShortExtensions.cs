@@ -11,6 +11,14 @@ public static class ShortExtensions
 	}
 
 	/// <summary>
+	/// Returns the sign of the number;
+	/// </summary>
+	public static short Sign(this short number)
+	{
+		return (short)((number < 0) ? -1 : 1);
+	}
+
+	/// <summary>
 	/// Returns the number clamped to the specified minimum and maximum value.
 	/// </summary>
 	public static short Clamp(this short number, short minimum, short maximum)
@@ -19,6 +27,30 @@ public static class ShortExtensions
 		{
 			return minimum;
 		}
+		if (number > maximum)
+		{
+			return maximum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified minimum value.
+	/// </summary>
+	public static short Min(this short number, short minimum)
+	{
+		if (number < minimum)
+		{
+			return minimum;
+		}
+		return number;
+	}
+
+	/// <summary>
+	/// Returns the number clamped to the specified maximum value.
+	/// </summary>
+	public static short Max(this short number, short maximum)
+	{
 		if (number > maximum)
 		{
 			return maximum;

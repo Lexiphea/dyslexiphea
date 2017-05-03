@@ -25,7 +25,7 @@ public class StatusEffectTemplate : DatabaseTemplate
 	{
 	}
 
-	public void OnTick(GameObject target, int numStacks)
+	public void OnTick(GameObject target, StatusEffect effect, int numStacks)
 	{
 	}
 

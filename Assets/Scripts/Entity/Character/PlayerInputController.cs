@@ -28,7 +28,7 @@ public class PlayerInputController : MonoBehaviour
 	{
 		if (this.movementController != null)
 		{
-			if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
+			if (Input.GetKeyDown(KeyCode.W))
 			{
 				this.movementController.Jump();
 			}
@@ -36,7 +36,7 @@ public class PlayerInputController : MonoBehaviour
 			{
 				this.movementController.Fastfall();
 			}
-			this.movementController.MoveXZ(Input.GetAxis("Horizontal"), 0.0f);
+			this.movementController.Move(Input.GetAxis("Horizontal"), 0.0f);
 		}
 		if (this.interactionController != null)
 		{
