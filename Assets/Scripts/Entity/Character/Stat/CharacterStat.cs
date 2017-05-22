@@ -14,6 +14,9 @@ public abstract class CharacterStat : MonoBehaviour, ICharacterStat
 	private Dictionary<Type, ICharacterStat> parents = new Dictionary<Type, ICharacterStat>();
 	private Dictionary<Type, ICharacterStat> children = new Dictionary<Type, ICharacterStat>();
 
+	/// <summary>
+	/// Returns the base value of the stat. Modifying this will trigger the parent stats to update.
+	/// </summary>
 	public float BaseValue
 	{
 		get
@@ -30,6 +33,9 @@ public abstract class CharacterStat : MonoBehaviour, ICharacterStat
 		}
 	}
 
+	/// <summary>
+	/// Returns the minimum value of the stat. Modifying this will trigger the parent stats to update.
+	/// </summary>
 	public float MinValue
 	{
 		get
@@ -46,6 +52,9 @@ public abstract class CharacterStat : MonoBehaviour, ICharacterStat
 		}
 	}
 
+	/// <summary>
+	/// Returns the maximum value of the stat. Modifying this will trigger the parent stats to update.
+	/// </summary>
 	public float MaxValue
 	{
 		get
@@ -66,6 +75,9 @@ public abstract class CharacterStat : MonoBehaviour, ICharacterStat
 	public abstract float DefaultMinValue { get; }
 	public abstract float DefaultMaxValue { get; }
 
+	/// <summary>
+	/// Returns the current modifier value.
+	/// </summary>
 	public float Modifier
 	{
 		get
@@ -74,6 +86,9 @@ public abstract class CharacterStat : MonoBehaviour, ICharacterStat
 		}
 	}
 
+	/// <summary>
+	/// Returns the total stat value clamped to the minimum and maximum value.
+	/// </summary>
 	public float TotalValue
 	{
 		get
@@ -85,39 +100,104 @@ public abstract class CharacterStat : MonoBehaviour, ICharacterStat
 	public abstract Type[] ParentTypes { get; }
 	public abstract Type[] ChildTypes { get; }
 
-	public virtual void Awake()
+	public virtual void OnBeforeAwake()
 	{
+	}
+
+	protected void Awake()
+	{
+		this.OnBeforeAwake();
+
 		this.baseValue = InitialValue;
 		this.minValue = DefaultMinValue;
 		this.maxValue = DefaultMaxValue;
 
+		//Get the other character stat components on the entity and set up heirarchy based on ParentTypes and ChildTypes.
 		int i;
-		for (i = 0; i < ParentTypes.Length; ++i)
+		if (ParentTypes != null)
 		{
-			CharacterStat parent = this.gameObject.GetComponent(ParentTypes[i]) as CharacterStat;
-			if (parent != null)
+			for (i = 0; i < ParentTypes.Length; ++i)
 			{
-				parent.AddChild(this);
+				CharacterStat parent = this.gameObject.GetComponent(ParentTypes[i]) as CharacterStat;
+				if (parent != null)
+				{
+					parent.AddChild(this);
+				}
 			}
 		}
-		for (i = 0; i < ChildTypes.Length; ++i)
+		if (ChildTypes != null)
 		{
-			CharacterStat child = this.gameObject.GetComponent(ChildTypes[i]) as CharacterStat;
-			if (child != null)
+			for (i = 0; i < ChildTypes.Length; ++i)
 			{
-				this.AddChild(child);
+				CharacterStat child = this.gameObject.GetComponent(ChildTypes[i]) as CharacterStat;
+				if (child != null)
+				{
+					this.AddChild(child);
+				}
 			}
 		}
+
+		this.OnAfterAwake();
 	}
 
+	public virtual void OnAfterAwake()
+	{
+	}
+
+	public virtual void OnBeforeDestroy()
+	{
+	}
+
+	protected void OnDestroy()
+	{
+		this.OnBeforeDestroy();
+
+		int i;
+		if (ParentTypes != null)
+		{
+			for (i = 0; i < ParentTypes.Length; ++i)
+			{
+				CharacterStat parent = this.gameObject.GetComponent(ParentTypes[i]) as CharacterStat;
+				if (parent != null)
+				{
+					parent.RemoveChild(this);
+				}
+			}
+		}
+		if (ChildTypes != null)
+		{
+			for (i = 0; i < ChildTypes.Length; ++i)
+			{
+				CharacterStat child = this.gameObject.GetComponent(ChildTypes[i]) as CharacterStat;
+				if (child != null)
+				{
+					this.RemoveChild(child);
+				}
+			}
+		}
+
+		this.OnAfterDestroy();
+	}
+
+	public virtual void OnAfterDestroy()
+	{
+	}
+
+	/// <summary>
+	/// Re-calculates the TotalValue of the stat. Parents are updated if the old total is not equal to the new total.
+	/// </summary>
 	protected void UpdateValues()
 	{
 		this.UpdateValues(false);
 	}
+	/// <summary>
+	/// Re-calculates the TotalValue of the stat. Parents are updated if the old total is not equal to the new total.
+	/// </summary>
 	protected void UpdateValues(bool forceUpdate)
 	{
 		float prevTotalValue = this.totalValue;
-		this.ApplyChildren();
+		this.modifier = this.CalculateModifier();
+		this.totalValue = (this.baseValue + this.modifier).Clamp(this.minValue, this.maxValue);
 		if (forceUpdate || this.totalValue != prevTotalValue)
 		{
 			foreach (CharacterStat parent in this.parents.Values)
@@ -127,48 +207,22 @@ public abstract class CharacterStat : MonoBehaviour, ICharacterStat
 		}
 	}
 
-	private void ApplyChildren()
+	/// <summary>
+	/// Calculates the modifier bonus.
+	/// </summary>
+	private float CalculateModifier()
 	{
-		this.modifier = 0.0f;
+		float modifier = 0.0f;
 		foreach (KeyValuePair<Type, Func<ICharacterStat, float>> pair in this.formulas)
 		{
 			ICharacterStat child;
 			if (this.children.TryGetValue(pair.Key, out child))
 			{
-				this.modifier += pair.Value.Invoke(child);
+				//TODO: Maybe this should be checked to prevent the modifier from rolling over?
+				modifier += pair.Value.Invoke(child);
 			}
 		}
-		this.totalValue = (this.baseValue + this.modifier).Clamp(this.minValue, this.maxValue);
-	}
-
-	private void AddParent(CharacterStat parent)
-	{
-		Type type = parent.GetType();
-		if (!this.parents.ContainsKey(type))
-		{
-			this.parents.Add(type, parent);
-		}
-	}
-	private void RemoveParent(CharacterStat parent)
-	{
-		this.parents.Remove(parent.GetType());
-	}
-
-	private void AddChild(CharacterStat child)
-	{
-		Type type = child.GetType();
-		if (!this.children.ContainsKey(type))
-		{
-			this.children.Add(type, child);
-			child.AddParent(this);
-			this.UpdateValues();
-		}
-	}
-	private void RemoveChild(CharacterStat child)
-	{
-		this.children.Remove(children.GetType());
-		child.RemoveParent(this);
-		this.UpdateValues();
+		return modifier;
 	}
 
 	public void AddFormula(Type statType, Func<ICharacterStat, float> formula)
@@ -181,5 +235,47 @@ public abstract class CharacterStat : MonoBehaviour, ICharacterStat
 	public void RemoveFormula(Type statType)
 	{
 		this.formulas.Remove(statType);
+	}
+
+	private void AddParent(CharacterStat parent)
+	{
+		if (parent != null)
+		{
+			Type type = parent.GetType();
+			if (!this.parents.ContainsKey(type))
+			{
+				this.parents.Add(type, parent);
+			}
+		}
+	}
+	private void RemoveParent(CharacterStat parent)
+	{
+		if (parent != null)
+		{
+			this.parents.Remove(parent.GetType());
+		}
+	}
+
+	private void AddChild(CharacterStat child)
+	{
+		if (child != null)
+		{
+			Type type = child.GetType();
+			if (!this.children.ContainsKey(type))
+			{
+				this.children.Add(type, child);
+				child.AddParent(this);
+				this.UpdateValues();
+			}
+		}
+	}
+	private void RemoveChild(CharacterStat child)
+	{
+		if (child != null)
+		{
+			this.children.Remove(child.GetType());
+			child.RemoveParent(this);
+			this.UpdateValues();
+		}
 	}
 }

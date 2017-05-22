@@ -106,6 +106,9 @@
     <Compile Include="Assets\Scripts\Entity\Character\Stat\ICharacterStat.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\StatusEffect\StatusEffect.cs" />
     <Compile Include="Assets\Scripts\Entity\Character\StatusEffect\StatusEffectTemplate.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Stat\Types\FlatStrengthModifier.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Stat\Types\PercentStrengthModifier.cs" />
+    <Compile Include="Assets\Scripts\Entity\Character\Stat\Types\Strength.cs" />
     <Compile Include="Assets\Scripts\Entity\IAttackable.cs" />
     <Compile Include="Assets\Scripts\Entity\Interactable\BaseInteractable.cs" />
     <Compile Include="Assets\Scripts\Entity\Interactable\SceneTeleporter.cs" />

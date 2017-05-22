@@ -11,7 +11,6 @@ public class PlayerInputController : MonoBehaviour
 	[SerializeField]
 	private KeyCode[] abilityHotkeys = new KeyCode[]
 	{
-		KeyCode.Alpha0,
 		KeyCode.Alpha1,
 		KeyCode.Alpha2,
 		KeyCode.Alpha3,
@@ -53,6 +52,10 @@ public class PlayerInputController : MonoBehaviour
 				{
 					this.abilityController.UseAbility(i);
 				}
+			}
+			if (Input.GetKeyDown(KeyCode.Escape))
+			{
+				this.abilityController.Interrupt();
 			}
 		}
 	}

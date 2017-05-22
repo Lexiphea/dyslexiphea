@@ -61,8 +61,8 @@ public class MovementController : MonoBehaviour
 	private IRateLimiter landingLagLimiter = new RateLimiter(0.066f);
 
 	public Vector3 velocity = Vector3.zero;
-	public Vector3 targetDirection = Vector3.zero;
-	public Vector3 deltaMove = Vector3.zero;
+	public Vector3 targetVelocity = Vector3.zero;
+	public Vector3 deltaPosition = Vector3.zero;
 	public Vector3 move = Vector3.zero;
 
 	/// <summary>
@@ -131,25 +131,26 @@ public class MovementController : MonoBehaviour
 
 	void FixedUpdate()
 	{
-		this.targetDirection *= (this.grounded ? this.groundedMoveSpeed : this.airMoveSpeed) * Time.deltaTime;
-
 		if (this.isJumping)
 		{
 			this.isJumping = false;
 			--this.remainingJumps;
 			this.jumpRateLimiter.Reset();
-			this.velocity = new Vector3(this.targetDirection.x, this.jumpVelocity, this.targetDirection.z);
+			this.velocity = new Vector3(this.targetVelocity.x, this.jumpVelocity, this.targetVelocity.z);
 		}
 		else
 		{
-			this.velocity = new Vector3(this.targetDirection.x, this.CalculateVelocityY(), this.targetDirection.z);
+			this.velocity = new Vector3(this.targetVelocity.x, this.CalculateVelocityY(), this.targetVelocity.z);
 		}
-		this.deltaMove = this.velocity * Time.deltaTime;
 
-		if (deltaMove.magnitude > MinimumMoveMagnitude)
+		this.deltaPosition = this.velocity * Time.deltaTime;
+		if (deltaPosition.sqrMagnitude >= MinimumMoveMagnitude * MinimumMoveMagnitude)
 		{
+			this.grounded = false;
+			this.groundNormal = Vector3.zero;
+
 			CollisionHitInfo hit;
-			if (this.CheckCollision(deltaMove, out hit))
+			if (this.CheckCollision(deltaPosition, out hit))
 			{
 				this.groundNormal = hit.Normal;
 				if (this.groundNormal.y >= this.minGroundedSlope)
@@ -166,27 +167,25 @@ public class MovementController : MonoBehaviour
 				{
 					this.velocity -= projection * this.groundNormal;
 				}
-				this.deltaMove = this.deltaMove.normalized * hit.Distance;
+				this.deltaPosition = this.deltaPosition.normalized * hit.Distance;
 
 				Vector3 groundNormalPerpendicularVector = new Vector3(this.groundNormal.y, -this.groundNormal.x, 0.0f);
-				Vector3 move = groundNormalPerpendicularVector * this.deltaMove.x;
-				move += Vector3.up * deltaMove.y;
-				this.cachedRigidbody.position = this.cachedRigidbody.position + move;
+				Vector3 move = groundNormalPerpendicularVector * this.deltaPosition.x;
+				move += Vector3.up * deltaPosition.y;
+				this.cachedRigidbody.MovePosition(this.cachedRigidbody.position + move);
 			}
 			else
 			{
-				this.grounded = false;
-				this.groundNormal = Vector3.zero;
-				this.cachedRigidbody.position = this.cachedRigidbody.position + this.deltaMove;
+				this.cachedRigidbody.MovePosition(this.cachedRigidbody.position + this.deltaPosition);
 			}
 		}
 	}
 
-	private bool CheckCollision(Vector3 deltaMove, out CollisionHitInfo hit)
+	private bool CheckCollision(Vector3 deltaPosition, out CollisionHitInfo hit)
 	{
-		float distance = deltaMove.magnitude;
+		float distance = deltaPosition.magnitude;
 		float sign = distance.Sign();
-		Vector3 direction = deltaMove.normalized;
+		Vector3 direction = deltaPosition.normalized;
 		RaycastHit rayHit;
 		if (Physics.BoxCast(this.cachedCollider.bounds.center, this.cachedCollider.bounds.extents, direction, out rayHit, this.cachedRigidbody.rotation, distance + ColliderPadding, this.rayLayermask))
 		{
@@ -215,10 +214,10 @@ public class MovementController : MonoBehaviour
 	/// </summary>
 	private float CalculateVelocityY()
 	{
-		float yVelocity = this.velocity.y;
-		yVelocity += this.CalculateGravityModifier() * Time.deltaTime;
-		yVelocity += this.targetDirection.y;
-		return yVelocity.Min(this.maxFallVelocity);
+		float velocityY = this.velocity.y;
+		velocityY += this.CalculateGravityModifier() * Time.deltaTime;
+		velocityY += this.targetVelocity.y;
+		return velocityY.Min(this.maxFallVelocity);
 	}
 
 	/// <summary>
@@ -226,20 +225,16 @@ public class MovementController : MonoBehaviour
 	/// </summary>
 	private float CalculateGravityModifier()
 	{
-		if (this.useGravity && !this.grounded)
+		float gravity = 0.0f;
+		if (this.useGravity)
 		{
-			float gravity = 0.0f;
-			if (this.useGravity)
-			{
-				gravity += this.gravity;
-			}
+			gravity += this.gravity;
 			if (this.fastFalling)
 			{
 				gravity += this.gravity * this.fastFallModifier;
 			}
-			return gravity;
 		}
-		return 0.0f;
+		return gravity;
 	}
 
 	/// <summary>
@@ -247,7 +242,8 @@ public class MovementController : MonoBehaviour
 	/// </summary>
 	public void Move(float x, float z)
 	{
-		this.targetDirection = new Vector3(x, 0.0f, z).normalized;
+		this.targetVelocity = new Vector3(x, 0.0f, z).normalized;
+		this.targetVelocity *= this.grounded ? this.groundedMoveSpeed : this.airMoveSpeed;
 	}
 
 	/// <summary>
@@ -255,7 +251,8 @@ public class MovementController : MonoBehaviour
 	/// </summary>
 	public void Move(Vector3 direction)
 	{
-		this.targetDirection = direction.normalized;
+		this.targetVelocity = direction.normalized;
+		this.targetVelocity *= this.grounded ? this.groundedMoveSpeed : this.airMoveSpeed;
 	}
 
 	/// <summary>
